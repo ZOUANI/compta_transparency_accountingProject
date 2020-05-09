@@ -29,6 +29,7 @@ public interface CpcCompteComptableService {
 	public List<CpcCompteComptable> findByCriteria(Long idMin, Long idMax, BigDecimal montantMin,
 			BigDecimal montantMax);
 
-
 	List<CpcCompteComptable> findCpcCompteComptable(Date dateDebut, Date dateFin, int codeSousClasseComptable);
+
+	public  List<CpcCompteComptable> find(int numeroSousClasse);
 }

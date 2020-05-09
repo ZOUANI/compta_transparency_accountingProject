@@ -67,7 +67,16 @@ CompteComptableVo vo = new CompteComptableVo();
 return vo;
  }
  }
-public void init() { 
+
+  public boolean isSousClasseComptable() {
+   return sousClasseComptable;
+  }
+
+  public void setSousClasseComptable(boolean sousClasseComptable) {
+   this.sousClasseComptable = sousClasseComptable;
+  }
+
+  public void init() {
 
 sousClasseComptable = true; 
 }

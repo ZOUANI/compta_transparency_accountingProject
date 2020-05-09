@@ -18,13 +18,20 @@ public class CpcCompteComptable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @JsonProperty(access = Access.WRITE_ONLY)
     @ManyToOne
     private CompteComptable compteComptable;
     @Column(precision = 16, scale = 4)
     private BigDecimal montant;
     @ManyToOne
     private CpcSousClasse cpcSousClasse;
+
+    public CpcCompteComptable() {
+    }
+
+    public CpcCompteComptable(CompteComptable compteComptable, BigDecimal montant) {
+        this.compteComptable = compteComptable;
+        this.montant = montant;
+    }
 
     public Long getId() {
         return id;

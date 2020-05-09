@@ -41,7 +41,13 @@ cpcSousClasseService.deleteById(id);
 public List<CpcSousClasseVo> findAll(){
 return cpcSousClasseConverter.toVo(cpcSousClasseService.findAll());
 }
-
+@GetMapping("/findAllCpcSousClasse/{numero}")
+public List<CpcSousClasseVo> findAllCpcSousClasse(@PathVariable int numero){
+ cpcSousClasseConverter.setCpc(false);
+ cpcSousClasseConverter.setSousClasseComptable(true);
+ cpcSousClasseConverter.setCpcCompteComptables(false);
+  return cpcSousClasseConverter.toVo(cpcSousClasseService.findAllCpcSousClasse(numero));
+ }
  public CpcSousClasseConverter getCpcSousClasseConverter(){
 return cpcSousClasseConverter;
 }

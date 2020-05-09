@@ -20,5 +20,6 @@ public CpcSousClasse clone(CpcSousClasse cpcsousclasse);
 public List<CpcSousClasse> clone(List<CpcSousClasse>cpcsousclasses);
  public List<CpcSousClasse>  findByCriteria(Long idMin,Long idMax,BigDecimal montantMin,BigDecimal montantMax);
 List<CpcSousClasse> findCpcSousClasseComptable(Date dateDebut, Date dateFin);
+List<CpcSousClasse> findAllCpcSousClasse(int numeroSousClasse);
 
 }

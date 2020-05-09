@@ -29,11 +29,10 @@ public class CpcSousClasse {
 
     
     
-    public CpcSousClasse(SousClasseComptable sousClasseComptable, BigDecimal montant, Cpc cpc) {
+    public CpcSousClasse(SousClasseComptable sousClasseComptable, BigDecimal montant) {
 		super();
 		this.sousClasseComptable = sousClasseComptable;
 		this.montant = montant;
-		this.cpc = cpc;
 	}
 
 	public CpcSousClasse() {

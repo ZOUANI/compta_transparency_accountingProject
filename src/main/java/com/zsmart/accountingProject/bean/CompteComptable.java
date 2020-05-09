@@ -27,7 +27,6 @@ public class CompteComptable implements Serializable {
     private Long id;
     private String code;
     private String libelle;
-    @JsonProperty(access = Access.WRITE_ONLY)
     @ManyToOne
     private SousClasseComptable sousClasseComptable;
 

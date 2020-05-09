@@ -71,7 +71,40 @@ CpcCompteComptableVo vo = new CpcCompteComptableVo();
 return vo;
  }
  }
-public void init() { 
+
+  public boolean isCompteComptable() {
+   return compteComptable;
+  }
+
+  public void setCompteComptable(boolean compteComptable) {
+   this.compteComptable = compteComptable;
+  }
+
+  public CompteComptableConverter getCompteComptableConverter() {
+   return compteComptableConverter;
+  }
+
+  public void setCompteComptableConverter(CompteComptableConverter compteComptableConverter) {
+   this.compteComptableConverter = compteComptableConverter;
+  }
+
+  public boolean isCpcSousClasse() {
+   return cpcSousClasse;
+  }
+
+  public void setCpcSousClasse(boolean cpcSousClasse) {
+   this.cpcSousClasse = cpcSousClasse;
+  }
+
+  public CpcSousClasseConverter getCpcSousClasseConverter() {
+   return cpcSousClasseConverter;
+  }
+
+  public void setCpcSousClasseConverter(CpcSousClasseConverter cpcSousClasseConverter) {
+   this.cpcSousClasseConverter = cpcSousClasseConverter;
+  }
+
+  public void init() {
 
 compteComptable = true; 
 
