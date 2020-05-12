@@ -8,7 +8,7 @@ import com.zsmart.accountingProject.bean.FactureFournisseur;
 import com.zsmart.accountingProject.bean.Fournisseur; 
 public interface FactureFournisseurService {
 
-public FactureFournisseur save(FactureFournisseur facturefournisseur); 
+public FactureFournisseur save(FactureFournisseur facturefournisseur);
 public List<FactureFournisseur>  findAll();
 public FactureFournisseur findById(Long id);
 public int delete(FactureFournisseur facturefournisseur);

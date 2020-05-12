@@ -33,7 +33,7 @@ public OperationComptableVo save(@RequestBody OperationComptableVo operationComp
 OperationComptable operationComptable= operationComptableConverter.toItem(operationComptableVo);
 return operationComptableConverter.toVo(operationComptableService.save(operationComptable));
 }
-@DeleteMapping("/{id}")
+@DeleteMapping("/delete/{id}")
 public void deleteById(@PathVariable Long id){
 operationComptableService.deleteById(id);
 }

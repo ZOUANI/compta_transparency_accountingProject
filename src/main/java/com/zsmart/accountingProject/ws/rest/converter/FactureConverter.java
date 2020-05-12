@@ -1,10 +1,13 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.OperationComptable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.zsmart.accountingProject.service.util.*;
 import com.zsmart.accountingProject.bean.Facture;
 import com.zsmart.accountingProject.ws.rest.vo.FactureVo;
+
+import java.math.BigDecimal;
 
 @Component
 public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
@@ -182,6 +185,18 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             }
 
             if (ListUtil.isNotEmpty(item.getOperationComptable()) && operationComptable) {
+                BigDecimal sumDebit=BigDecimal.ZERO;
+                BigDecimal sumCredit=BigDecimal.ZERO;
+                for (OperationComptable op: item.getOperationComptable()
+                     ) {
+                    if (op.getTypeOperationComptable().getLibelle().equals("Debit")){
+                        sumDebit=sumDebit.add(op.getMontant());
+                    }else if (op.getTypeOperationComptable().getLibelle().equals("Credit")){
+                        sumCredit=sumCredit.add(op.getMontant());
+                    }
+                }
+                vo.setTotalDebit(NumberUtil.toString(sumDebit));
+                vo.setTotalCredit(NumberUtil.toString(sumCredit));
                 vo.setOperationComptablesVo(operationComptableConverter.toVo(item.getOperationComptable()));
             }
 

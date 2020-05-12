@@ -8,7 +8,7 @@ import com.zsmart.accountingProject.bean.FactureClient;
 import com.zsmart.accountingProject.bean.Client; 
 public interface FactureClientService {
 
-public FactureClient save(FactureClient factureclient); 
+public FactureClient save(FactureClient factureclient);
 public List<FactureClient>  findAll();
 public FactureClient findById(Long id);
 public int delete(FactureClient factureclient);

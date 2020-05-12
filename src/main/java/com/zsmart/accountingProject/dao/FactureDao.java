@@ -5,6 +5,8 @@ import com.zsmart.accountingProject.bean.Facture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
  public interface FactureDao extends JpaRepository<Facture,Long> {
@@ -16,4 +18,9 @@ import org.springframework.stereotype.Repository;
 
 	 public int deleteByEtatFacture(EtatFacture etatFacture);
 
+	 public List<Facture> findByReferenceSociete(String reference);
+
+	public Facture findByid(Long id);
+
+	public Facture findByReferenceSocieteAndReference(String referenceSociete,String reference);
 }

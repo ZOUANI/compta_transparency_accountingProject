@@ -41,13 +41,21 @@ public class FactureRest {
     @PostMapping("/saveWithOperations/")
     public FactureVo saveWithOperations(@RequestBody FactureVo factureVo) {
         factureConverter.setOperationComptable(true);
+        factureConverter.getOperationComptableConverter().setTypeOperationComptable(true);
+        factureConverter.getOperationComptableConverter().setCompteBanquaire(true);
+        factureConverter.getOperationComptableConverter().setCaisse(true);
         Facture facture = factureConverter.toItem(factureVo);
         return factureConverter.toVo(factureService.saveWithOperationComptable(facture));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteById(@PathVariable Long id) {
         factureService.deleteById(id);
+    }
+
+    @DeleteMapping("/DelFacWithOp/{id}")
+    public void deleteWithOperationsComptable(@PathVariable Long id) {
+        factureService.deleteWithOperationsComptable(id);
     }
 
     @DeleteMapping("/{reference}")
@@ -58,6 +66,20 @@ public class FactureRest {
     @GetMapping("/")
     public List<FactureVo> findAll() {
         return factureConverter.toVo(factureService.findAll());
+    }
+
+    @GetMapping("/findByRefSociete/{ref}")
+    public List<FactureVo> findByReferenceSociete(@PathVariable String ref) {
+        factureConverter.setOperationComptable(true);
+        factureConverter.getOperationComptableConverter().setTypeOperationComptable(true);
+        return factureConverter.toVo(factureService.findByReferenceSociete(ref));
+    }
+
+    @GetMapping("/findByRefAndRefSociete/{refsoc}/{ref}")
+    public FactureVo findByReferenceAndReferenceSociete(@PathVariable String refsoc,@PathVariable String ref) {
+        factureConverter.setOperationComptable(true);
+        factureConverter.getOperationComptableConverter().setTypeOperationComptable(true);
+        return factureConverter.toVo(factureService.findByReferenceSocieteAndReference(refsoc,ref));
     }
 
     public FactureConverter getFactureConverter() {

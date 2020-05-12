@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FactureClientVo{
+public class FactureClientVo extends FactureVo{
 
 private String id ;
 private ClientVo clientVo ;

@@ -139,10 +139,35 @@ public class FactureServiceImpl implements FactureService {
     }
 
     @Override
+    public List<Facture> findByReferenceSociete(String reference) {
+        return factureDao.findByReferenceSociete(reference);
+    }
+
+    @Override
+    public Facture findByReferenceSocieteAndReference(String referenceSociete, String reference) {
+        return factureDao.findByReferenceSocieteAndReference(referenceSociete,reference);
+    }
+
+    @Override
     public int delete(Facture facture) {
         if (facture == null) {
             return -1;
         } else {
+            factureDao.delete(facture);
+            return 1;
+        }
+    }
+
+    @Override
+    public int deleteWithOperationsComptable(Long id) {
+        Facture facture=factureDao.findByid(id);
+        if (facture==null){
+            return -1;
+        }else{
+            for (OperationComptable op:facture.getOperationComptable()
+                 ) {
+                operationcomptableService.delete(op);
+            }
             factureDao.delete(facture);
             return 1;
         }
