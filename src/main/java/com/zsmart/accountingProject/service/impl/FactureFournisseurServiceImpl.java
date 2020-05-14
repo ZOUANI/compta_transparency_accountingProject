@@ -1,6 +1,7 @@
 
 package com.zsmart.accountingProject.service.impl;
 
+import com.zsmart.accountingProject.bean.FactureClient;
 import com.zsmart.accountingProject.bean.OperationComptable;
 import com.zsmart.accountingProject.service.facade.FactureFournisseurService;
 import com.zsmart.accountingProject.dao.FactureFournisseurDao;
@@ -39,6 +40,10 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
 
     private FournisseurService fournisseurService;
 
+    @Autowired
+
+    private OperationComptableService operationcomptableService;
+
     @Override
     public FactureFournisseur save(FactureFournisseur facturefournisseur) {
 
@@ -50,10 +55,26 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
         }
     }
 
+    @Override
+    public FactureFournisseur saveWithOperations(FactureFournisseur facturefournisseur) {
+        if (facturefournisseur == null) {
+            return null;
+        } else {
+            if (facturefournisseur.getOperationComptable()==null || facturefournisseur.getOperationComptable().isEmpty()) {
+                return null;
+            } else {
+                facturefournisseurDao.save(facturefournisseur);
+                for (OperationComptable operationcomptable : facturefournisseur.getOperationComptable()) {
+                    operationcomptable.setFacture(facturefournisseur);
+                    operationcomptableService.save(operationcomptable);
+                }
+                return facturefournisseur;
+            }
+        }
+    }
 
 
-
- @Override
+    @Override
     public List<FactureFournisseur> findAll() {
         return facturefournisseurDao.findAll();
     }
@@ -62,6 +83,27 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
     public FactureFournisseur findById(Long id) {
 
         return facturefournisseurDao.getOne(id);
+    }
+
+    @Override
+    public FactureFournisseur findByReferenceSocieteAndReference(String refsoc, String ref) {
+        return facturefournisseurDao.findByReferenceSocieteAndReference(refsoc, ref);
+    }
+
+    @Override
+    public List<BigDecimal> calculateChargeParAnneeEtRefSociete(int annee, String refsoc) {
+        List<BigDecimal> data=new ArrayList<>();
+        for (int i = 0; i <12 ; i++) {
+            List<FactureFournisseur> factureFournisseurs=facturefournisseurDao.findByAnneeAndReferenceSocieteAndMois(annee,refsoc,i);
+            BigDecimal total=BigDecimal.ZERO;
+            for (FactureFournisseur f:factureFournisseurs
+                 ) {
+                total=total.add(f.getTotalTtc());
+            }
+            data.add(total);
+        }
+        return data;
+
     }
 
     @Override

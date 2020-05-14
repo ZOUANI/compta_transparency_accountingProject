@@ -9,8 +9,11 @@ import com.zsmart.accountingProject.bean.Client;
 public interface FactureClientService {
 
 public FactureClient save(FactureClient factureclient);
+public FactureClient saveWithOperations(FactureClient factureclient);
 public List<FactureClient>  findAll();
 public FactureClient findById(Long id);
+ public FactureClient findByReferenceSocieteAndReference(String refsoc, String ref);
+ public List<BigDecimal> calculateGainParAnneeEtRefSociete(int annee,String refsoc);
 public int delete(FactureClient factureclient);
 public void  deleteById(Long id);
 public void clone(FactureClient factureclient,FactureClient factureclientClone);

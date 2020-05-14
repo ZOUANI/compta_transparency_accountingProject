@@ -189,10 +189,12 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
                 BigDecimal sumCredit=BigDecimal.ZERO;
                 for (OperationComptable op: item.getOperationComptable()
                      ) {
-                    if (op.getTypeOperationComptable().getLibelle().equals("Debit")){
-                        sumDebit=sumDebit.add(op.getMontant());
-                    }else if (op.getTypeOperationComptable().getLibelle().equals("Credit")){
-                        sumCredit=sumCredit.add(op.getMontant());
+                    if (op.getTypeOperationComptable()!=null){
+                        if (op.getTypeOperationComptable().getLibelle().equals("Debit")){
+                            sumDebit=sumDebit.add(op.getMontant());
+                        }else if (op.getTypeOperationComptable().getLibelle().equals("Credit")){
+                            sumCredit=sumCredit.add(op.getMontant());
+                    }
                     }
                 }
                 vo.setTotalDebit(NumberUtil.toString(sumDebit));

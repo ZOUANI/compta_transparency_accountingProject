@@ -1,14 +1,12 @@
 
 package com.zsmart.accountingProject.service.impl;
 
-import com.zsmart.accountingProject.bean.Facture;
-import com.zsmart.accountingProject.bean.OperationComptable;
+import com.zsmart.accountingProject.bean.*;
 import com.zsmart.accountingProject.service.facade.FactureClientService;
 import com.zsmart.accountingProject.dao.FactureClientDao;
 import com.zsmart.accountingProject.service.facade.FactureService;
 import com.zsmart.accountingProject.service.facade.OperationComptableService;
 import com.zsmart.accountingProject.service.util.SearchUtil;
-import com.zsmart.accountingProject.bean.FactureClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import com.zsmart.accountingProject.bean.Client;
 import com.zsmart.accountingProject.service.facade.ClientService;
 
 @Service
@@ -59,7 +56,23 @@ public class FactureClientServiceImpl implements FactureClientService {
         }
     }
 
-
+    @Override
+    public FactureClient saveWithOperations(FactureClient factureclient) {
+        if (factureclient == null) {
+            return null;
+        } else {
+            if (factureclient.getOperationComptable()==null || factureclient.getOperationComptable().isEmpty()) {
+                return null;
+            } else {
+                factureclientDao.save(factureclient);
+                for (OperationComptable operationcomptable : factureclient.getOperationComptable()) {
+                    operationcomptable.setFacture(factureclient);
+                    operationcomptableService.save(operationcomptable);
+                }
+                return factureclient;
+            }
+        }
+    }
 
     @Override
     public List<FactureClient> findAll() {
@@ -69,6 +82,26 @@ public class FactureClientServiceImpl implements FactureClientService {
     @Override
     public FactureClient findById(Long id) {
         return factureclientDao.getOne(id);
+    }
+
+    @Override
+    public FactureClient findByReferenceSocieteAndReference(String refsoc, String ref) {
+        return factureclientDao.findByReferenceSocieteAndReference(refsoc, ref);
+    }
+
+    @Override
+    public List<BigDecimal> calculateGainParAnneeEtRefSociete(int annee, String refsoc) {
+        List<BigDecimal> data=new ArrayList<>();
+        for (int i = 0; i <12 ; i++) {
+            List<FactureClient> factureFournisseurs=factureclientDao.findByAnneeAndReferenceSocieteAndMois(annee,refsoc,i);
+            BigDecimal total=BigDecimal.ZERO;
+            for (FactureClient f:factureFournisseurs
+            ) {
+                total=total.add(f.getTotalTtc());
+            }
+            data.add(total);
+        }
+        return data;
     }
 
     @Override

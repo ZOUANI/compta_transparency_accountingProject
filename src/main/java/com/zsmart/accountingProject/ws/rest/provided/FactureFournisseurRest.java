@@ -1,7 +1,10 @@
 package com.zsmart.accountingProject.ws.rest.provided ;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import com.zsmart.accountingProject.ws.rest.vo.FactureClientVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +36,16 @@ public FactureFournisseurVo save(@RequestBody FactureFournisseurVo factureFourni
 FactureFournisseur factureFournisseur= factureFournisseurConverter.toItem(factureFournisseurVo);
 return factureFournisseurConverter.toVo(factureFournisseurService.save(factureFournisseur));
 }
+ @PostMapping("/saveWithOperations/")
+ public FactureFournisseurVo saveWithOperations(@RequestBody FactureFournisseurVo factureFournisseurVo){
+  factureFournisseurConverter.setFournisseur(true);
+  factureFournisseurConverter.setOperationComptable(true);
+  factureFournisseurConverter.getOperationComptableConverter().setTypeOperationComptable(true);
+  factureFournisseurConverter.getOperationComptableConverter().setCompteBanquaire(true);
+  factureFournisseurConverter.getOperationComptableConverter().setCaisse(true);
+  FactureFournisseur factureFournisseur= factureFournisseurConverter.toItem(factureFournisseurVo);
+  return factureFournisseurConverter.toVo(factureFournisseurService.saveWithOperations(factureFournisseur));
+ }
 @DeleteMapping("/{id}")
 public void deleteById(@PathVariable Long id){
 factureFournisseurService.deleteById(id);
@@ -41,6 +54,18 @@ factureFournisseurService.deleteById(id);
 public List<FactureFournisseurVo> findAll(){
 return factureFournisseurConverter.toVo(factureFournisseurService.findAll());
 }
+ @GetMapping("/calculateChargeByAnneeAndRefSoc/{annee}/{refSoc}")
+ public List<BigDecimal> calculateChargeByAnneeAndRefSoc(@PathVariable int annee,@PathVariable String refSoc){
+  return factureFournisseurService.calculateChargeParAnneeEtRefSociete(annee,refSoc);
+ }
+
+ @GetMapping("/findByRefAndRefSociete/{refsoc}/{ref}")
+ public FactureFournisseurVo findByReferenceAndReferenceSociete(@PathVariable String refsoc, @PathVariable String ref) {
+ factureFournisseurConverter.setFournisseur(true);
+  factureFournisseurConverter.setOperationComptable(true);
+  factureFournisseurConverter.getOperationComptableConverter().setTypeOperationComptable(true);
+  return factureFournisseurConverter.toVo(factureFournisseurService.findByReferenceSocieteAndReference(refsoc,ref));
+ }
 
  public FactureFournisseurConverter getFactureFournisseurConverter(){
 return factureFournisseurConverter;
