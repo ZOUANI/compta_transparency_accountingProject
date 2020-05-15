@@ -2,10 +2,8 @@
 package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.*;
-import com.zsmart.accountingProject.service.facade.FactureClientService;
+import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.dao.FactureClientDao;
-import com.zsmart.accountingProject.service.facade.FactureService;
-import com.zsmart.accountingProject.service.facade.OperationComptableService;
 import com.zsmart.accountingProject.service.util.SearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,8 +16,6 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import com.zsmart.accountingProject.service.facade.ClientService;
 
 @Service
 
@@ -37,6 +33,9 @@ public class FactureClientServiceImpl implements FactureClientService {
     @Autowired
 
     private ClientService clientService;
+
+    @Autowired
+    private SocieteService societeService;
 
 
 
@@ -85,15 +84,17 @@ public class FactureClientServiceImpl implements FactureClientService {
     }
 
     @Override
-    public FactureClient findByReferenceSocieteAndReference(String refsoc, String ref) {
-        return factureclientDao.findByReferenceSocieteAndReference(refsoc, ref);
+    public FactureClient findBySocieteIdAndReference(Long id, String ref) {
+        Societe societe=societeService.findById(id);
+        return factureclientDao.findBySocieteAndReference(societe,ref);
     }
 
     @Override
-    public List<BigDecimal> calculateGainParAnneeEtRefSociete(int annee, String refsoc) {
+    public List<BigDecimal> calculateGainParAnneeEtSocieteId(int annee,Long id) {
         List<BigDecimal> data=new ArrayList<>();
-        for (int i = 0; i <12 ; i++) {
-            List<FactureClient> factureFournisseurs=factureclientDao.findByAnneeAndReferenceSocieteAndMois(annee,refsoc,i);
+        Societe societe=societeService.findById(id);
+        for (int i = 1; i <13 ; i++) {
+            List<FactureClient> factureFournisseurs=factureclientDao.findByAnneeAndSocieteAndMois(annee,societe,i);
             BigDecimal total=BigDecimal.ZERO;
             for (FactureClient f:factureFournisseurs
             ) {

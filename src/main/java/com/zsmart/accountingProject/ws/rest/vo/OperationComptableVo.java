@@ -8,7 +8,7 @@ public class OperationComptableVo{
 
 private String id ;
 private String libelle ;
-private String referenceSociete ;
+private SocieteVo societeVo;
 private String referenceFacture ;
 private String montant;
 private String montantMin ;
@@ -44,15 +44,15 @@ public void setLibelle(String  libelle){
      this.libelle = libelle;
 }
 
-public String  getReferenceSociete(){
-    return referenceSociete;
-}
+    public SocieteVo getSocieteVo() {
+        return societeVo;
+    }
 
-public void setReferenceSociete(String  referenceSociete){
-     this.referenceSociete = referenceSociete;
-}
+    public void setSocieteVo(SocieteVo societeVo) {
+        this.societeVo = societeVo;
+    }
 
-public String  getReferenceFacture(){
+    public String  getReferenceFacture(){
     return referenceFacture;
 }
 

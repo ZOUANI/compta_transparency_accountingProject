@@ -29,6 +29,10 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
     @Autowired
     private FactureItemConverter factureItemConverter;
 
+    @Autowired
+    private SocieteConverter societeConverter;
+    private boolean societe;
+
     @Override
     public Facture toItem(FactureVo vo) {
         if (vo == null) {
@@ -48,8 +52,8 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
                 item.setTypeFacture(vo.getTypeFacture());
             }
 
-            if (StringUtil.isNotEmpty(vo.getReferenceSociete())) {
-                item.setReferenceSociete(vo.getReferenceSociete());
+            if (vo.getSocieteVo()!=null && societe) {
+                item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
             }
 
             if (vo.getId() != null) {
@@ -131,8 +135,8 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
                 vo.setTypeFacture(item.getTypeFacture());
             }
 
-            if (StringUtil.isNotEmpty(item.getReferenceSociete())) {
-                vo.setReferenceSociete(item.getReferenceSociete());
+            if (item.getSociete()!=null && societe) {
+                vo.setSocieteVo(societeConverter.toVo(item.getSociete()));
             }
 
 
@@ -219,10 +223,19 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
         operationComptable = true;
 
         factureItems = true;
+        societe=true;
     }
 
     public boolean isEtatFacture() {
         return etatFacture;
+    }
+
+    public boolean isSociete() {
+        return societe;
+    }
+
+    public void setSociete(boolean societe) {
+        this.societe = societe;
     }
 
     public void setEtatFacture(boolean etatFacture) {

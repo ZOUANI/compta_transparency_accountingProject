@@ -44,7 +44,7 @@ public class FactureVo {
     private String dateSaisie;
     private String dateSaisieMin;
     private String dateSaisieMax;
-    private String referenceSociete;
+    private SocieteVo societeVo;
     private EtatFactureVo etatFactureVo;
     private List<PaiementFactureVo> paiementFacturesVo;
     private List<OperationComptableVo> operationComptablesVo;
@@ -355,12 +355,12 @@ public class FactureVo {
         this.dateSaisieMax = dateSaisieMax;
     }
 
-    public String getReferenceSociete() {
-        return referenceSociete;
+    public SocieteVo getSocieteVo() {
+        return societeVo;
     }
 
-    public void setReferenceSociete(String referenceSociete) {
-        this.referenceSociete = referenceSociete;
+    public void setSocieteVo(SocieteVo societeVo) {
+        this.societeVo = societeVo;
     }
 
     public EtatFactureVo getEtatFactureVo() {

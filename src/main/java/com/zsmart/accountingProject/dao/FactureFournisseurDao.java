@@ -2,6 +2,7 @@ package com.zsmart.accountingProject.dao;
 import com.zsmart.accountingProject.bean.Fournisseur;
 import com.zsmart.accountingProject.bean.FactureFournisseur;
 
+import com.zsmart.accountingProject.bean.Societe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +17,8 @@ import java.util.List;
 
 	 public int deleteByFournisseur(Fournisseur fournisseur);
 
-	 public FactureFournisseur findByReferenceSocieteAndReference(String refsoc,String ref);
+	 public FactureFournisseur findBySocieteAndReference(Societe societe, String ref);
 
-	 public List<FactureFournisseur> findByAnneeAndReferenceSocieteAndMois(int annee,String refSoc,int mois);
+	 public List<FactureFournisseur> findByAnneeAndSocieteAndMois(int annee,Societe societe,int mois);
 
 }

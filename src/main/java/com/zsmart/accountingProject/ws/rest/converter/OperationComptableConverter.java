@@ -33,6 +33,8 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
 
     @Autowired
     private FactureConverter factureConverter;
+    @Autowired
+    private SocieteConverter societeConverter;
 
     @Override
     public OperationComptable toItem(OperationComptableVo vo) {
@@ -69,8 +71,8 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
                 item.setLibelle(vo.getLibelle());
             }
 
-            if (StringUtil.isNotEmpty(vo.getReferenceSociete())) {
-                item.setReferenceSociete(vo.getReferenceSociete());
+            if (vo.getSocieteVo()!=null) {
+                item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
             }
 
             if (StringUtil.isNotEmpty(vo.getReferenceFacture())) {
@@ -132,8 +134,8 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
                 vo.setLibelle(item.getLibelle());
             }
 
-            if (StringUtil.isNotEmpty(item.getReferenceSociete())) {
-                vo.setReferenceSociete(item.getReferenceSociete());
+            if (item.getSociete()!=null) {
+                vo.setSocieteVo(societeConverter.toVo(item.getSociete()));
             }
 
             if (StringUtil.isNotEmpty(item.getReferenceFacture())) {

@@ -33,6 +33,9 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
     @Autowired
     private FactureItemConverter factureItemConverter;
 
+    @Autowired
+    private SocieteConverter societeConverter;
+
     @Override
     public FactureClient toItem(FactureClientVo vo) {
         if (vo == null) {
@@ -52,8 +55,8 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
                 item.setTypeFacture(vo.getTypeFacture());
             }
 
-            if (StringUtil.isNotEmpty(vo.getReferenceSociete())) {
-                item.setReferenceSociete(vo.getReferenceSociete());
+            if (vo.getSocieteVo()!=null) {
+                item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
             }
 
             if (vo.getId() != null) {
@@ -140,8 +143,8 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
                 vo.setTypeFacture(item.getTypeFacture());
             }
 
-            if (StringUtil.isNotEmpty(item.getReferenceSociete())) {
-                vo.setReferenceSociete(item.getReferenceSociete());
+            if (item.getSociete()!=null) {
+                vo.setSocieteVo(societeConverter.toVo(item.getSociete()));
             }
 
             if (item.getAnnee() != null) {

@@ -14,6 +14,9 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 	@Autowired
 	private CpcSousClasseConverter cpcSousClasseConverter;
 
+	@Autowired
+	private SocieteConverter societeConverter;
+
 	@Override
 	public Cpc toItem(CpcVo vo) {
 		if (vo == null) {
@@ -21,8 +24,8 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 		} else {
 			Cpc item = new Cpc();
 
-			if (StringUtil.isNotEmpty(vo.getReferenceSociete())) {
-				item.setReferenceSociete(vo.getReferenceSociete());
+			if (vo.getSocieteVo()!=null) {
+				item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
 			}
 
 			if (vo.getId() != null) {
@@ -64,8 +67,8 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 		} else {
 			CpcVo vo = new CpcVo();
 
-			if (StringUtil.isNotEmpty(item.getReferenceSociete())) {
-				vo.setReferenceSociete(item.getReferenceSociete());
+			if (item.getSociete()!=null) {
+				vo.setSocieteVo(societeConverter.toVo(item.getSociete()));
 			}
 
 			if (item.getId() != null) {

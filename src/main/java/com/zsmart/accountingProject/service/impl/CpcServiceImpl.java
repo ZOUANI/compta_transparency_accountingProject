@@ -151,7 +151,7 @@ public class CpcServiceImpl implements CpcService {
 			cpcClone.setId(cpc.getId());
 			cpcClone.setDateDebut(cpc.getDateDebut());
 			cpcClone.setDateFin(cpc.getDateFin());
-			cpcClone.setReferenceSociete(cpc.getReferenceSociete());
+			cpcClone.setSociete(cpc.getSociete());
 			cpcClone.setTotalCharge(cpc.getTotalCharge());
 			cpcClone.setTotalProduit(cpc.getTotalProduit());
 			cpcClone.setResultat(cpc.getResultat());

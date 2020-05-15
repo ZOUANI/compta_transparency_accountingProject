@@ -12,8 +12,6 @@ public Facture save(Facture facture);
 public Facture  saveWithPaimentFactures (Facture facture);public Facture  saveWithOperationComptable (Facture facture);public Facture  saveWithFactureItems (Facture facture);public List<Facture>  findAll();
 public Facture findById(Long id);
 public Facture  findByReference(String  reference);
-public List<Facture> findByReferenceSociete(String reference);
-public Facture findByReferenceSocieteAndReference(String referenceSociete,String reference);
 public int delete(Facture facture);
 public void  deleteById(Long id);
 public void  deleteByReference(String  reference);

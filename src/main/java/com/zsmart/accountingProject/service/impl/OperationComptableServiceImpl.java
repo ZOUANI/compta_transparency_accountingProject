@@ -135,7 +135,7 @@ public class OperationComptableServiceImpl implements OperationComptableService 
 		if (operationcomptable != null && operationcomptableClone != null) {
 			operationcomptableClone.setId(operationcomptable.getId());
 			operationcomptableClone.setLibelle(operationcomptable.getLibelle());
-			operationcomptableClone.setReferenceSociete(operationcomptable.getReferenceSociete());
+			operationcomptableClone.setSociete(operationcomptable.getSociete());
 			operationcomptableClone.setReferenceFacture(operationcomptable.getReferenceFacture());
 			operationcomptableClone.setMontant(operationcomptable.getMontant());
 			operationcomptableClone.setDateOperationComptable(operationcomptable.getDateOperationComptable());

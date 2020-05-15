@@ -1,88 +1,89 @@
 package com.zsmart.accountingProject.ws.rest.converter;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.SousClasseComptable; 
-import com.zsmart.accountingProject.ws.rest.vo.SousClasseComptableVo; 
+import com.zsmart.accountingProject.bean.SousClasseComptable;
+import com.zsmart.accountingProject.ws.rest.vo.SousClasseComptableVo;
 
- @Component 
-public class SousClasseComptableConverter extends AbstractConverter<SousClasseComptable,SousClasseComptableVo>{ 
+@Component
+public class SousClasseComptableConverter extends AbstractConverter<SousClasseComptable, SousClasseComptableVo> {
 
-private boolean classeComptable; 
+    private boolean classeComptable;
 
- @Autowired
- private ClasseComptableConverter classeComptableConverter ; 
-private boolean compteComptables; 
+    @Autowired
+    private ClasseComptableConverter classeComptableConverter;
+    private boolean compteComptables;
 
- @Autowired
- private CompteComptableConverter compteComptableConverter ; 
+    @Autowired
+    private CompteComptableConverter compteComptableConverter;
 
- @Override 
- public SousClasseComptable toItem(SousClasseComptableVo vo) {
- if (vo == null) {
-    return null;
-      } else {
-SousClasseComptable item = new SousClasseComptable();
+    @Override
+    public SousClasseComptable toItem(SousClasseComptableVo vo) {
+        if (vo == null) {
+            return null;
+        } else {
+            SousClasseComptable item = new SousClasseComptable();
 
- if(classeComptable&& vo.getClasseComptableVo() != null) {
- item.setClasseComptable(classeComptableConverter.toItem(vo.getClasseComptableVo()));
-} 
- 
- if (StringUtil.isNotEmpty(vo.getLibelle())) {
- item.setLibelle(vo.getLibelle());
-} 
+            if (classeComptable && vo.getClasseComptableVo() != null) {
+                item.setClasseComptable(classeComptableConverter.toItem(vo.getClasseComptableVo()));
+            }
 
- if (vo.getId() != null) {
- item.setId(NumberUtil.toLong(vo.getId()));
-} 
+            if (StringUtil.isNotEmpty(vo.getLibelle())) {
+                item.setLibelle(vo.getLibelle());
+            }
 
- if (vo.getNumero() != null) {
- item.setNumero(NumberUtil.toInt(vo.getNumero()));
-} 
+            if (vo.getId() != null) {
+                item.setId(NumberUtil.toLong(vo.getId()));
+            }
 
- if (ListUtil.isNotEmpty(vo.getCompteComptablesVo ()) && compteComptables) {
- item.setCompteComptables(compteComptableConverter.toItem(vo.getCompteComptablesVo())); 
-} 
+            if (vo.getNumero() != null) {
+                item.setNumero(NumberUtil.toInt(vo.getNumero()));
+            }
 
-return item;
- }
- }
+            if (ListUtil.isNotEmpty(vo.getCompteComptablesVo()) && compteComptables) {
+                item.setCompteComptables(compteComptableConverter.toItem(vo.getCompteComptablesVo()));
+            }
 
-  @Override 
- public SousClasseComptableVo toVo(SousClasseComptable item) {
- if (item == null) {
-    return null;
-      } else {
-SousClasseComptableVo vo = new SousClasseComptableVo();
+            return item;
+        }
+    }
 
- if(classeComptable&& item.getClasseComptable() != null) {
- vo.setClasseComptableVo(classeComptableConverter.toVo(item.getClasseComptable()));
-} 
- 
- if (StringUtil.isNotEmpty(item.getLibelle())) {
- vo.setLibelle(item.getLibelle());
-} 
+    @Override
+    public SousClasseComptableVo toVo(SousClasseComptable item) {
+        if (item == null) {
+            return null;
+        } else {
+            SousClasseComptableVo vo = new SousClasseComptableVo();
 
- if (item.getId() != null) {
- vo.setId(NumberUtil.toString(item.getId()));
-} 
+            if (classeComptable && item.getClasseComptable() != null) {
+                vo.setClasseComptableVo(classeComptableConverter.toVo(item.getClasseComptable()));
+            }
 
- if (item.getNumero() != null) {
- vo.setNumero(NumberUtil.toString(item.getNumero()));
-} 
+            if (StringUtil.isNotEmpty(item.getLibelle())) {
+                vo.setLibelle(item.getLibelle());
+            }
 
- if(ListUtil.isNotEmpty(item.getCompteComptables()) && compteComptables) {
- vo.setCompteComptablesVo(compteComptableConverter.toVo(item.getCompteComptables()));
-} 
+            if (item.getId() != null) {
+                vo.setId(NumberUtil.toString(item.getId()));
+            }
 
-return vo;
- }
- }
-public void init() { 
+            if (item.getNumero() != null) {
+                vo.setNumero(NumberUtil.toString(item.getNumero()));
+            }
 
-classeComptable = true; 
+            if (ListUtil.isNotEmpty(item.getCompteComptables()) && compteComptables) {
+                vo.setCompteComptablesVo(compteComptableConverter.toVo(item.getCompteComptables()));
+            }
 
-compteComptables = true; 
+            return vo;
+        }
+    }
+
+    public void init() {
+
+        classeComptable = true;
+
+        compteComptables = true;
+    }
 }
- } 

@@ -13,7 +13,7 @@ private String dateDebutMax ;
 private String dateFin;
 private String dateFinMin ;
 private String dateFinMax ;
-private String referenceSociete ;
+private SocieteVo societeVo;
 private String totalCharge;
 private String totalChargeMin ;
 private String totalChargeMax ;
@@ -83,15 +83,15 @@ public void setDateFinMax(String  dateFinMax){
      this.dateFinMax = dateFinMax;
 }
 
-public String  getReferenceSociete(){
-    return referenceSociete;
-}
+    public SocieteVo getSocieteVo() {
+        return societeVo;
+    }
 
-public void setReferenceSociete(String  referenceSociete){
-     this.referenceSociete = referenceSociete;
-}
+    public void setSocieteVo(SocieteVo societeVo) {
+        this.societeVo = societeVo;
+    }
 
-public String  getTotalCharge(){
+    public String  getTotalCharge(){
     return totalCharge;
 }
 

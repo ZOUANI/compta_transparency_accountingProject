@@ -68,19 +68,7 @@ public class FactureRest {
         return factureConverter.toVo(factureService.findAll());
     }
 
-    @GetMapping("/findByRefSociete/{ref}")
-    public List<FactureVo> findByReferenceSociete(@PathVariable String ref) {
-        factureConverter.setOperationComptable(true);
-        factureConverter.getOperationComptableConverter().setTypeOperationComptable(true);
-        return factureConverter.toVo(factureService.findByReferenceSociete(ref));
-    }
 
-    @GetMapping("/findByRefAndRefSociete/{refsoc}/{ref}")
-    public FactureVo findByReferenceAndReferenceSociete(@PathVariable String refsoc,@PathVariable String ref) {
-        factureConverter.setOperationComptable(true);
-        factureConverter.getOperationComptableConverter().setTypeOperationComptable(true);
-        return factureConverter.toVo(factureService.findByReferenceSocieteAndReference(refsoc,ref));
-    }
 
     public FactureConverter getFactureConverter() {
         return factureConverter;

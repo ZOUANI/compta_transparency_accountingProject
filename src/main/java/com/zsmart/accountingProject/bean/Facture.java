@@ -43,7 +43,8 @@ public class Facture implements Serializable {
 	private Date dateFacture;
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date dateSaisie;
-	private String referenceSociete;
+	@ManyToOne
+	private Societe societe;
 	@ManyToOne
 	private EtatFacture etatFacture;
 	@OneToMany(mappedBy = "facture")
@@ -138,12 +139,15 @@ public class Facture implements Serializable {
 	public void setDateSaisie(Date dateSaisie) {
 		this.dateSaisie = dateSaisie;
 	}
-	public String getReferenceSociete() {
-		return referenceSociete;
+
+	public Societe getSociete() {
+		return societe;
 	}
-	public void setReferenceSociete(String referenceSociete) {
-		this.referenceSociete = referenceSociete;
+
+	public void setSociete(Societe societe) {
+		this.societe = societe;
 	}
+
 	public EtatFacture getEtatFacture() {
 		return etatFacture;
 	}
@@ -183,16 +187,28 @@ public class Facture implements Serializable {
 		}
 		else return id.equals(other.id);
 	}
+
 	@Override
 	public String toString() {
-		return "Facture [id=" + id + ", reference=" + reference + ", typeFacture=" + typeFacture + ", annee=" + annee
-				+ ", mois=" + mois + ", trimester=" + trimester + ", totalHt=" + totalHt + ", totalTtc=" + totalTtc
-				+ ", tva=" + tva + ", totalPayerHt=" + totalPayerHt + ", totalRestantHt=" + totalRestantHt
-				+ ", dateFacture=" + dateFacture + ", dateSaisie=" + dateSaisie + ", referenceSociete="
-				+ referenceSociete + ", etatFacture=" + etatFacture + ", paimentFactures=" + paimentFactures
-				+ ", operationComptable=" + operationComptable + ", factureItems=" + factureItems + "]";
+		return "Facture{" +
+				"id=" + id +
+				", reference='" + reference + '\'' +
+				", typeFacture='" + typeFacture + '\'' +
+				", annee=" + annee +
+				", mois=" + mois +
+				", trimester=" + trimester +
+				", totalHt=" + totalHt +
+				", totalTtc=" + totalTtc +
+				", tva=" + tva +
+				", totalPayerHt=" + totalPayerHt +
+				", totalRestantHt=" + totalRestantHt +
+				", dateFacture=" + dateFacture +
+				", dateSaisie=" + dateSaisie +
+				", societe=" + societe +
+				", etatFacture=" + etatFacture +
+				", paimentFactures=" + paimentFactures +
+				", operationComptable=" + operationComptable +
+				", factureItems=" + factureItems +
+				'}';
 	}
-
-	
-	
 }

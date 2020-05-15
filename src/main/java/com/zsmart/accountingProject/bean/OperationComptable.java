@@ -19,7 +19,8 @@ public class OperationComptable implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String libelle;
-    private String referenceSociete;
+    @ManyToOne
+    private Societe societe;
     private String referenceFacture;
     @Column(precision = 16, scale = 4)
     private BigDecimal montant;
@@ -73,12 +74,12 @@ public class OperationComptable implements Serializable {
         this.libelle = libelle;
     }
 
-    public String getReferenceSociete() {
-        return referenceSociete;
+    public Societe getSociete() {
+        return societe;
     }
 
-    public void setReferenceSociete(String referenceSociete) {
-        this.referenceSociete = referenceSociete;
+    public void setSociete(Societe societe) {
+        this.societe = societe;
     }
 
     public String getReferenceFacture() {

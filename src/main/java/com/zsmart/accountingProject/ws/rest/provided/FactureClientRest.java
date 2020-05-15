@@ -65,17 +65,17 @@ public class FactureClientRest {
         return factureClientConverter.toVo(factureClientService.findAll());
     }
 
-    @GetMapping("/calculateGainByAnneeAndRefSoc/{annee}/{refSoc}")
-    public List<BigDecimal> calculateChargeByAnneeAndRefSoc(@PathVariable int annee, @PathVariable String refSoc){
-        return factureClientService.calculateGainParAnneeEtRefSociete(annee,refSoc);
+    @GetMapping("/calculateGainByAnneeAndSocieteId/{annee}/{id}")
+    public List<BigDecimal> calculateChargeByAnneeAndRefSoc(@PathVariable int annee, @PathVariable Long id){
+        return factureClientService.calculateGainParAnneeEtSocieteId(annee,id);
     }
 
-    @GetMapping("/findByRefAndRefSociete/{refsoc}/{ref}")
-    public FactureClientVo findByReferenceAndReferenceSociete(@PathVariable String refsoc, @PathVariable String ref) {
+    @GetMapping("/findByRefAndSocieteId/{id}/{ref}")
+    public FactureClientVo findByReferenceAndReferenceSociete(@PathVariable Long id, @PathVariable String ref) {
         factureClientConverter.setClient(true);
         factureClientConverter.setOperationComptable(true);
         factureClientConverter.getOperationComptableConverter().setTypeOperationComptable(true);
-        return factureClientConverter.toVo(factureClientService.findByReferenceSocieteAndReference(refsoc,ref));
+        return factureClientConverter.toVo(factureClientService.findBySocieteIdAndReference(id,ref));
     }
 
     public FactureClientConverter getFactureClientConverter() {

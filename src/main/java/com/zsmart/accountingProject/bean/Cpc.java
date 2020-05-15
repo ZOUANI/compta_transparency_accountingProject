@@ -4,13 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Cpc {
@@ -20,7 +14,8 @@ public class Cpc {
     private Long id;
     private Date dateDebut;
     private Date dateFin;
-    private String referenceSociete;
+    @ManyToOne
+    private Societe societe;
     @Column(precision = 16, scale = 4)
     private BigDecimal totalCharge;
     @Column(precision = 16, scale = 4)
@@ -54,12 +49,12 @@ public class Cpc {
         this.dateFin = dateFin;
     }
 
-    public String getReferenceSociete() {
-        return referenceSociete;
+    public Societe getSociete() {
+        return societe;
     }
 
-    public void setReferenceSociete(String referenceSociete) {
-        this.referenceSociete = referenceSociete;
+    public void setSociete(Societe societe) {
+        this.societe = societe;
     }
 
     public BigDecimal getTotalCharge() {
@@ -96,9 +91,16 @@ public class Cpc {
 
     @Override
     public String toString() {
-        return "Cpc [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", referenceSociete="
-                + referenceSociete + ", totalCharge=" + totalCharge + ", totalProduit=" + totalProduit + ", resultat="
-                + resultat + ", cpcSousClasses=" + cpcSousClasses + "]";
+        return "Cpc{" +
+                "id=" + id +
+                ", dateDebut=" + dateDebut +
+                ", dateFin=" + dateFin +
+                ", societe=" + societe +
+                ", totalCharge=" + totalCharge +
+                ", totalProduit=" + totalProduit +
+                ", resultat=" + resultat +
+                ", cpcSousClasses=" + cpcSousClasses +
+                '}';
     }
 
     @Override

@@ -3,6 +3,7 @@ import com.zsmart.accountingProject.bean.Client;
 import com.zsmart.accountingProject.bean.FactureClient;
 
 import com.zsmart.accountingProject.bean.FactureFournisseur;
+import com.zsmart.accountingProject.bean.Societe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +18,8 @@ import java.util.List;
 
 	 public int deleteByClient(Client client);
 
-	public FactureClient findByReferenceSocieteAndReference(String refsoc, String ref);
+	public FactureClient findBySocieteAndReference(Societe societe,String ref);
 
-	public List<FactureClient> findByAnneeAndReferenceSocieteAndMois(int annee, String refSoc, int mois);
+	public List<FactureClient> findByAnneeAndSocieteAndMois(int annee, Societe societe, int mois);
 
 }

@@ -18,9 +18,7 @@ import java.util.List;
 
 	 public int deleteByEtatFacture(EtatFacture etatFacture);
 
-	 public List<Facture> findByReferenceSociete(String reference);
 
 	public Facture findByid(Long id);
 
-	public Facture findByReferenceSocieteAndReference(String referenceSociete,String reference);
 }

@@ -138,15 +138,7 @@ public class FactureServiceImpl implements FactureService {
         return factureDao.findByReference(reference);
     }
 
-    @Override
-    public List<Facture> findByReferenceSociete(String reference) {
-        return factureDao.findByReferenceSociete(reference);
-    }
 
-    @Override
-    public Facture findByReferenceSocieteAndReference(String referenceSociete, String reference) {
-        return factureDao.findByReferenceSocieteAndReference(referenceSociete,reference);
-    }
 
     @Override
     public int delete(Facture facture) {
@@ -198,7 +190,7 @@ public class FactureServiceImpl implements FactureService {
             factureClone.setTotalRestantHt(facture.getTotalRestantHt());
             factureClone.setDateFacture(facture.getDateFacture());
             factureClone.setDateSaisie(facture.getDateSaisie());
-            factureClone.setReferenceSociete(facture.getReferenceSociete());
+            factureClone.setSociete(facture.getSociete());
             factureClone.setEtatFacture(etatfactureService.clone(facture.getEtatFacture()));
             factureClone.setPaimentFactures(paiementfactureService.clone(facture.getPaimentFactures()));
             factureClone.setOperationComptable(operationcomptableService.clone(facture.getOperationComptable()));

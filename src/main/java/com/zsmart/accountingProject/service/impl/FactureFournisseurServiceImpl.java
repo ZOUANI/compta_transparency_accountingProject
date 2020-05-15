@@ -1,13 +1,12 @@
 
 package com.zsmart.accountingProject.service.impl;
 
-import com.zsmart.accountingProject.bean.FactureClient;
-import com.zsmart.accountingProject.bean.OperationComptable;
+import com.zsmart.accountingProject.bean.*;
 import com.zsmart.accountingProject.service.facade.FactureFournisseurService;
 import com.zsmart.accountingProject.dao.FactureFournisseurDao;
 import com.zsmart.accountingProject.service.facade.OperationComptableService;
+import com.zsmart.accountingProject.service.facade.SocieteService;
 import com.zsmart.accountingProject.service.util.SearchUtil;
-import com.zsmart.accountingProject.bean.FactureFournisseur;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import com.zsmart.accountingProject.bean.Fournisseur;
 import com.zsmart.accountingProject.service.facade.FournisseurService;
 
 @Service
@@ -43,6 +41,9 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
     @Autowired
 
     private OperationComptableService operationcomptableService;
+
+    @Autowired
+    private SocieteService societeService;
 
     @Override
     public FactureFournisseur save(FactureFournisseur facturefournisseur) {
@@ -86,15 +87,17 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
     }
 
     @Override
-    public FactureFournisseur findByReferenceSocieteAndReference(String refsoc, String ref) {
-        return facturefournisseurDao.findByReferenceSocieteAndReference(refsoc, ref);
+    public FactureFournisseur findBySocieteIdAndReference(Long id, String ref) {
+        Societe societe=societeService.findById(id);
+        return facturefournisseurDao.findBySocieteAndReference(societe, ref);
     }
 
     @Override
-    public List<BigDecimal> calculateChargeParAnneeEtRefSociete(int annee, String refsoc) {
+    public List<BigDecimal> calculateChargeParAnneeEtSocieteId(int annee, Long id) {
         List<BigDecimal> data=new ArrayList<>();
-        for (int i = 0; i <12 ; i++) {
-            List<FactureFournisseur> factureFournisseurs=facturefournisseurDao.findByAnneeAndReferenceSocieteAndMois(annee,refsoc,i);
+        Societe societe=societeService.findById(id);
+        for (int i = 1; i <13 ; i++) {
+            List<FactureFournisseur> factureFournisseurs=facturefournisseurDao.findByAnneeAndSocieteAndMois(annee,societe,i);
             BigDecimal total=BigDecimal.ZERO;
             for (FactureFournisseur f:factureFournisseurs
                  ) {
