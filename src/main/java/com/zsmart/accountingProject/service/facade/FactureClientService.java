@@ -7,11 +7,16 @@ import java.math.BigDecimal;
 import com.zsmart.accountingProject.bean.FactureClient;
 import com.zsmart.accountingProject.bean.Client;
 import com.zsmart.accountingProject.bean.Societe;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FactureClientService {
 
 public FactureClient save(FactureClient factureclient);
 public FactureClient saveWithOperations(FactureClient factureclient);
+public FactureClient saveWithOperationsAndFactureItems(FactureClient factureClient);
+public void uploadScan(MultipartFile file, FactureClient factureClient);
+public Resource getScan(Long id);
 public List<FactureClient>  findAll();
 public FactureClient findById(Long id);
  public FactureClient findBySocieteIdAndReference(Long id, String ref);

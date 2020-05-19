@@ -33,7 +33,7 @@ public FactureItemVo save(@RequestBody FactureItemVo factureItemVo){
 FactureItem factureItem= factureItemConverter.toItem(factureItemVo);
 return factureItemConverter.toVo(factureItemService.save(factureItem));
 }
-@DeleteMapping("/{id}")
+@DeleteMapping("/delete/{id}")
 public void deleteById(@PathVariable Long id){
 factureItemService.deleteById(id);
 }

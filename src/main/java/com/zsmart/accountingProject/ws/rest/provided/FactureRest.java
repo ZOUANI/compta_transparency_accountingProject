@@ -1,6 +1,7 @@
 package com.zsmart.accountingProject.ws.rest.provided;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,12 @@ public class FactureRest {
 
     @DeleteMapping("/DelFacWithOp/{id}")
     public void deleteWithOperationsComptable(@PathVariable Long id) {
+        try{
         factureService.deleteWithOperationsComptable(id);
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{reference}")

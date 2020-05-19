@@ -35,6 +35,7 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
     private FactureConverter factureConverter;
     @Autowired
     private SocieteConverter societeConverter;
+    private boolean societe;
 
     @Override
     public OperationComptable toItem(OperationComptableVo vo) {
@@ -71,7 +72,7 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
                 item.setLibelle(vo.getLibelle());
             }
 
-            if (vo.getSocieteVo()!=null) {
+            if (vo.getSocieteVo()!=null  && societe) {
                 item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
             }
 
@@ -134,7 +135,7 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
                 vo.setLibelle(item.getLibelle());
             }
 
-            if (item.getSociete()!=null) {
+            if (item.getSociete()!=null && societe) {
                 vo.setSocieteVo(societeConverter.toVo(item.getSociete()));
             }
 
@@ -162,6 +163,14 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
         }
     }
 
+    public boolean isSociete() {
+        return societe;
+    }
+
+    public void setSociete(boolean societe) {
+        this.societe = societe;
+    }
+
     public void init() {
 
         caisse = true;
@@ -175,6 +184,7 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
         operationComptableGroupe = true;
 
         facture = true;
+        societe=true;
     }
 
     public boolean isCaisse() {

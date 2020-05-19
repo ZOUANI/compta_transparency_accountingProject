@@ -39,6 +39,7 @@ public class SocieteRest {
     @GetMapping("/{id}")
     public SocieteVo findById(@PathVariable Long id){
         societeConverter.getFactureConverter().setOperationComptable(true);
+        societeConverter.getFactureConverter().setFactureItems(true);
         societeConverter.getFactureConverter().getOperationComptableConverter().setTypeOperationComptable(true);
         societeConverter.setFacture(true);
         return societeConverter.toVo(societeService.findById(id));

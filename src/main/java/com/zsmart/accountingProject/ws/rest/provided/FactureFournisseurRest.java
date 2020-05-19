@@ -1,25 +1,22 @@
 package com.zsmart.accountingProject.ws.rest.provided ;
 
 
+import java.awt.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
-import com.zsmart.accountingProject.ws.rest.vo.FactureClientVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import com.zsmart.accountingProject.service.facade.FactureFournisseurService;
 import com.zsmart.accountingProject.bean.FactureFournisseur;
 import com.zsmart.accountingProject.ws.rest.vo.FactureFournisseurVo;
 import com.zsmart.accountingProject.ws.rest.converter.FactureFournisseurConverter;
-import com.zsmart.accountingProject.service.util.* ;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
 @RestController
 @RequestMapping("/accountingProject/FactureFournisseur")
 @CrossOrigin(origins = {"http://localhost:4200"})
@@ -44,7 +41,28 @@ return factureFournisseurConverter.toVo(factureFournisseurService.save(factureFo
   factureFournisseurConverter.getOperationComptableConverter().setCompteBanquaire(true);
   factureFournisseurConverter.getOperationComptableConverter().setCaisse(true);
   FactureFournisseur factureFournisseur= factureFournisseurConverter.toItem(factureFournisseurVo);
+
   return factureFournisseurConverter.toVo(factureFournisseurService.saveWithOperations(factureFournisseur));
+ }
+ @PostMapping("/saveWithOperationsAndFactureItems/")
+ public FactureFournisseurVo saveWithOperationsAndFactureItems(@RequestPart(value = "file",required = true) MultipartFile file,@RequestPart(value = "facture",required = true) FactureFournisseurVo factureFournisseurVo){
+  factureFournisseurConverter.setFournisseur(true);
+  factureFournisseurConverter.setOperationComptable(true);
+  factureFournisseurConverter.setFactureItems(true);
+  factureFournisseurConverter.getOperationComptableConverter().setTypeOperationComptable(true);
+  factureFournisseurConverter.getOperationComptableConverter().setCompteBanquaire(true);
+  factureFournisseurConverter.getOperationComptableConverter().setCaisse(true);
+  FactureFournisseur factureFournisseur= factureFournisseurConverter.toItem(factureFournisseurVo);
+  factureFournisseurService.uploadScan(file,factureFournisseur);
+  return factureFournisseurConverter.toVo(factureFournisseurService.saveWithOperationsAndFactureItems(factureFournisseur));
+ }
+ @GetMapping(value = "/scan/{id}")
+ public Resource getScan(@PathVariable Long id){
+  return factureFournisseurService.getScan(id);
+ }
+ @GetMapping("/{id}")
+ public FactureFournisseurVo findById(Long id){
+  return factureFournisseurConverter.toVo(factureFournisseurService.findById(id));
  }
 @DeleteMapping("/{id}")
 public void deleteById(@PathVariable Long id){
@@ -63,9 +81,12 @@ return factureFournisseurConverter.toVo(factureFournisseurService.findAll());
  public FactureFournisseurVo findByReferenceAndReferenceSociete(@PathVariable Long id, @PathVariable String ref) {
  factureFournisseurConverter.setFournisseur(true);
   factureFournisseurConverter.setOperationComptable(true);
+  factureFournisseurConverter.setFactureItems(true);
   factureFournisseurConverter.getOperationComptableConverter().setTypeOperationComptable(true);
   return factureFournisseurConverter.toVo(factureFournisseurService.findBySocieteIdAndReference(id, ref));
  }
+
+
 
  public FactureFournisseurConverter getFactureFournisseurConverter(){
 return factureFournisseurConverter;

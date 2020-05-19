@@ -1,5 +1,6 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.FactureItem;
 import com.zsmart.accountingProject.bean.OperationComptable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,6 +61,9 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
 
             if (StringUtil.isNotEmpty(vo.getTypeFacture())) {
                 item.setTypeFacture(vo.getTypeFacture());
+            }
+            if (StringUtil.isNotEmpty(vo.getScanPath())) {
+                item.setScanPath(vo.getScanPath());
             }
 
             if (vo.getSocieteVo()!=null) {
@@ -140,6 +144,9 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
             if (StringUtil.isNotEmpty(item.getReference())) {
                 vo.setReference(item.getReference());
             }
+            if (StringUtil.isNotEmpty(item.getScanPath())) {
+                vo.setScanPath(item.getScanPath());
+            }
 
             if (StringUtil.isNotEmpty(item.getTypeFacture())) {
                 vo.setTypeFacture(item.getTypeFacture());
@@ -212,6 +219,12 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
             }
 
             if (ListUtil.isNotEmpty(item.getFactureItems()) && factureItems) {
+                BigDecimal total=BigDecimal.ZERO;
+                for (FactureItem fi:item.getFactureItems()
+                     ) {
+                    total=total.add(fi.getMontant().multiply(fi.getQuantite()));
+                }
+                vo.setTotalFactureItems(NumberUtil.toString(total));
                 vo.setFactureItemsVo(factureItemConverter.toVo(item.getFactureItems()));
             }
 

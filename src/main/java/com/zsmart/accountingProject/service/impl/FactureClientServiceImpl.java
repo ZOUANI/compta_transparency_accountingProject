@@ -7,13 +7,20 @@ import com.zsmart.accountingProject.dao.FactureClientDao;
 import com.zsmart.accountingProject.service.util.SearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,7 +43,9 @@ public class FactureClientServiceImpl implements FactureClientService {
 
     @Autowired
     private SocieteService societeService;
-
+    @Autowired
+    private FactureItemService factureItemService;
+    private final Path root= Paths.get("src\\main\\resources\\uploads");
 
 
     @Autowired
@@ -72,7 +81,64 @@ public class FactureClientServiceImpl implements FactureClientService {
             }
         }
     }
+    @Override
+    public FactureClient saveWithOperationsAndFactureItems(FactureClient factureClient) {
+        if (factureClient==null){
+            return null;
+        }else {
+            if (factureClient.getOperationComptable()==null
+                    || factureClient.getOperationComptable().isEmpty()
+                    || factureClient.getFactureItems()==null
+                    || factureClient.getFactureItems().isEmpty()){
+                return null;
+            }else{
+                factureclientDao.save(factureClient);
+                for (OperationComptable operationcomptable : factureClient.getOperationComptable()) {
+                    operationcomptable.setFacture(factureClient);
+                    operationcomptableService.save(operationcomptable);
+                }
+                for (FactureItem factureItem : factureClient.getFactureItems()) {
+                    factureItem.setFacture(factureClient);
+                    factureItemService.save(factureItem);
+                }
+                return factureClient;
+            }
+        }
+    }
 
+    @Override
+    public void uploadScan(MultipartFile file, FactureClient factureClient) {
+        if (factureClient!=null){
+            try {
+                if (factureClient.getId()!=null){
+                    Files.delete(this.root.resolve(factureClient.getSociete().getRaisonSocial() + "Fournisseur" + factureClient.getReference()));
+                }
+
+                Files.copy(file.getInputStream(), this.root.resolve(factureClient.getSociete().getRaisonSocial() + "Fournisseur" + factureClient.getReference()));
+                factureClient.setScanPath(factureClient.getSociete().getRaisonSocial() + "Fournisseur" + factureClient.getReference());
+
+            } catch (Exception e) {
+                throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public Resource getScan(Long id) {
+        FactureClient factureClient=findById(id);
+        try {
+            Path file = root.resolve(factureClient.getScanPath());
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read the file!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+
+    }
     @Override
     public List<FactureClient> findAll() {
         return factureclientDao.findAll();

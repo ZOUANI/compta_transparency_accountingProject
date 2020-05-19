@@ -2,24 +2,28 @@
 package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.*;
-import com.zsmart.accountingProject.service.facade.FactureFournisseurService;
+import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.dao.FactureFournisseurDao;
-import com.zsmart.accountingProject.service.facade.OperationComptableService;
-import com.zsmart.accountingProject.service.facade.SocieteService;
 import com.zsmart.accountingProject.service.util.SearchUtil;
+import org.aspectj.weaver.JoinPointSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import com.zsmart.accountingProject.service.facade.FournisseurService;
 
 @Service
 
@@ -44,6 +48,9 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
 
     @Autowired
     private SocieteService societeService;
+    @Autowired
+    private FactureItemService factureItemService;
+    private final Path root= Paths.get("src\\main\\resources\\uploads");
 
     @Override
     public FactureFournisseur save(FactureFournisseur facturefournisseur) {
@@ -74,6 +81,64 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
         }
     }
 
+    @Override
+    public FactureFournisseur saveWithOperationsAndFactureItems(FactureFournisseur facturefournisseur) {
+        if (facturefournisseur==null){
+            return null;
+        }else {
+            if (facturefournisseur.getOperationComptable()==null
+                    || facturefournisseur.getOperationComptable().isEmpty()
+                    || facturefournisseur.getFactureItems()==null
+                    || facturefournisseur.getFactureItems().isEmpty()){
+                return null;
+            }else{
+                facturefournisseurDao.save(facturefournisseur);
+                for (OperationComptable operationcomptable : facturefournisseur.getOperationComptable()) {
+                    operationcomptable.setFacture(facturefournisseur);
+                    operationcomptableService.save(operationcomptable);
+                }
+                for (FactureItem factureItem : facturefournisseur.getFactureItems()) {
+                    factureItem.setFacture(facturefournisseur);
+                    factureItemService.save(factureItem);
+                }
+                return facturefournisseur;
+            }
+        }
+    }
+
+    @Override
+    public void uploadScan(MultipartFile file,FactureFournisseur factureFournisseur) {
+      if (factureFournisseur!=null){
+            try {
+                    if (factureFournisseur.getId()!=null){
+                        Files.delete(this.root.resolve(factureFournisseur.getSociete().getRaisonSocial() + "Fournisseur" + factureFournisseur.getReference()));
+                    }
+
+                    Files.copy(file.getInputStream(), this.root.resolve(factureFournisseur.getSociete().getRaisonSocial() + "Fournisseur" + factureFournisseur.getReference()));
+                    factureFournisseur.setScanPath(factureFournisseur.getSociete().getRaisonSocial() + "Fournisseur" + factureFournisseur.getReference());
+
+            } catch (Exception e) {
+                throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public Resource getScan(Long id) {
+        FactureFournisseur factureFournisseur=findById(id);
+        try {
+                Path file = root.resolve(factureFournisseur.getScanPath());
+                Resource resource = new UrlResource(file.toUri());
+                if (resource.exists() || resource.isReadable()) {
+                    return resource;
+                } else {
+                    throw new RuntimeException("Could not read the file!");
+                }
+            } catch (MalformedURLException e) {
+                throw new RuntimeException("Error: " + e.getMessage());
+            }
+
+    }
 
     @Override
     public List<FactureFournisseur> findAll() {

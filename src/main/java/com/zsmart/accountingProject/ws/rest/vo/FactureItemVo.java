@@ -14,11 +14,18 @@ private String montantMax ;
 private String quantite;
 private String quantiteMin ;
 private String quantiteMax ;
+private String montantTotal ;
 private FactureVo factureVo ;
 
+    public String getMontantTotal() {
+        return montantTotal;
+    }
 
+    public void setMontantTotal(String montantTotal) {
+        this.montantTotal = montantTotal;
+    }
 
-public String  getId(){
+    public String  getId(){
     return id;
 }
 

@@ -1,5 +1,6 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.FactureItem;
 import com.zsmart.accountingProject.bean.OperationComptable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -207,6 +208,12 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             }
 
             if (ListUtil.isNotEmpty(item.getFactureItems()) && factureItems) {
+                BigDecimal total=BigDecimal.ZERO;
+                for (FactureItem fi:item.getFactureItems()
+                ) {
+                    total=total.add(fi.getMontant().multiply(fi.getQuantite()));
+                }
+                vo.setTotalFactureItems(NumberUtil.toString(total));
                 vo.setFactureItemsVo(factureItemConverter.toVo(item.getFactureItems()));
             }
 

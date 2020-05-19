@@ -26,6 +26,7 @@ public class Facture implements Serializable {
 	private Long id;
 	private String reference;
 	private String typeFacture;
+	private String scanPath;
 	private Integer annee;
 	private Integer mois;
 	private Integer trimester;
@@ -53,8 +54,15 @@ public class Facture implements Serializable {
 	private List<OperationComptable> operationComptable;
 	@OneToMany(mappedBy = "facture")
 	private List<FactureItem> factureItems;
-	
-	
+
+	public String getScanPath() {
+		return scanPath;
+	}
+
+	public void setScanPath(String scanPath) {
+		this.scanPath = scanPath;
+	}
+
 	public List<FactureItem> getFactureItems() {
 		return factureItems;
 	}
@@ -194,6 +202,7 @@ public class Facture implements Serializable {
 				"id=" + id +
 				", reference='" + reference + '\'' +
 				", typeFacture='" + typeFacture + '\'' +
+				", scanPath='" + scanPath + '\'' +
 				", annee=" + annee +
 				", mois=" + mois +
 				", trimester=" + trimester +

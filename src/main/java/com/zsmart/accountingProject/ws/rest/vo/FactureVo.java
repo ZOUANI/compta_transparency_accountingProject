@@ -12,6 +12,7 @@ public class FactureVo {
     private String id;
     private String reference;
     private String typeFacture;
+    private String scanPath;
     private String annee;
     private String anneeMin;
     private String anneeMax;
@@ -28,8 +29,10 @@ public class FactureVo {
     private String totalTtcMin;
     private String totalTtcMax;
     private String tva;
+    private String tauxTva;
     private String totalDebit;
     private String totalCredit;
+    private String totalFactureItems;
     private String tvaMin;
     private String tvaMax;
     private String totalPayerHt;
@@ -50,6 +53,29 @@ public class FactureVo {
     private List<OperationComptableVo> operationComptablesVo;
     private List<FactureItemVo> factureItemsVo;
 
+    public String getTotalFactureItems() {
+        return totalFactureItems;
+    }
+
+    public void setTotalFactureItems(String totalFactureItems) {
+        this.totalFactureItems = totalFactureItems;
+    }
+
+    public String getScanPath() {
+        return scanPath;
+    }
+
+    public void setScanPath(String scanPath) {
+        this.scanPath = scanPath;
+    }
+
+    public String getTauxTva() {
+        return tauxTva;
+    }
+
+    public void setTauxTva(String tauxTva) {
+        this.tauxTva = tauxTva;
+    }
 
     public String getTotalDebit() {
         return totalDebit;

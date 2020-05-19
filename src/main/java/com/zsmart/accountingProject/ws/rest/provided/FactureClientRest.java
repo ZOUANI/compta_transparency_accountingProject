@@ -4,17 +4,13 @@ package com.zsmart.accountingProject.ws.rest.provided;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import com.zsmart.accountingProject.bean.FactureFournisseur;
 import com.zsmart.accountingProject.ws.rest.converter.FactureConverter;
+import com.zsmart.accountingProject.ws.rest.vo.FactureFournisseurVo;
 import com.zsmart.accountingProject.ws.rest.vo.FactureVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.Resource;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +19,7 @@ import com.zsmart.accountingProject.bean.FactureClient;
 import com.zsmart.accountingProject.ws.rest.vo.FactureClientVo;
 import com.zsmart.accountingProject.ws.rest.converter.FactureClientConverter;
 import com.zsmart.accountingProject.service.util.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/accountingProject/FactureClient")
@@ -53,6 +50,22 @@ public class FactureClientRest {
      factureClientConverter.getOperationComptableConverter().setCaisse(true);
         FactureClient factureClient = factureClientConverter.toItem(factureClientVo);
         return factureClientConverter.toVo(factureClientService.saveWithOperations(factureClient));
+    }
+    @PostMapping("/saveWithOperationsAndFactureItems/")
+    public FactureClientVo saveWithOperationsAndFactureItems(@RequestPart(value = "file",required = true) MultipartFile file, @RequestPart(value = "facture",required = true) FactureClientVo factureClientVo){
+        factureClientConverter.setClient(true);
+        factureClientConverter.setOperationComptable(true);
+        factureClientConverter.setFactureItems(true);
+        factureClientConverter.getOperationComptableConverter().setTypeOperationComptable(true);
+        factureClientConverter.getOperationComptableConverter().setCompteBanquaire(true);
+        factureClientConverter.getOperationComptableConverter().setCaisse(true);
+        FactureClient factureClient= factureClientConverter.toItem(factureClientVo);
+        factureClientService.uploadScan(file,factureClient);
+        return factureClientConverter.toVo(factureClientService.saveWithOperationsAndFactureItems(factureClient));
+    }
+    @GetMapping(value = "/scan/{id}")
+    public Resource getScan(@PathVariable Long id){
+        return factureClientService.getScan(id);
     }
 
     @DeleteMapping("/{id}")

@@ -7,6 +7,10 @@ import com.zsmart.accountingProject.service.util.SearchUtil;
 import com.zsmart.accountingProject.bean.Facture;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 import javax.persistence.EntityManager;
@@ -54,6 +58,8 @@ public class FactureServiceImpl implements FactureService {
     @Autowired
 
     private EtatFactureService etatfactureService;
+
+    private String uploadDir= "src\\main\\resources\\uploads";
 
     @Override
     public Facture save(Facture facture) {
@@ -151,11 +157,12 @@ public class FactureServiceImpl implements FactureService {
     }
 
     @Override
-    public int deleteWithOperationsComptable(Long id) {
+    public int deleteWithOperationsComptable(Long id) throws IOException {
         Facture facture=factureDao.findByid(id);
         if (facture==null){
             return -1;
         }else{
+            Files.delete(Paths.get(uploadDir+"\\"+facture.getScanPath()));
             for (OperationComptable op:facture.getOperationComptable()
                  ) {
                 operationcomptableService.delete(op);

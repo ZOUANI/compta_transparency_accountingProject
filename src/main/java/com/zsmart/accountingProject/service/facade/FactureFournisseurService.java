@@ -2,15 +2,21 @@ package com.zsmart.accountingProject.service.facade;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date; 
+import java.util.Date;
 import java.math.BigDecimal;
 
 import com.zsmart.accountingProject.bean.FactureFournisseur;
-import com.zsmart.accountingProject.bean.Fournisseur; 
+import com.zsmart.accountingProject.bean.Fournisseur;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
+
 public interface FactureFournisseurService {
 
 public FactureFournisseur save(FactureFournisseur facturefournisseur);
 public FactureFournisseur saveWithOperations(FactureFournisseur facturefournisseur);
+public FactureFournisseur saveWithOperationsAndFactureItems(FactureFournisseur facturefournisseur);
+public void uploadScan(MultipartFile file,FactureFournisseur factureFournisseur);
+public Resource getScan(Long id);
 public List<FactureFournisseur>  findAll();
 public FactureFournisseur findById(Long id);
  public FactureFournisseur findBySocieteIdAndReference(Long id, String ref);
