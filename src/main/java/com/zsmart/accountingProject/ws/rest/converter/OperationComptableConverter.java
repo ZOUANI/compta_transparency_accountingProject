@@ -187,6 +187,14 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
         societe=true;
     }
 
+    public SocieteConverter getSocieteConverter() {
+        return societeConverter;
+    }
+
+    public void setSocieteConverter(SocieteConverter societeConverter) {
+        this.societeConverter = societeConverter;
+    }
+
     public boolean isCaisse() {
         return caisse;
     }

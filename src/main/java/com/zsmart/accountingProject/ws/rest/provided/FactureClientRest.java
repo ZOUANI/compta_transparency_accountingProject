@@ -59,6 +59,7 @@ public class FactureClientRest {
         factureClientConverter.getOperationComptableConverter().setTypeOperationComptable(true);
         factureClientConverter.getOperationComptableConverter().setCompteBanquaire(true);
         factureClientConverter.getOperationComptableConverter().setCaisse(true);
+        factureClientConverter.getOperationComptableConverter().setSociete(true);
         FactureClient factureClient= factureClientConverter.toItem(factureClientVo);
         factureClientService.uploadScan(file,factureClient);
         return factureClientConverter.toVo(factureClientService.saveWithOperationsAndFactureItems(factureClient));

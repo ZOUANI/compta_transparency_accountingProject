@@ -17,6 +17,7 @@ public interface OperationComptableService {
 public OperationComptable save(OperationComptable operationcomptable); 
 public List<OperationComptable>  findAll();
 public OperationComptable findById(Long id);
+public List<OperationComptable> findBySocId(Long id);
 public int delete(OperationComptable operationcomptable);
 public void  deleteById(Long id);
 public void clone(OperationComptable operationcomptable,OperationComptable operationcomptableClone);

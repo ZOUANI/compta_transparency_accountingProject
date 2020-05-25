@@ -157,7 +157,7 @@ public class FactureServiceImpl implements FactureService {
     }
 
     @Override
-    public int deleteWithOperationsComptable(Long id) throws IOException {
+    public int deleteWithAll(Long id) throws IOException {
         Facture facture=factureDao.findByid(id);
         if (facture==null){
             return -1;
@@ -166,6 +166,10 @@ public class FactureServiceImpl implements FactureService {
             for (OperationComptable op:facture.getOperationComptable()
                  ) {
                 operationcomptableService.delete(op);
+            }
+            for (FactureItem item:facture.getFactureItems()
+                 ) {
+                factureitemService.delete(item);
             }
             factureDao.delete(facture);
             return 1;

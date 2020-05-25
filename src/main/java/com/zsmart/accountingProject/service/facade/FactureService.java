@@ -16,7 +16,7 @@ public Facture  findByReference(String  reference);
 public int delete(Facture facture);
 public void  deleteById(Long id);
 public void  deleteByReference(String  reference);
-public int deleteWithOperationsComptable(Long id) throws IOException;
+public int deleteWithAll(Long id) throws IOException;
 public void clone(Facture facture,Facture factureClone);
 public Facture clone(Facture facture);
 public List<Facture> clone(List<Facture>factures);

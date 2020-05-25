@@ -1,10 +1,10 @@
 
 package com.zsmart.accountingProject.service.impl;
 
-import com.zsmart.accountingProject.service.facade.OperationComptableService;
+import com.zsmart.accountingProject.bean.*;
+import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.dao.OperationComptableDao;
 import com.zsmart.accountingProject.service.util.SearchUtil;
-import com.zsmart.accountingProject.bean.OperationComptable;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.math.BigDecimal;
@@ -13,21 +13,6 @@ import javax.persistence.PersistenceContext;
 import java.util.Date;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import com.zsmart.accountingProject.bean.Caisse;
-import com.zsmart.accountingProject.service.facade.CaisseService;
-import com.zsmart.accountingProject.bean.TypeOperationComptable;
-import com.zsmart.accountingProject.service.facade.TypeOperationComptableService;
-import com.zsmart.accountingProject.bean.CompteBanquaire;
-import com.zsmart.accountingProject.service.facade.CompteBanquaireService;
-import com.zsmart.accountingProject.bean.CompteComptable;
-import com.zsmart.accountingProject.bean.CpcCompteComptable;
-import com.zsmart.accountingProject.bean.CpcSousClasse;
-import com.zsmart.accountingProject.service.facade.CompteComptableService;
-import com.zsmart.accountingProject.bean.OperationComptableGroupe;
-import com.zsmart.accountingProject.bean.SousClasseComptable;
-import com.zsmart.accountingProject.service.facade.OperationComptableGroupeService;
-import com.zsmart.accountingProject.bean.Facture;
-import com.zsmart.accountingProject.service.facade.FactureService;
 
 @Service
 
@@ -64,6 +49,9 @@ public class OperationComptableServiceImpl implements OperationComptableService 
 	@Autowired
 
 	private FactureService factureService;
+	@Autowired
+
+	private SocieteService societeService;
 
 	
 
@@ -114,6 +102,12 @@ public class OperationComptableServiceImpl implements OperationComptableService 
 	@Override
 	public OperationComptable findById(Long id) {
 		return operationcomptableDao.getOne(id);
+	}
+
+	@Override
+	public List<OperationComptable> findBySocId(Long id) {
+		Societe societe=societeService.findById(id);
+		return operationcomptableDao.findBySociete(societe);
 	}
 
 	@Override

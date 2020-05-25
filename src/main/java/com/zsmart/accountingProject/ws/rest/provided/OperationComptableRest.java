@@ -39,7 +39,21 @@ operationComptableService.deleteById(id);
 }
 @GetMapping("/")
 public List<OperationComptableVo> findAll(){
+ operationComptableConverter.getSocieteConverter().setFacture(false);
+ operationComptableConverter.setSociete(true);
+ operationComptableConverter.setTypeOperationComptable(true);
+ operationComptableConverter.setCaisse(true);
+ operationComptableConverter.setCompteBanquaire(true);
 return operationComptableConverter.toVo(operationComptableService.findAll());
+}
+@GetMapping("/findBySocId/{id}")
+public List<OperationComptableVo> findBySocId(@PathVariable Long id){
+ operationComptableConverter.setTypeOperationComptable(true);
+ operationComptableConverter.setCaisse(true);
+ operationComptableConverter.setCompteBanquaire(true);
+ operationComptableConverter.setSociete(true);
+ operationComptableConverter.setCompteComptable(true);
+return operationComptableConverter.toVo(operationComptableService.findBySocId(id));
 }
 
  public OperationComptableConverter getOperationComptableConverter(){

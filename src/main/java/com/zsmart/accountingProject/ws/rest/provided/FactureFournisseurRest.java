@@ -40,6 +40,7 @@ return factureFournisseurConverter.toVo(factureFournisseurService.save(factureFo
   factureFournisseurConverter.getOperationComptableConverter().setTypeOperationComptable(true);
   factureFournisseurConverter.getOperationComptableConverter().setCompteBanquaire(true);
   factureFournisseurConverter.getOperationComptableConverter().setCaisse(true);
+  factureFournisseurConverter.getOperationComptableConverter().setSociete(true);
   FactureFournisseur factureFournisseur= factureFournisseurConverter.toItem(factureFournisseurVo);
 
   return factureFournisseurConverter.toVo(factureFournisseurService.saveWithOperations(factureFournisseur));

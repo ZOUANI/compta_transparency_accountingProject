@@ -54,10 +54,10 @@ public class FactureRest {
         factureService.deleteById(id);
     }
 
-    @DeleteMapping("/DelFacWithOp/{id}")
+    @DeleteMapping("/DelFacWithAll/{id}")
     public void deleteWithOperationsComptable(@PathVariable Long id) {
         try{
-        factureService.deleteWithOperationsComptable(id);
+        factureService.deleteWithAll(id);
         }
         catch (Exception e){
             throw new RuntimeException(e.getMessage());

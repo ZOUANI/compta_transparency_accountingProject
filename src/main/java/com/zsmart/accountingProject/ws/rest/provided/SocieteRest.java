@@ -33,6 +33,7 @@ public class SocieteRest {
     }
     @GetMapping("/")
     public List<SocieteVo> findAll(){
+        societeConverter.setFacture(false);
         return societeConverter.toVo(societeService.findAll());
     }
 
@@ -42,6 +43,7 @@ public class SocieteRest {
         societeConverter.getFactureConverter().setFactureItems(true);
         societeConverter.getFactureConverter().getOperationComptableConverter().setTypeOperationComptable(true);
         societeConverter.setFacture(true);
+        societeConverter.getFactureConverter().setSociete(false);
         return societeConverter.toVo(societeService.findById(id));
     }
 
