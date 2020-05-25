@@ -54,6 +54,16 @@ public class Facture implements Serializable {
 	private List<OperationComptable> operationComptable;
 	@OneToMany(mappedBy = "facture")
 	private List<FactureItem> factureItems;
+	@ManyToOne
+	private DeclarationTva declarationTva;
+
+	public DeclarationTva getDeclarationTva() {
+		return declarationTva;
+	}
+
+	public void setDeclarationTva(DeclarationTva declarationTva) {
+		this.declarationTva = declarationTva;
+	}
 
 	public String getScanPath() {
 		return scanPath;

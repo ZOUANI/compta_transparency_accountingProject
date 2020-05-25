@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
  public interface FactureDao extends JpaRepository<Facture,Long> {
+
 	 public Facture findByReference(String reference);
 
 	 public int deleteByReference(String reference);
@@ -18,7 +19,6 @@ import java.util.List;
 
 	 public int deleteByEtatFacture(EtatFacture etatFacture);
 
-
-	public Facture findByid(Long id);
+	 public Facture findByid(Long id);
 
 }

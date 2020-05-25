@@ -2,18 +2,13 @@ package com.zsmart.accountingProject.ws.rest.provided;
 
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 import com.zsmart.accountingProject.service.facade.FactureService;
@@ -24,9 +19,8 @@ import com.zsmart.accountingProject.service.util.*;
 
 @RestController
 @RequestMapping("/accountingProject/Facture")
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins ="http://localhost:4200")
 public class FactureRest {
-
     @Autowired
     private FactureService factureService;
 
@@ -74,7 +68,17 @@ public class FactureRest {
         return factureConverter.toVo(factureService.findAll());
     }
 
+    @PostMapping("/findBySocieteAnneeTrimestre" )
+    public List<FactureVo> findBySocieteAnneeTrimestre(@RequestBody FactureVo factureVo) {
+        factureConverter.setSociete(true);
+     Facture facture= factureConverter.toItem(factureVo);
 
+    return factureConverter.toVo(factureService.findByCriteria(
+                    facture.getSociete().getRaisonSocial(),
+                    facture.getAnnee(),
+                    facture.getTrimester()
+    ));
+    }
 
     public FactureConverter getFactureConverter() {
         return factureConverter;

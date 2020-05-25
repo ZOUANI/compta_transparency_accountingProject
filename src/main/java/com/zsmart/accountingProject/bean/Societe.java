@@ -13,8 +13,19 @@ public class Societe {
     private String raisonSocial;
     private String ice;
     private String identifiantFiscal;
+    
     @OneToMany(mappedBy = "societe")
     private List<Facture> factures;
+    @OneToMany(mappedBy = "societe")
+    private List<DeclarationTva> declarationTvas;
+
+    public List<DeclarationTva> getDeclarationTvas() {
+        return declarationTvas;
+    }
+
+    public void setDeclarationTvas(List<DeclarationTva> declarationTvas) {
+        this.declarationTvas = declarationTvas;
+    }
 
     public List<Facture> getFactures() {
         return factures;

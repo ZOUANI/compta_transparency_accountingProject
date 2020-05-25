@@ -232,27 +232,17 @@ public class FactureServiceImpl implements FactureService {
     }
 
     @Override
-    public List<Facture> findByCriteria(String reference, String typeFacture, String referenceSociete, long serialVersionUIDMin, long serialVersionUIDMax, Long idMin, Long idMax, Integer anneeMin, Integer anneeMax, Integer moisMin, Integer moisMax, Integer trimesterMin, Integer trimesterMax, BigDecimal totalHtMin, BigDecimal totalHtMax, BigDecimal totalTtcMin, BigDecimal totalTtcMax, BigDecimal tvaMin, BigDecimal tvaMax, BigDecimal totalPayerHtMin, BigDecimal totalPayerHtMax, BigDecimal totalRestantHtMin, BigDecimal totalRestantHtMax, Date dateFactureMin, Date dateFactureMax, Date dateSaisieMin, Date dateSaisieMax) {
-        return entityManager.createQuery(constructQuery(reference, typeFacture, referenceSociete, serialVersionUIDMin, serialVersionUIDMax, idMin, idMax, anneeMin, anneeMax, moisMin, moisMax, trimesterMin, trimesterMax, totalHtMin, totalHtMax, totalTtcMin, totalTtcMax, tvaMin, tvaMax, totalPayerHtMin, totalPayerHtMax, totalRestantHtMin, totalRestantHtMax, dateFactureMin, dateFactureMax, dateSaisieMin, dateSaisieMax)).getResultList();
+    public List<Facture> findByCriteria( String raisonSocial, Integer annee, Integer trimester) {
+        return entityManager.createQuery(constructQuery(raisonSocial, annee, trimester)).getResultList();
     }
 
-    private String constructQuery(String reference, String typeFacture, String referenceSociete, long serialVersionUIDMin, long serialVersionUIDMax, Long idMin, Long idMax, Integer anneeMin, Integer anneeMax, Integer moisMin, Integer moisMax, Integer trimesterMin, Integer trimesterMax, BigDecimal totalHtMin, BigDecimal totalHtMax, BigDecimal totalTtcMin, BigDecimal totalTtcMax, BigDecimal tvaMin, BigDecimal tvaMax, BigDecimal totalPayerHtMin, BigDecimal totalPayerHtMax, BigDecimal totalRestantHtMin, BigDecimal totalRestantHtMax, Date dateFactureMin, Date dateFactureMax, Date dateSaisieMin, Date dateSaisieMax) {
-        String query = "SELECT f FROM Facture f where 1=1 ";
-        query += SearchUtil.addConstraint("f", "reference", "=", reference);
-        query += SearchUtil.addConstraint("f", "typeFacture", "=", typeFacture);
-        query += SearchUtil.addConstraint("f", "referenceSociete", "=", referenceSociete);
-        query += SearchUtil.addConstraintMinMax("f", "serialVersionUID", serialVersionUIDMin, serialVersionUIDMax);
-        query += SearchUtil.addConstraintMinMax("f", "id", idMin, idMax);
-        query += SearchUtil.addConstraintMinMax("f", "annee", anneeMin, anneeMax);
-        query += SearchUtil.addConstraintMinMax("f", "mois", moisMin, moisMax);
-        query += SearchUtil.addConstraintMinMax("f", "trimester", trimesterMin, trimesterMax);
-        query += SearchUtil.addConstraintMinMax("f", "totalHt", totalHtMin, totalHtMax);
-        query += SearchUtil.addConstraintMinMax("f", "totalTtc", totalTtcMin, totalTtcMax);
-        query += SearchUtil.addConstraintMinMax("f", "tva", tvaMin, tvaMax);
-        query += SearchUtil.addConstraintMinMax("f", "totalPayerHt", totalPayerHtMin, totalPayerHtMax);
-        query += SearchUtil.addConstraintMinMax("f", "totalRestantHt", totalRestantHtMin, totalRestantHtMax);
-        query += SearchUtil.addConstraintMinMaxDate("f", " dateFacture", dateFactureMin, dateFactureMax);
-        query += SearchUtil.addConstraintMinMaxDate("f", " dateSaisie", dateSaisieMin, dateSaisieMax);
+    private String constructQuery(  String raisonSocial, Integer annee, Integer trimester) {
+        String query = "SELECT f FROM Facture f where 1=1";
+
+        query += SearchUtil.addConstraint("f", "societe.raisonSocial", "=", raisonSocial);
+        query += SearchUtil.addConstraint("f", "annee","=", annee);
+        query += SearchUtil.addConstraint("f", "trimester","=", trimester);
+
 
         return query;
     }
