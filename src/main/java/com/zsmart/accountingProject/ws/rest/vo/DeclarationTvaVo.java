@@ -3,12 +3,13 @@ package com.zsmart.accountingProject.ws.rest.vo;
 import java.util.List;
 
 public class DeclarationTvaVo {
-    private Long id;
+    private String id;
     private String totalTvaGain;
     private String totalTvaCharge;
     private String cotisation;
     private String differenceChargeGain;
-    private List<FactureVo> facturesVo;
+    private List<FactureVo> facturesGain;
+    private List<FactureVo> facturescharge;
     private SocieteVo societeVo;
 
     public SocieteVo getSocieteVo() {
@@ -19,11 +20,11 @@ public class DeclarationTvaVo {
         this.societeVo = societeVo;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -59,11 +60,19 @@ public class DeclarationTvaVo {
         this.differenceChargeGain = differenceChargeGain;
     }
 
-    public List<FactureVo> getFacturesVo() {
-        return facturesVo;
+    public List<FactureVo> getFacturesGain() {
+        return facturesGain;
     }
 
-    public void setFacturesVo(List<FactureVo> facturesVo) {
-        this.facturesVo = facturesVo;
+    public void setFacturesGain(List<FactureVo> facturesGain) {
+        this.facturesGain = facturesGain;
+    }
+
+    public List<FactureVo> getFacturescharge() {
+        return facturescharge;
+    }
+
+    public void setFacturescharge(List<FactureVo> facturescharge) {
+        this.facturescharge = facturescharge;
     }
 }

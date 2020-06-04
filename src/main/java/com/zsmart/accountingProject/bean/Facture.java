@@ -30,6 +30,7 @@ public class Facture implements Serializable {
 	private Integer annee;
 	private Integer mois;
 	private Integer trimester;
+	private Boolean traiter;
 	@Column(precision = 16, scale = 4)
 	private BigDecimal totalHt;
 	@Column(precision = 16, scale = 4)
@@ -56,6 +57,14 @@ public class Facture implements Serializable {
 	private List<FactureItem> factureItems;
 	@ManyToOne
 	private DeclarationTva declarationTva;
+
+	public Boolean getTraiter() {
+		return traiter;
+	}
+
+	public void setTraiter(Boolean traiter) {
+		this.traiter = traiter;
+	}
 
 	public DeclarationTva getDeclarationTva() {
 		return declarationTva;

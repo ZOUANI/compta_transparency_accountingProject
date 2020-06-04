@@ -1,10 +1,10 @@
 
 package com.zsmart.accountingProject.service.impl;
 
+import com.zsmart.accountingProject.bean.*;
 import com.zsmart.accountingProject.service.facade.FactureService;
 import com.zsmart.accountingProject.dao.FactureDao;
 import com.zsmart.accountingProject.service.util.SearchUtil;
-import com.zsmart.accountingProject.bean.Facture;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -21,14 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import com.zsmart.accountingProject.bean.EtatFacture;
 import com.zsmart.accountingProject.service.facade.EtatFactureService;
 import com.zsmart.accountingProject.service.facade.PaiementFactureService;
-import com.zsmart.accountingProject.bean.PaiementFacture;
 import com.zsmart.accountingProject.service.facade.OperationComptableService;
-import com.zsmart.accountingProject.bean.OperationComptable;
 import com.zsmart.accountingProject.service.facade.FactureItemService;
-import com.zsmart.accountingProject.bean.FactureItem;
 
 @Service
 
@@ -67,7 +63,10 @@ public class FactureServiceImpl implements FactureService {
         if (facture == null) {
             return null;
         } else {
-            factureDao.save(facture);
+
+            facture.setTraiter(facture.getDeclarationTva() != null);
+
+        factureDao.save(facture);
             return facture;
         }
     }
@@ -232,9 +231,27 @@ public class FactureServiceImpl implements FactureService {
     }
 
     @Override
-    public List<Facture> findByCriteria( String raisonSocial, Integer annee, Integer trimester) {
-        return entityManager.createQuery(constructQuery(raisonSocial, annee, trimester)).getResultList();
+    public List<Facture> findByCriteria( Facture facture) {
+        return entityManager.createQuery(constructQuery(facture.getSociete().getRaisonSocial(), facture.getAnnee(), facture.getTrimester())).getResultList();
     }
+
+    @Override
+    public int updateByDeclarationTva(DeclarationTva declarationTva) {
+
+   for (Facture element : declarationTva.getFacturescharge() )   {
+       element.setDeclarationTva(declarationTva);
+       factureDao.save(element);
+
+        }
+        for (Facture element : declarationTva.getFacturesGain() )   {
+            element.setDeclarationTva(declarationTva);
+            factureDao.save(element);
+        }
+
+        return 1;
+    }
+
+
 
     private String constructQuery(  String raisonSocial, Integer annee, Integer trimester) {
         String query = "SELECT f FROM Facture f where 1=1";

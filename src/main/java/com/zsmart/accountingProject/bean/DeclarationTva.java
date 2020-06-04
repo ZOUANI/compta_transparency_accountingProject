@@ -22,15 +22,33 @@ public class DeclarationTva  implements Serializable {
     private BigDecimal differenceChargeGain;
 
     @OneToMany(mappedBy = "declarationTva")
-    private List<Facture> factures;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Facture> facturesGain;
+    @OneToMany(mappedBy = "declarationTva")
+    private List<Facture> facturescharge;
 
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     private Societe societe;
 
     public DeclarationTva() {
     }
 
+    public List<Facture> getFacturesGain() {
+        return facturesGain;
+    }
+
+    public void setFacturesGain(List<Facture> facturesGain) {
+        this.facturesGain = facturesGain;
+    }
+
+    public List<Facture> getFacturescharge() {
+        return facturescharge;
+    }
+
+    public void setFacturescharge(List<Facture> facturescharge) {
+        this.facturescharge = facturescharge;
+    }
 
     public Long getId() {
         return id;
@@ -72,13 +90,7 @@ public class DeclarationTva  implements Serializable {
         this.differenceChargeGain = differenceChargeGain;
     }
 
-    public List<Facture> getFactures() {
-        return factures;
-    }
 
-    public void setFactures(List<Facture> factures) {
-        this.factures = factures;
-    }
 
     public Societe getSociete() {
         return societe;

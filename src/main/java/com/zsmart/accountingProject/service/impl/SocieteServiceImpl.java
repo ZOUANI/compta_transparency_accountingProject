@@ -19,7 +19,8 @@ public class SocieteServiceImpl implements SocieteService {
 
     @Override
     public Societe findById(Long id) {
-        return societeDao.getOne(id);
+        if (id!=null)return societeDao.getOne(id);
+        else return null;
     }
 
     @Override

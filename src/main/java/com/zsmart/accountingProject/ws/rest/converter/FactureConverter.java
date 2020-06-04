@@ -29,11 +29,12 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
 
     @Autowired
     private FactureItemConverter factureItemConverter;
-
+    @Autowired
+    private DeclarationTvaConverter declarationTvaConverter;
     @Autowired
     private SocieteConverter societeConverter;
     private boolean societe;
-
+    private boolean declarationtva;
     @Override
     public Facture toItem(FactureVo vo) {
         if (vo == null) {
@@ -44,6 +45,10 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             if (etatFacture && vo.getEtatFactureVo() != null) {
                 item.setEtatFacture(etatFactureConverter.toItem(vo.getEtatFactureVo()));
             }
+            if (declarationtva && vo.getDeclarationTvaVo() != null) {
+                item.setDeclarationTva(declarationTvaConverter.toItem(vo.getDeclarationTvaVo()));
+            }
+
 
             if (StringUtil.isNotEmpty(vo.getReference())) {
                 item.setReference(vo.getReference());
@@ -68,7 +73,9 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             if (vo.getMois() != null) {
                 item.setMois(NumberUtil.toInt(vo.getMois()));
             }
-
+            if (vo.getTraiter()!=null){
+                item.setTraiter(vo.getTraiter());
+            }
             if (vo.getTrimester() != null) {
                 item.setTrimester(NumberUtil.toInt(vo.getTrimester()));
             }
@@ -127,6 +134,9 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             if (etatFacture && item.getEtatFacture() != null) {
                 vo.setEtatFactureVo(etatFactureConverter.toVo(item.getEtatFacture()));
             }
+            if (declarationtva && item.getDeclarationTva() != null) {
+                vo.setDeclarationTvaVo(declarationTvaConverter.toVo(item.getDeclarationTva()));
+            }
 
             if (StringUtil.isNotEmpty(item.getReference())) {
                 vo.setReference(item.getReference());
@@ -148,7 +158,9 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             if (item.getAnnee() != null) {
                 vo.setAnnee(NumberUtil.toString(item.getAnnee()));
             }
-
+            if(item.getTraiter()!=null){
+                vo.setTraiter(item.getTraiter());
+            }
             if (item.getMois() != null) {
                 vo.setMois(NumberUtil.toString(item.getMois()));
             }
@@ -230,6 +242,7 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
         operationComptable = true;
 
         factureItems = true;
+
         societe=true;
     }
 
@@ -237,6 +250,13 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
         return etatFacture;
     }
 
+    public boolean isDeclarationtva() {
+        return declarationtva;
+    }
+
+    public void setDeclarationtva(boolean declarationtva) {
+        this.declarationtva = declarationtva;
+    }
     public boolean isSociete() {
         return societe;
     }

@@ -48,10 +48,27 @@ public class FactureVo {
     private String dateSaisieMin;
     private String dateSaisieMax;
     private SocieteVo societeVo;
+    private Boolean traiter;
     private EtatFactureVo etatFactureVo;
     private List<PaiementFactureVo> paiementFacturesVo;
     private List<OperationComptableVo> operationComptablesVo;
     private List<FactureItemVo> factureItemsVo;
+    private DeclarationTvaVo declarationTvaVo;
+
+    public Boolean getTraiter() {
+        return traiter;
+    }
+
+    public void setTraiter(Boolean traiter) {
+        this.traiter = traiter;
+    }
+    public DeclarationTvaVo getDeclarationTvaVo() {
+        return declarationTvaVo;
+    }
+
+    public void setDeclarationTvaVo(DeclarationTvaVo declarationTvaVo) {
+        this.declarationTvaVo = declarationTvaVo;
+    }
 
     public String getTotalFactureItems() {
         return totalFactureItems;

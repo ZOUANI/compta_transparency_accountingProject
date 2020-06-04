@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import com.zsmart.accountingProject.bean.DeclarationTva;
+import com.zsmart.accountingProject.service.facade.DeclarationTvaService;
+import com.zsmart.accountingProject.ws.rest.converter.DeclarationTvaConverter;
+import com.zsmart.accountingProject.ws.rest.vo.DeclarationTvaVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +27,6 @@ import com.zsmart.accountingProject.service.util.*;
 public class FactureRest {
     @Autowired
     private FactureService factureService;
-
     @Autowired
     private FactureConverter factureConverter;
 
@@ -68,17 +71,7 @@ public class FactureRest {
         return factureConverter.toVo(factureService.findAll());
     }
 
-    @PostMapping("/findBySocieteAnneeTrimestre" )
-    public List<FactureVo> findBySocieteAnneeTrimestre(@RequestBody FactureVo factureVo) {
-        factureConverter.setSociete(true);
-     Facture facture= factureConverter.toItem(factureVo);
 
-    return factureConverter.toVo(factureService.findByCriteria(
-                    facture.getSociete().getRaisonSocial(),
-                    facture.getAnnee(),
-                    facture.getTrimester()
-    ));
-    }
 
     public FactureConverter getFactureConverter() {
         return factureConverter;
