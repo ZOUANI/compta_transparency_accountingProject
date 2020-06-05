@@ -29,7 +29,24 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
             if (StringUtil.isNotEmpty(vo.getRaisonSocial())) {
                 item.setRaisonSocial(vo.getRaisonSocial());
             }
-
+            if (StringUtil.isNotEmpty(vo.getNom())) {
+                item.setNom(vo.getNom());
+            }
+            if (StringUtil.isNotEmpty(vo.getPrenom())) {
+                item.setPrenom(vo.getPrenom());
+            }
+            if (StringUtil.isNotEmpty(vo.getRegistreComerce())) {
+                item.setRegistreComerce(vo.getRegistreComerce());
+            }
+            if (StringUtil.isNotEmpty(vo.getAuthentificationCnss())) {
+                item.setAuthentificationCnss(vo.getAuthentificationCnss());
+            }
+            if (StringUtil.isNotEmpty(vo.getJuridiction())) {
+                item.setJuridiction(vo.getJuridiction());
+            }
+            if (StringUtil.isNotEmpty(vo.getStatuejuridique())) {
+                item.setStatuejuridique(vo.getStatuejuridique());
+            }
             if (vo.getId() != null) {
                 item.setId(NumberUtil.toLong(vo.getId()));
             }
@@ -57,11 +74,34 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
             SocieteVo vo=new SocieteVo();
 
 
-
             if (StringUtil.isNotEmpty(item.getRaisonSocial())) {
                 vo.setRaisonSocial(item.getRaisonSocial());
             }
 
+
+            if (StringUtil.isNotEmpty(item.getNom())) {
+                vo.setNom(item.getNom());
+            }
+
+            if (StringUtil.isNotEmpty(item.getPrenom())) {
+                vo.setPrenom(item.getPrenom());
+            }
+
+            if (StringUtil.isNotEmpty(item.getRegistreComerce())) {
+                vo.setRegistreComerce(item.getRegistreComerce());
+            }
+
+            if (StringUtil.isNotEmpty(item.getAuthentificationCnss())) {
+                vo.setAuthentificationCnss(item.getAuthentificationCnss());
+            }
+
+            if (StringUtil.isNotEmpty(item.getJuridiction())) {
+                vo.setJuridiction(item.getJuridiction());
+            }
+
+            if (StringUtil.isNotEmpty(item.getStatuejuridique())) {
+                vo.setStatuejuridique(item.getStatuejuridique());
+            }
             if (item.getId() != null) {
                 vo.setId(NumberUtil.toString(item.getId()));
             }

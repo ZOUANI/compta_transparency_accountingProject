@@ -2,11 +2,13 @@ package com.zsmart.accountingProject.ws.rest.provided;
 
 import com.zsmart.accountingProject.bean.DeclarationTva;
 import com.zsmart.accountingProject.bean.Facture;
+import com.zsmart.accountingProject.bean.Societe;
 import com.zsmart.accountingProject.service.facade.DeclarationTvaService;
 import com.zsmart.accountingProject.ws.rest.converter.DeclarationTvaConverter;
 import com.zsmart.accountingProject.ws.rest.converter.FactureConverter;
 import com.zsmart.accountingProject.ws.rest.vo.DeclarationTvaVo;
 import com.zsmart.accountingProject.ws.rest.vo.FactureVo;
+import com.zsmart.accountingProject.ws.rest.vo.SocieteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +66,17 @@ public class DeclarationTvaRest {
         declarationTvaConverter.setFacture(true);
 
         return declarationTvaConverter.toVo(declarationTvaService.update(declaration));    }
+
+   /* @PostMapping("/findbysociete" )
+    public DeclarationTvaVo findbysociete(@RequestBody SocieteVo societeVo) {
+
+
+        declarationTvaService.findbyFacture(facture);
+        declarationTvaConverter.setFacture(true);
+        declarationTvaConverter.setSociete(true);
+        return declarationTvaConverter.toVo(declarationTvaService.findbyFacture(facture));
+    }*/
+
 
 
 }

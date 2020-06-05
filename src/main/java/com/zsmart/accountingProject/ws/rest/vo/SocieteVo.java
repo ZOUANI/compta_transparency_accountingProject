@@ -8,10 +8,64 @@ public class SocieteVo {
     private String raisonSocial;
     private String ice;
     private String identifiantFiscal;
+    private String nom;
+    private String prenom;
+    private String registreComerce;
+    private String authentificationCnss;
+    private String juridiction;
+    private String statuejuridique;
     private List<FactureVo> facturesVo;
 
     public String getId() {
         return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getRegistreComerce() {
+        return registreComerce;
+    }
+
+    public void setRegistreComerce(String registreComerce) {
+        this.registreComerce = registreComerce;
+    }
+
+    public String getAuthentificationCnss() {
+        return authentificationCnss;
+    }
+
+    public void setAuthentificationCnss(String authentificationCnss) {
+        this.authentificationCnss = authentificationCnss;
+    }
+
+    public String getJuridiction() {
+        return juridiction;
+    }
+
+    public void setJuridiction(String juridiction) {
+        this.juridiction = juridiction;
+    }
+
+    public String getStatuejuridique() {
+        return statuejuridique;
+    }
+
+    public void setStatuejuridique(String statuejuridique) {
+        this.statuejuridique = statuejuridique;
     }
 
     public void setId(String id) {

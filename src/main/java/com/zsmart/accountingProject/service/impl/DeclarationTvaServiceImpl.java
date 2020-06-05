@@ -2,19 +2,25 @@ package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.DeclarationTva;
 import com.zsmart.accountingProject.bean.Facture;
+import com.zsmart.accountingProject.bean.FactureItem;
 import com.zsmart.accountingProject.bean.Societe;
 import com.zsmart.accountingProject.dao.DeclarationTvaDao;
 import com.zsmart.accountingProject.service.facade.DeclarationTvaService;
 import com.zsmart.accountingProject.service.facade.FactureService;
 import com.zsmart.accountingProject.service.facade.SocieteService;
+import com.zsmart.accountingProject.service.util.SearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DeclarationTvaServiceImpl implements DeclarationTvaService {
+    @Autowired
+    private EntityManager entityManager;
     @Autowired
     private DeclarationTvaDao declarationTvaDao;
     @Autowired
@@ -85,6 +91,23 @@ public class DeclarationTvaServiceImpl implements DeclarationTvaService {
     }
 
 
+    @Override
+    public List<DeclarationTva> findByCriteria( Societe societe) {
+        return entityManager.createQuery(constructQuery(societe)).getResultList();
+    }
+
+
+
+    private String constructQuery(  Societe societe) {
+        String query = "SELECT d FROM DeclarationTva f where 1=1";
+
+        query += SearchUtil.addConstraint("f", "societe.raisonSocial", "=", societe.getRaisonSocial());
+        query += SearchUtil.addConstraint("f", "societe.ice","=", societe.getIce());
+        query += SearchUtil.addConstraint("f", "societe.identifiantFiscal","=", societe.getIdentifiantFiscal());
+
+
+        return query;
+    }
 
     @Override
     public List<DeclarationTva> findAll() {

@@ -235,22 +235,6 @@ public class FactureServiceImpl implements FactureService {
         return entityManager.createQuery(constructQuery(facture.getSociete().getRaisonSocial(), facture.getAnnee(), facture.getTrimester())).getResultList();
     }
 
-    @Override
-    public int updateByDeclarationTva(DeclarationTva declarationTva) {
-
-   for (Facture element : declarationTva.getFacturescharge() )   {
-       element.setDeclarationTva(declarationTva);
-       factureDao.save(element);
-
-        }
-        for (Facture element : declarationTva.getFacturesGain() )   {
-            element.setDeclarationTva(declarationTva);
-            factureDao.save(element);
-        }
-
-        return 1;
-    }
-
 
 
     private String constructQuery(  String raisonSocial, Integer annee, Integer trimester) {
@@ -263,4 +247,21 @@ public class FactureServiceImpl implements FactureService {
 
         return query;
     }
+    @Override
+    public int updateByDeclarationTva(DeclarationTva declarationTva) {
+
+        for (Facture element : declarationTva.getFacturescharge() )   {
+            element.setDeclarationTva(declarationTva);
+            factureDao.save(element);
+
+        }
+        for (Facture element : declarationTva.getFacturesGain() )   {
+            element.setDeclarationTva(declarationTva);
+            factureDao.save(element);
+        }
+
+        return 1;
+    }
+
+
 }
