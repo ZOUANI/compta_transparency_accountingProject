@@ -30,7 +30,7 @@ public class NumberUtil {
         if (value == null || value.isEmpty()) {
             return false;
         } else {
-            return new Boolean(value);
+            return Boolean.valueOf(value);
         }
     }
 

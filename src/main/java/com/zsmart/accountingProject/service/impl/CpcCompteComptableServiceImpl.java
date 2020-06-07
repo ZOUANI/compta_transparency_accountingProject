@@ -1,26 +1,22 @@
 
 package com.zsmart.accountingProject.service.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.zsmart.accountingProject.bean.CompteComptable;
 import com.zsmart.accountingProject.bean.CpcCompteComptable;
-import com.zsmart.accountingProject.bean.CpcSousClasse;
-import com.zsmart.accountingProject.bean.SousClasseComptable;
 import com.zsmart.accountingProject.dao.CpcCompteComptableDao;
 import com.zsmart.accountingProject.service.facade.CompteComptableService;
 import com.zsmart.accountingProject.service.facade.CpcCompteComptableService;
 import com.zsmart.accountingProject.service.facade.CpcSousClasseService;
 import com.zsmart.accountingProject.service.facade.OperationComptableService;
 import com.zsmart.accountingProject.service.util.SearchUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class CpcCompteComptableServiceImpl implements CpcCompteComptableService {
@@ -46,9 +42,9 @@ public class CpcCompteComptableServiceImpl implements CpcCompteComptableService 
 
 	@Override
 	public List<CpcCompteComptable> findCpcCompteComptable(Date dateDebut, Date dateFin,
-			int codeSousClasseComptable) {
-		List<Object[]> res = operationComptableService.findGroupeByCompteComptable(dateDebut, dateFin,codeSousClasseComptable );
-	
+														   int codeSousClasseComptable, Long socId) {
+		List<Object[]> res = operationComptableService.findGroupeByCompteComptable(dateDebut, dateFin, codeSousClasseComptable, socId);
+
 		List<CpcCompteComptable> cpcCompteComptables = new ArrayList<>();
 		cpcCompteComptables.addAll(constructCpcCompteComptable(res));
 		return cpcCompteComptables;

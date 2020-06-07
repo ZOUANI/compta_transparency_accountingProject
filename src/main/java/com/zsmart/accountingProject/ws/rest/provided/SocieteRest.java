@@ -1,10 +1,8 @@
 package com.zsmart.accountingProject.ws.rest.provided;
 
-import com.zsmart.accountingProject.bean.PaiementFacture;
 import com.zsmart.accountingProject.bean.Societe;
 import com.zsmart.accountingProject.service.facade.SocieteService;
 import com.zsmart.accountingProject.ws.rest.converter.SocieteConverter;
-import com.zsmart.accountingProject.ws.rest.vo.PaiementFactureVo;
 import com.zsmart.accountingProject.ws.rest.vo.SocieteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +39,10 @@ public class SocieteRest {
     public SocieteVo findById(@PathVariable Long id){
         societeConverter.getFactureConverter().setOperationComptable(true);
         societeConverter.getFactureConverter().setFactureItems(true);
+        societeConverter.getFactureConverter().getFactureItemConverter().setFacture(false);
         societeConverter.getFactureConverter().getOperationComptableConverter().setTypeOperationComptable(true);
+        societeConverter.getFactureConverter().getOperationComptableConverter().setSociete(false);
+        societeConverter.getFactureConverter().getOperationComptableConverter().setFacture(false);
         societeConverter.setFacture(true);
         societeConverter.getFactureConverter().setSociete(false);
         return societeConverter.toVo(societeService.findById(id));

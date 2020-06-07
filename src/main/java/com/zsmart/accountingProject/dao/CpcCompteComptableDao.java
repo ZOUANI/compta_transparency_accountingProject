@@ -1,8 +1,8 @@
 package com.zsmart.accountingProject.dao;
-import com.zsmart.accountingProject.bean.CompteComptable;
-import com.zsmart.accountingProject.bean.CpcSousClasse;
-import com.zsmart.accountingProject.bean.CpcCompteComptable;
 
+import com.zsmart.accountingProject.bean.CompteComptable;
+import com.zsmart.accountingProject.bean.CpcCompteComptable;
+import com.zsmart.accountingProject.bean.CpcSousClasse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,7 +22,7 @@ import java.util.List;
 	 public int deleteByCpcSousClasse(CpcSousClasse cpcSousClasse);
 	 public int deleteByCpcSousClasseCpcId (Long id);
 	 @Query("SELECT NEW com.zsmart.accountingProject.bean.CpcCompteComptable(o.compteComptable,SUM(o.montant)) FROM OperationComptable o" +
-			 " WHERE o.compteComptable.code LIKE :numeroClasse% GROUP BY o.compteComptable")
+			 " WHERE o.compteComptable.code LIKE :numeroClasse%   GROUP BY o.compteComptable")
 	 public List<CpcCompteComptable> find(@Param("numeroClasse") int numeroClasse);
 
 }

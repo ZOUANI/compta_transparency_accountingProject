@@ -2,27 +2,22 @@
 package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.*;
-import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.dao.FactureFournisseurDao;
+import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.service.util.SearchUtil;
-import org.aspectj.weaver.JoinPointSignature;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.math.BigDecimal;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.Date;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,9 +43,11 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
 
     @Autowired
     private SocieteService societeService;
+    private final Path root = Paths.get("src\\main\\resources\\uploads");
+    @Autowired
+    private OperationComptableGroupeService operationComptableGroupeService;
     @Autowired
     private FactureItemService factureItemService;
-    private final Path root= Paths.get("src\\main\\resources\\uploads");
 
     @Override
     public FactureFournisseur save(FactureFournisseur facturefournisseur) {
@@ -86,14 +83,24 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
         if (facturefournisseur==null){
             return null;
         }else {
-            if (facturefournisseur.getOperationComptable()==null
+            if (facturefournisseur.getOperationComptable() == null
                     || facturefournisseur.getOperationComptable().isEmpty()
-                    || facturefournisseur.getFactureItems()==null
-                    || facturefournisseur.getFactureItems().isEmpty()){
+                    || facturefournisseur.getFactureItems() == null
+                    || facturefournisseur.getFactureItems().isEmpty()) {
                 return null;
-            }else{
+            } else {
+                OperationComptableGroupe groupe = null;
+                if (facturefournisseur.getId() == null) {
+                    groupe = new OperationComptableGroupe();
+                    groupe.setLibelle("GroupFacture" + facturefournisseur.getReference() + facturefournisseur.getSociete().getRaisonSocial());
+                    groupe.setCode("CodeGroup" + facturefournisseur.getReference() + facturefournisseur.getSociete().getRaisonSocial());
+                    operationComptableGroupeService.save(groupe);
+                }
                 facturefournisseurDao.save(facturefournisseur);
                 for (OperationComptable operationcomptable : facturefournisseur.getOperationComptable()) {
+                    if (groupe != null) {
+                        operationcomptable.setOperationComptableGroupe(groupe);
+                    }
                     operationcomptable.setFacture(facturefournisseur);
                     operationcomptableService.save(operationcomptable);
                 }

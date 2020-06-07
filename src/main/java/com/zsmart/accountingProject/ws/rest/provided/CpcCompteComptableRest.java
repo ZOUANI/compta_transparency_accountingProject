@@ -1,70 +1,71 @@
 package com.zsmart.accountingProject.ws.rest.provided;
 
-import java.util.ArrayList;
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import com.zsmart.accountingProject.service.facade.CpcCompteComptableService;
+import com.zsmart.accountingProject.bean.Cpc;
 import com.zsmart.accountingProject.bean.CpcCompteComptable;
-import com.zsmart.accountingProject.ws.rest.vo.CpcCompteComptableVo;
+import com.zsmart.accountingProject.service.facade.CpcCompteComptableService;
 import com.zsmart.accountingProject.ws.rest.converter.CpcCompteComptableConverter;
-import com.zsmart.accountingProject.service.util.*;
+import com.zsmart.accountingProject.ws.rest.converter.CpcConverter;
+import com.zsmart.accountingProject.ws.rest.vo.CpcCompteComptableVo;
+import com.zsmart.accountingProject.ws.rest.vo.CpcVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/accountingProject/CpcCompteComptable")
-@CrossOrigin(origins = { "http://localhost:4200" })
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class CpcCompteComptableRest {
 
-	@Autowired
-	private CpcCompteComptableService cpcCompteComptableService;
+    @Autowired
+    private CpcCompteComptableService cpcCompteComptableService;
 
-	@Autowired
-	private CpcCompteComptableConverter cpcCompteComptableConverter;
+    @Autowired
+    private CpcCompteComptableConverter cpcCompteComptableConverter;
 
-	@PostMapping("/")
-	public CpcCompteComptableVo save(@RequestBody CpcCompteComptableVo cpcCompteComptableVo) {
-		CpcCompteComptable cpcCompteComptable = cpcCompteComptableConverter.toItem(cpcCompteComptableVo);
-		return cpcCompteComptableConverter.toVo(cpcCompteComptableService.save(cpcCompteComptable));
-	}
+    @Autowired
+    private CpcConverter cpcConverter;
 
-	@DeleteMapping("/{id}")
-	public void deleteById(@PathVariable Long id) {
-		cpcCompteComptableService.deleteById(id);
-	}
+    @PostMapping("/")
+    public CpcCompteComptableVo save(@RequestBody CpcCompteComptableVo cpcCompteComptableVo) {
+        CpcCompteComptable cpcCompteComptable = cpcCompteComptableConverter.toItem(cpcCompteComptableVo);
+        return cpcCompteComptableConverter.toVo(cpcCompteComptableService.save(cpcCompteComptable));
+    }
 
-	@GetMapping("/")
-	public List<CpcCompteComptableVo> findAll() {
-		return cpcCompteComptableConverter.toVo(cpcCompteComptableService.findAll());
-	}
-	@GetMapping("/find/{numero}")
-	public List<CpcCompteComptableVo> find(@PathVariable int numero) {
-		cpcCompteComptableConverter.setCompteComptable(true);
-		cpcCompteComptableConverter.setCpcSousClasse(false);
-		cpcCompteComptableConverter.getCompteComptableConverter().setSousClasseComptable(true);
-		return cpcCompteComptableConverter.toVo(cpcCompteComptableService.find(numero));
-	}
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        cpcCompteComptableService.deleteById(id);
+    }
 
-	public CpcCompteComptableConverter getCpcCompteComptableConverter() {
-		return cpcCompteComptableConverter;
-	}
+    @GetMapping("/")
+    public List<CpcCompteComptableVo> findAll() {
+        return cpcCompteComptableConverter.toVo(cpcCompteComptableService.findAll());
+    }
 
-	public void setCpcCompteComptableConverter(CpcCompteComptableConverter cpcCompteComptableConverter) {
-		this.cpcCompteComptableConverter = cpcCompteComptableConverter;
-	}
+    @PostMapping("/find/")
+    public List<CpcCompteComptableVo> find(@RequestBody CpcVo cpcVo) {
+        cpcConverter.getSocieteConverter().setFacture(false);
+        Cpc cpc = cpcConverter.toItem(cpcVo);
+        cpcCompteComptableConverter.setCompteComptable(true);
+        cpcCompteComptableConverter.setCpcSousClasse(true);
+        List<CpcCompteComptableVo> cpcCompteComptableVos = new ArrayList<>();
+        cpcCompteComptableVos.addAll(cpcCompteComptableConverter.toVo(cpcCompteComptableService.findCpcCompteComptable(cpc.getDateDebut(), cpc.getDateFin(), 6, cpc.getSociete().getId())));
+        cpcCompteComptableVos.addAll(cpcCompteComptableConverter.toVo(cpcCompteComptableService.findCpcCompteComptable(cpc.getDateDebut(), cpc.getDateFin(), 7, cpc.getSociete().getId())));
+        return cpcCompteComptableVos;
+    }
 
-	public CpcCompteComptableService getCpcCompteComptableService() {
-		return cpcCompteComptableService;
-	}
+    public CpcCompteComptableConverter getCpcCompteComptableConverter() {
+        return cpcCompteComptableConverter;
+    }
+
+    public void setCpcCompteComptableConverter(CpcCompteComptableConverter cpcCompteComptableConverter) {
+        this.cpcCompteComptableConverter = cpcCompteComptableConverter;
+    }
+
+    public CpcCompteComptableService getCpcCompteComptableService() {
+        return cpcCompteComptableService;
+    }
 
 	public void setCpcCompteComptableService(CpcCompteComptableService cpcCompteComptableService) {
 		this.cpcCompteComptableService = cpcCompteComptableService;

@@ -2,29 +2,18 @@
 package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.*;
-import com.zsmart.accountingProject.service.facade.FactureService;
 import com.zsmart.accountingProject.dao.FactureDao;
+import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.service.util.SearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.math.BigDecimal;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.Date;
-
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
-
-import com.zsmart.accountingProject.service.facade.EtatFactureService;
-import com.zsmart.accountingProject.service.facade.PaiementFactureService;
-import com.zsmart.accountingProject.service.facade.OperationComptableService;
-import com.zsmart.accountingProject.service.facade.FactureItemService;
 
 @Service
 
@@ -55,7 +44,10 @@ public class FactureServiceImpl implements FactureService {
 
     private EtatFactureService etatfactureService;
 
-    private String uploadDir= "src\\main\\resources\\uploads";
+    @Autowired
+    private OperationComptableGroupeService operationComptableGroupeService;
+
+    private String uploadDir = "src\\main\\resources\\uploads";
 
     @Override
     public Facture save(Facture facture) {
@@ -158,17 +150,28 @@ public class FactureServiceImpl implements FactureService {
     @Override
     public int deleteWithAll(Long id) throws IOException {
         Facture facture=factureDao.findByid(id);
-        if (facture==null){
+        if (facture == null) {
             return -1;
-        }else{
-            Files.delete(Paths.get(uploadDir+"\\"+facture.getScanPath()));
-            for (OperationComptable op:facture.getOperationComptable()
-                 ) {
-                operationcomptableService.delete(op);
+        } else {
+            Files.delete(Paths.get(uploadDir + "\\" + facture.getScanPath()));
+
+            if (facture.getOperationComptable() != null
+                    && !facture.getOperationComptable().isEmpty()) {
+
+
+                operationComptableGroupeService.delete(facture.getOperationComptable().get(0).getOperationComptableGroupe());
+                for (OperationComptable op : facture.getOperationComptable()
+                ) {
+                    operationcomptableService.delete(op);
+                }
             }
-            for (FactureItem item:facture.getFactureItems()
-                 ) {
-                factureitemService.delete(item);
+            if (facture.getFactureItems() != null
+                    && !facture.getFactureItems().isEmpty()) {
+
+                for (FactureItem item : facture.getFactureItems()
+                ) {
+                    factureitemService.delete(item);
+                }
             }
             factureDao.delete(facture);
             return 1;

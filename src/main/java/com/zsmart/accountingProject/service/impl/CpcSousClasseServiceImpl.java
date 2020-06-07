@@ -1,32 +1,22 @@
 
 package com.zsmart.accountingProject.service.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.zsmart.accountingProject.bean.CompteComptable;
-import com.zsmart.accountingProject.bean.Cpc;
 import com.zsmart.accountingProject.bean.CpcCompteComptable;
 import com.zsmart.accountingProject.bean.CpcSousClasse;
 import com.zsmart.accountingProject.bean.SousClasseComptable;
 import com.zsmart.accountingProject.dao.CpcCompteComptableDao;
 import com.zsmart.accountingProject.dao.CpcSousClasseDao;
-import com.zsmart.accountingProject.service.facade.CpcCompteComptableService;
-import com.zsmart.accountingProject.service.facade.CpcService;
-import com.zsmart.accountingProject.service.facade.CpcSousClasseService;
-import com.zsmart.accountingProject.service.facade.OperationComptableService;
-import com.zsmart.accountingProject.service.facade.SousClasseComptableService;
+import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.service.util.ListUtil;
 import com.zsmart.accountingProject.service.util.SearchUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 
@@ -60,14 +50,14 @@ public class CpcSousClasseServiceImpl implements CpcSousClasseService {
 	private CpcService cpcService;
 
 	@Override
-	public List<CpcSousClasse> findCpcSousClasseComptable(Date dateDebut, Date dateFin) {
+	public List<CpcSousClasse> findCpcSousClasseComptable(Date dateDebut, Date dateFin, Long socId) {
 		List<Object[]> sousClasseProduits = operationComptableService.findGroupeBySousClasseCompteComptable(dateDebut,
-				dateFin, "7");
+				dateFin, "7", socId);
 		List<Object[]> sousClasseCharges = operationComptableService.findGroupeBySousClasseCompteComptable(dateDebut,
-				dateFin, "6");
+				dateFin, "6", socId);
 		List<CpcSousClasse> cpcSousClasses = new ArrayList<>();
-		cpcSousClasses.addAll(constructCpcSousClasseComptable(sousClasseCharges, dateDebut, dateFin));
-		cpcSousClasses.addAll(constructCpcSousClasseComptable(sousClasseProduits, dateDebut, dateFin));
+		cpcSousClasses.addAll(constructCpcSousClasseComptable(sousClasseCharges, dateDebut, dateFin, socId));
+		cpcSousClasses.addAll(constructCpcSousClasseComptable(sousClasseProduits, dateDebut, dateFin, socId));
 
 		return cpcSousClasses;
 	}
@@ -78,14 +68,14 @@ public class CpcSousClasseServiceImpl implements CpcSousClasseService {
 	}
 
 	private List<CpcSousClasse> constructCpcSousClasseComptable(List<Object[]> cpcCompteComptableCruds, Date dateDebut,
-			Date dateFin) {
+																Date dateFin, Long socId) {
 		List<CpcSousClasse> cpcSousClasses = new ArrayList<>();
 		for (Object[] chargOperationComptable : cpcCompteComptableCruds) {
 			CpcSousClasse cpcSousClasse = new CpcSousClasse();
 			cpcSousClasse.setSousClasseComptable((SousClasseComptable) chargOperationComptable[0]);
 			cpcSousClasse.setMontant((BigDecimal) chargOperationComptable[1]);
 			cpcSousClasse.setCpcCompteComptables(cpccomptecomptableService.findCpcCompteComptable(dateDebut, dateFin,
-					cpcSousClasse.getSousClasseComptable().getNumero()));
+					cpcSousClasse.getSousClasseComptable().getNumero(), socId));
 			cpcSousClasses.add(cpcSousClasse);
 		}
 

@@ -1,17 +1,6 @@
 
 package com.zsmart.accountingProject.service.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.zsmart.accountingProject.bean.Cpc;
 import com.zsmart.accountingProject.bean.CpcSousClasse;
 import com.zsmart.accountingProject.dao.CpcCompteComptableDao;
@@ -22,6 +11,15 @@ import com.zsmart.accountingProject.service.facade.CpcSousClasseService;
 import com.zsmart.accountingProject.service.facade.OperationComptableService;
 import com.zsmart.accountingProject.service.util.ListUtil;
 import com.zsmart.accountingProject.service.util.SearchUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 
@@ -50,19 +48,19 @@ public class CpcServiceImpl implements CpcService {
 	private CpcSousClasseService cpcsousclasseService;
 
 	@Override
-	public Cpc findCpcClasseComptable(Date dateDebut, Date dateFin) {
+	public Cpc findCpcClasseComptable(Date dateDebut, Date dateFin, Long socId) {
 
 		List<Object[]> classeProduits = operationComptableService.findGroupeByClasseCompteComptable(dateDebut, dateFin,
-				"7");
+				"7", socId);
 		List<Object[]> classeCharges = operationComptableService.findGroupeByClasseCompteComptable(dateDebut, dateFin,
-				"6");
+				"6", socId);
 		Cpc cpc = new Cpc();
 		if (ListUtil.isEmpty(classeCharges)) {
 			cpc.setTotalProduit(BigDecimal.ZERO);
 		} else {
 			Object[] chargOperationComptableCharge = classeCharges.get(0);
 			cpc.setTotalCharge((BigDecimal) chargOperationComptableCharge[1]);
-			
+
 		}
 		if (ListUtil.isEmpty(classeProduits)) {
 			cpc.setTotalCharge(BigDecimal.ZERO);
@@ -74,7 +72,7 @@ public class CpcServiceImpl implements CpcService {
 		cpc.setDateFin(dateFin);
 		cpc.setResultat(cpc.getTotalProduit().subtract(cpc.getTotalCharge()));
 
-		cpc.setCpcSousClasses(cpcsousclasseService.findCpcSousClasseComptable(dateDebut, dateFin));
+		cpc.setCpcSousClasses(cpcsousclasseService.findCpcSousClasseComptable(dateDebut, dateFin, socId));
 		return cpc;
 	}
 

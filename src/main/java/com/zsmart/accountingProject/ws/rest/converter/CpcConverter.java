@@ -1,10 +1,12 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.Cpc;
+import com.zsmart.accountingProject.service.util.DateUtil;
+import com.zsmart.accountingProject.service.util.ListUtil;
+import com.zsmart.accountingProject.service.util.NumberUtil;
+import com.zsmart.accountingProject.ws.rest.vo.CpcVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.Cpc;
-import com.zsmart.accountingProject.ws.rest.vo.CpcVo;
 
 @Component
 public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
@@ -106,6 +108,14 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 	public void init() {
 
 		cpcSousClasses = true;
+	}
+
+	public SocieteConverter getSocieteConverter() {
+		return societeConverter;
+	}
+
+	public void setSocieteConverter(SocieteConverter societeConverter) {
+		this.societeConverter = societeConverter;
 	}
 
 	public boolean isCpcSousClasses() {

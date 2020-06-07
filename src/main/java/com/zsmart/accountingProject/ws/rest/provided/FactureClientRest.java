@@ -1,25 +1,18 @@
 package com.zsmart.accountingProject.ws.rest.provided;
 
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-
-import com.zsmart.accountingProject.bean.FactureFournisseur;
+import com.zsmart.accountingProject.bean.FactureClient;
+import com.zsmart.accountingProject.service.facade.FactureClientService;
+import com.zsmart.accountingProject.ws.rest.converter.FactureClientConverter;
 import com.zsmart.accountingProject.ws.rest.converter.FactureConverter;
-import com.zsmart.accountingProject.ws.rest.vo.FactureFournisseurVo;
-import com.zsmart.accountingProject.ws.rest.vo.FactureVo;
+import com.zsmart.accountingProject.ws.rest.vo.FactureClientVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import com.zsmart.accountingProject.service.facade.FactureClientService;
-import com.zsmart.accountingProject.bean.FactureClient;
-import com.zsmart.accountingProject.ws.rest.vo.FactureClientVo;
-import com.zsmart.accountingProject.ws.rest.converter.FactureClientConverter;
-import com.zsmart.accountingProject.service.util.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/accountingProject/FactureClient")
@@ -60,6 +53,7 @@ public class FactureClientRest {
         factureClientConverter.getOperationComptableConverter().setCompteBanquaire(true);
         factureClientConverter.getOperationComptableConverter().setCaisse(true);
         factureClientConverter.getOperationComptableConverter().setSociete(true);
+        factureClientConverter.getOperationComptableConverter().setOperationComptableGroupe(true);
         FactureClient factureClient= factureClientConverter.toItem(factureClientVo);
         factureClientService.uploadScan(file,factureClient);
         return factureClientConverter.toVo(factureClientService.saveWithOperationsAndFactureItems(factureClient));
@@ -88,8 +82,11 @@ public class FactureClientRest {
     public FactureClientVo findByReferenceAndReferenceSociete(@PathVariable Long id, @PathVariable String ref) {
         factureClientConverter.setClient(true);
         factureClientConverter.setOperationComptable(true);
+        factureClientConverter.setFactureItems(true);
         factureClientConverter.getOperationComptableConverter().setTypeOperationComptable(true);
-        return factureClientConverter.toVo(factureClientService.findBySocieteIdAndReference(id,ref));
+        factureClientConverter.getOperationComptableConverter().setSociete(true);
+        factureClientConverter.getOperationComptableConverter().getSocieteConverter().setFacture(false);
+        return factureClientConverter.toVo(factureClientService.findBySocieteIdAndReference(id, ref));
     }
 
     public FactureClientConverter getFactureClientConverter() {

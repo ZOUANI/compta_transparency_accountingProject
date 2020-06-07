@@ -1,10 +1,12 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.OperationComptableGroupe;
+import com.zsmart.accountingProject.service.util.ListUtil;
+import com.zsmart.accountingProject.service.util.NumberUtil;
+import com.zsmart.accountingProject.service.util.StringUtil;
+import com.zsmart.accountingProject.ws.rest.vo.OperationComptableGroupeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.OperationComptableGroupe;
-import com.zsmart.accountingProject.ws.rest.vo.OperationComptableGroupeVo;
 
 @Component
 public class OperationComptableGroupeConverter extends AbstractConverter<OperationComptableGroupe, OperationComptableGroupeVo> {
@@ -71,5 +73,21 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
     public void init() {
 
         operationComptables = true;
+    }
+
+    public boolean isOperationComptables() {
+        return operationComptables;
+    }
+
+    public void setOperationComptables(boolean operationComptables) {
+        this.operationComptables = operationComptables;
+    }
+
+    public OperationComptableConverter getOperationComptableConverter() {
+        return operationComptableConverter;
+    }
+
+    public void setOperationComptableConverter(OperationComptableConverter operationComptableConverter) {
+        this.operationComptableConverter = operationComptableConverter;
     }
 }

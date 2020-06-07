@@ -1,12 +1,10 @@
 package com.zsmart.accountingProject.service.facade;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-import java.math.BigDecimal;
 import com.zsmart.accountingProject.bean.CpcCompteComptable;
-import com.zsmart.accountingProject.bean.CompteComptable;
-import com.zsmart.accountingProject.bean.CpcSousClasse;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 public interface CpcCompteComptableService {
 
@@ -16,20 +14,20 @@ public interface CpcCompteComptableService {
 
 	public CpcCompteComptable findById(Long id);
 
-	public int delete(CpcCompteComptable cpccomptecomptable);
+    public int delete(CpcCompteComptable cpccomptecomptable);
 
-	public void deleteById(Long id);
+    public void deleteById(Long id);
 
-	public void clone(CpcCompteComptable cpccomptecomptable, CpcCompteComptable cpccomptecomptableClone);
+    public void clone(CpcCompteComptable cpccomptecomptable, CpcCompteComptable cpccomptecomptableClone);
 
-	public CpcCompteComptable clone(CpcCompteComptable cpccomptecomptable);
+    public CpcCompteComptable clone(CpcCompteComptable cpccomptecomptable);
 
-	public List<CpcCompteComptable> clone(List<CpcCompteComptable> cpccomptecomptables);
+    public List<CpcCompteComptable> clone(List<CpcCompteComptable> cpccomptecomptables);
 
-	public List<CpcCompteComptable> findByCriteria(Long idMin, Long idMax, BigDecimal montantMin,
-			BigDecimal montantMax);
+    public List<CpcCompteComptable> findByCriteria(Long idMin, Long idMax, BigDecimal montantMin,
+                                                   BigDecimal montantMax);
 
-	List<CpcCompteComptable> findCpcCompteComptable(Date dateDebut, Date dateFin, int codeSousClasseComptable);
+    List<CpcCompteComptable> findCpcCompteComptable(Date dateDebut, Date dateFin, int codeSousClasseComptable, Long socId);
 
-	public  List<CpcCompteComptable> find(int numeroSousClasse);
+    public List<CpcCompteComptable> find(int numeroSousClasse);
 }

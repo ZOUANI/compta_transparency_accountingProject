@@ -1,12 +1,15 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
-import com.zsmart.accountingProject.bean.Facture;
+import com.zsmart.accountingProject.bean.FactureClient;
+import com.zsmart.accountingProject.bean.FactureItem;
 import com.zsmart.accountingProject.bean.OperationComptable;
+import com.zsmart.accountingProject.service.util.DateUtil;
+import com.zsmart.accountingProject.service.util.ListUtil;
+import com.zsmart.accountingProject.service.util.NumberUtil;
+import com.zsmart.accountingProject.service.util.StringUtil;
+import com.zsmart.accountingProject.ws.rest.vo.FactureClientVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.FactureClient;
-import com.zsmart.accountingProject.ws.rest.vo.FactureClientVo;
 
 import java.math.BigDecimal;
 
@@ -210,6 +213,12 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
             }
 
             if (ListUtil.isNotEmpty(item.getFactureItems()) && factureItems) {
+                BigDecimal total = BigDecimal.ZERO;
+                for (FactureItem fi : item.getFactureItems()
+                ) {
+                    total = total.add(fi.getMontant().multiply(fi.getQuantite()));
+                }
+                vo.setTotalFactureItems(NumberUtil.toString(total));
                 vo.setFactureItemsVo(factureItemConverter.toVo(item.getFactureItems()));
             }
 

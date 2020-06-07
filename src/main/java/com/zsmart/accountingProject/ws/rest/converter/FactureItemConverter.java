@@ -1,10 +1,11 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.FactureItem;
+import com.zsmart.accountingProject.service.util.NumberUtil;
+import com.zsmart.accountingProject.service.util.StringUtil;
+import com.zsmart.accountingProject.ws.rest.vo.FactureItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.FactureItem;
-import com.zsmart.accountingProject.ws.rest.vo.FactureItemVo;
 
 @Component
 public class FactureItemConverter extends AbstractConverter<FactureItem, FactureItemVo> {
@@ -82,5 +83,21 @@ public class FactureItemConverter extends AbstractConverter<FactureItem, Facture
     public void init() {
 
         facture = true;
+    }
+
+    public boolean isFacture() {
+        return facture;
+    }
+
+    public void setFacture(boolean facture) {
+        this.facture = facture;
+    }
+
+    public FactureConverter getFactureConverter() {
+        return factureConverter;
+    }
+
+    public void setFactureConverter(FactureConverter factureConverter) {
+        this.factureConverter = factureConverter;
     }
 }
