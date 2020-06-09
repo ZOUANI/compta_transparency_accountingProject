@@ -13,6 +13,6 @@ public class SwaggerConfig {
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("com.zsmart.accountingProject")).build();
+                .apis(RequestHandlerSelectors.basePackage("com.zsmart.accountingProject/src/main/java/com/zsmart/accountingProject/ws/rest/provided")).build();
     }
 }

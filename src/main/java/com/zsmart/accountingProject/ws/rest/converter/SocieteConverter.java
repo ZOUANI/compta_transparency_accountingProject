@@ -52,6 +52,9 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
             if (StringUtil.isNotEmpty(vo.getStatuejuridique())) {
                 item.setStatuejuridique(vo.getStatuejuridique());
             }
+            if (StringUtil.isNotEmpty(vo.getAdresse())) {
+                item.setAdresse(vo.getAdresse());
+            }
             if (vo.getId() != null) {
                 item.setId(NumberUtil.toLong(vo.getId()));
             }
@@ -96,7 +99,9 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
             if (StringUtil.isNotEmpty(item.getPrenom())) {
                 vo.setPrenom(item.getPrenom());
             }
-
+            if (StringUtil.isNotEmpty(item.getAdresse())) {
+                vo.setAdresse(item.getAdresse());
+            }
             if (StringUtil.isNotEmpty(item.getRegistreComerce())) {
                 vo.setRegistreComerce(item.getRegistreComerce());
             }

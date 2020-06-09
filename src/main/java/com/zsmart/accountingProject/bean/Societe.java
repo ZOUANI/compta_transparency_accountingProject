@@ -19,6 +19,7 @@ public class Societe {
     private String authentificationCnss;
     private String juridiction;
     private String statuejuridique;
+    private String adresse;
     @OneToMany(mappedBy = "societe")
     private List<Facture> factures;
     @OneToMany(mappedBy = "societe")
@@ -27,6 +28,14 @@ public class Societe {
     private Adherant adherant;
     @ManyToOne
     private Comptable comptable;
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
 
     public Comptable getComptable() {
         return comptable;

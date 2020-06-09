@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.zsmart.accountingProject.bean.DeclarationTva;
 import com.zsmart.accountingProject.bean.Facture;
+import com.zsmart.accountingProject.bean.Societe;
+
 public interface FactureService {
 
 public Facture save(Facture facture); 
@@ -23,4 +25,5 @@ public Facture clone(Facture facture);
 public List<Facture> clone(List<Facture>factures);
 public List<Facture>  findByCriteria(Facture facture);
 public int updateByDeclarationTva(DeclarationTva declarationTva);
+
 }

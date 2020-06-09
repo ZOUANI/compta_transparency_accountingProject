@@ -14,9 +14,18 @@ public class SocieteVo {
     private String authentificationCnss;
     private String juridiction;
     private String statuejuridique;
+    private String adresse;
     private List<FactureVo> facturesVo;
     private AdherantVo adherantVo;
     private ComptableVo comptableVo;
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
 
     public AdherantVo getAdherantVo() {
         return adherantVo;
