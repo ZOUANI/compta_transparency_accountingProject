@@ -1,5 +1,9 @@
 package com.zsmart.accountingProject.ws.rest.vo;
 
+import com.zsmart.accountingProject.bean.Adherant;
+import com.zsmart.accountingProject.bean.Comptable;
+
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +18,26 @@ private String libelle ;
 private String code ;
 private List<FactureClientVo>factureClientsVo;
 
+    private AdherantVo adherantVo;
+    private ComptableVo comptableVo;
 
+    public AdherantVo getAdherantVo() {
+        return adherantVo;
+    }
 
-public String  getId(){
+    public void setAdherantVo(AdherantVo adherantVo) {
+        this.adherantVo = adherantVo;
+    }
+
+    public ComptableVo getComptableVo() {
+        return comptableVo;
+    }
+
+    public void setComptableVo(ComptableVo comptableVo) {
+        this.comptableVo = comptableVo;
+    }
+
+    public String  getId(){
     return id;
 }
 

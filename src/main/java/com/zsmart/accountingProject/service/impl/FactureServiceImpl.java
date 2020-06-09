@@ -235,17 +235,19 @@ public class FactureServiceImpl implements FactureService {
 
     @Override
     public List<Facture> findByCriteria( Facture facture) {
-        return entityManager.createQuery(constructQuery(facture.getSociete().getRaisonSocial(), facture.getAnnee(), facture.getTrimester())).getResultList();
+        return entityManager.createQuery(constructQuery(facture)).getResultList();
     }
 
 
 
-    private String constructQuery(  String raisonSocial, Integer annee, Integer trimester) {
+    private String constructQuery( Facture facture) {
         String query = "SELECT f FROM Facture f where 1=1";
 
-        query += SearchUtil.addConstraint("f", "societe.raisonSocial", "=", raisonSocial);
-        query += SearchUtil.addConstraint("f", "annee","=", annee);
-        query += SearchUtil.addConstraint("f", "trimester","=", trimester);
+        query += SearchUtil.addConstraint("f", "societe.raisonSocial", "=", facture.getSociete().getRaisonSocial());
+        query += SearchUtil.addConstraint("f", "societe.identifiantFiscal", "=", facture.getSociete().getIdentifiantFiscal());
+        query += SearchUtil.addConstraint("f", "societe.ice", "=", facture.getSociete().getIce());
+        query += SearchUtil.addConstraint("f", "annee","=", facture.getAnnee());
+        query += SearchUtil.addConstraint("f", "trimester","=", facture.getTrimester());
 
 
         return query;

@@ -24,6 +24,25 @@ public class Cpc {
     private BigDecimal resultat;
     @OneToMany(mappedBy = "cpc" )
     private List<CpcSousClasse> cpcSousClasses;
+    @ManyToOne
+    private Adherant adherant;
+    @ManyToOne
+    private Comptable comptable;
+    public Adherant getAdherant() {
+        return adherant;
+    }
+
+    public void setAdherant(Adherant adherant) {
+        this.adherant = adherant;
+    }
+
+    public Comptable getComptable() {
+        return comptable;
+    }
+
+    public void setComptable(Comptable comptable) {
+        this.comptable = comptable;
+    }
 
     public Long getId() {
         return id;

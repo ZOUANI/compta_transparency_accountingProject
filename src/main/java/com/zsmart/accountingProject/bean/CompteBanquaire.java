@@ -26,8 +26,10 @@ public class CompteBanquaire implements Serializable {
 	private Banque banque;
 	@OneToMany(mappedBy = "compteBanquaire")
 	private List<OperationComptable> operationComptables;
-	
-	
+	@ManyToOne
+	private Adherant adherant;
+	@ManyToOne
+	private Comptable comptable;
 
 	public List<OperationComptable> getOperationComptables() {
 		return operationComptables;
@@ -35,6 +37,22 @@ public class CompteBanquaire implements Serializable {
 
 	public void setOperationComptables(List<OperationComptable> operationComptables) {
 		this.operationComptables = operationComptables;
+	}
+
+	public Adherant getAdherant() {
+		return adherant;
+	}
+
+	public void setAdherant(Adherant adherant) {
+		this.adherant = adherant;
+	}
+
+	public Comptable getComptable() {
+		return comptable;
+	}
+
+	public void setComptable(Comptable comptable) {
+		this.comptable = comptable;
 	}
 
 	public BigDecimal getSolde() {

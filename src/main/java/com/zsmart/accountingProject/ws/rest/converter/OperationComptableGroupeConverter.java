@@ -12,7 +12,12 @@ import org.springframework.stereotype.Component;
 public class OperationComptableGroupeConverter extends AbstractConverter<OperationComptableGroupe, OperationComptableGroupeVo> {
 
     private boolean operationComptables;
-
+    @Autowired
+    private AdherantConverter adherantConverter;
+    @Autowired
+    private ComptableConverter comptableConverter;
+    private Boolean adherant;
+    private Boolean comptable;
     @Autowired
     private OperationComptableConverter operationComptableConverter;
 
@@ -38,7 +43,12 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
             if (ListUtil.isNotEmpty(vo.getOperationComptablesVo()) && operationComptables) {
                 item.setOperationComptables(operationComptableConverter.toItem(vo.getOperationComptablesVo()));
             }
-
+            if (vo.getAdherantVo()!=null && adherant) {
+                item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+            }
+            if (vo.getComptableVo()!=null && comptable) {
+                item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+            }
             return item;
         }
     }
@@ -65,7 +75,12 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
             if (ListUtil.isNotEmpty(item.getOperationComptables()) && operationComptables) {
                 vo.setOperationComptablesVo(operationComptableConverter.toVo(item.getOperationComptables()));
             }
-
+            if (item.getAdherant()!=null && adherant) {
+                vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+            }
+            if (item.getComptable()!=null && comptable) {
+                vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
+            }
             return vo;
         }
     }
@@ -74,7 +89,21 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
 
         operationComptables = true;
     }
+    public Boolean isAdherant() {
+        return adherant;
+    }
 
+    public void setAdherant(Boolean adherant) {
+        this.adherant = adherant;
+    }
+
+    public Boolean isComptable() {
+        return comptable;
+    }
+
+    public void setComptable(Boolean comptable) {
+        this.comptable = comptable;
+    }
     public boolean isOperationComptables() {
         return operationComptables;
     }

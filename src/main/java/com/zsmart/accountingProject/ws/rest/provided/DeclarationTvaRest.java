@@ -6,6 +6,7 @@ import com.zsmart.accountingProject.bean.Societe;
 import com.zsmart.accountingProject.service.facade.DeclarationTvaService;
 import com.zsmart.accountingProject.ws.rest.converter.DeclarationTvaConverter;
 import com.zsmart.accountingProject.ws.rest.converter.FactureConverter;
+import com.zsmart.accountingProject.ws.rest.converter.SocieteConverter;
 import com.zsmart.accountingProject.ws.rest.vo.DeclarationTvaVo;
 import com.zsmart.accountingProject.ws.rest.vo.FactureVo;
 import com.zsmart.accountingProject.ws.rest.vo.SocieteVo;
@@ -25,6 +26,8 @@ public class DeclarationTvaRest {
     private DeclarationTvaService declarationTvaService;
     @Autowired
     private FactureConverter factureConverter;
+    @Autowired
+    private SocieteConverter societeConverter;
 
 
     @GetMapping("/findbyid/{id}")
@@ -49,7 +52,6 @@ public class DeclarationTvaRest {
     factureConverter.setSociete(true);
 
         Facture facture= factureConverter.toItem(factureVo);
-        declarationTvaService.findbyFacture(facture);
         declarationTvaConverter.setFacture(true);
         declarationTvaConverter.setSociete(true);
         return declarationTvaConverter.toVo(declarationTvaService.findbyFacture(facture));
@@ -67,16 +69,12 @@ public class DeclarationTvaRest {
 
         return declarationTvaConverter.toVo(declarationTvaService.update(declaration));    }
 
-   /* @PostMapping("/findbysociete" )
-    public DeclarationTvaVo findbysociete(@RequestBody SocieteVo societeVo) {
+    @PostMapping("/findbysociete/" )
+    public List<DeclarationTvaVo> findbysociete(@RequestBody SocieteVo societeVo) {
 
-
-        declarationTvaService.findbyFacture(facture);
+        Societe societe = societeConverter.toItem(societeVo);
         declarationTvaConverter.setFacture(true);
-        declarationTvaConverter.setSociete(true);
-        return declarationTvaConverter.toVo(declarationTvaService.findbyFacture(facture));
-    }*/
-
-
+        return declarationTvaConverter.toVo(declarationTvaService.findByCriteria(societe));
+    }
 
 }

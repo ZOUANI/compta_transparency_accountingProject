@@ -57,6 +57,25 @@ public class Facture implements Serializable {
 	private List<FactureItem> factureItems;
 	@ManyToOne
 	private DeclarationTva declarationTva;
+	@ManyToOne
+	private Adherant adherant;
+	@ManyToOne
+	private Comptable comptable;
+	public Adherant getAdherant() {
+		return adherant;
+	}
+
+	public Comptable getComptable() {
+		return comptable;
+	}
+
+	public void setComptable(Comptable comptable) {
+		this.comptable = comptable;
+	}
+
+	public void setAdherant(Adherant adherant) {
+		this.adherant = adherant;
+	}
 
 	public Boolean getTraiter() {
 		return traiter;

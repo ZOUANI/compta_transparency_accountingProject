@@ -23,6 +23,26 @@ public class Societe {
     private List<Facture> factures;
     @OneToMany(mappedBy = "societe")
     private List<DeclarationTva> declarationTvas;
+    @ManyToOne
+    private Adherant adherant;
+    @ManyToOne
+    private Comptable comptable;
+
+    public Comptable getComptable() {
+        return comptable;
+    }
+
+    public void setComptable(Comptable comptable) {
+        this.comptable = comptable;
+    }
+
+    public Adherant getAdherant() {
+        return adherant;
+    }
+
+    public void setAdherant(Adherant adherant) {
+        this.adherant = adherant;
+    }
 
     public String getNom() {
         return nom;

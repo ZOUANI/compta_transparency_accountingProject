@@ -18,6 +18,12 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 
 	@Autowired
 	private SocieteConverter societeConverter;
+	@Autowired
+	private AdherantConverter adherantConverter;
+	@Autowired
+	private ComptableConverter comptableConverter;
+	private Boolean adherant;
+	private Boolean comptable;
 
 	@Override
 	public Cpc toItem(CpcVo vo) {
@@ -57,7 +63,12 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 			if (ListUtil.isNotEmpty(vo.getCpcSousClassesVo()) && cpcSousClasses) {
 				item.setCpcSousClasses(cpcSousClasseConverter.toItem(vo.getCpcSousClassesVo()));
 			}
-
+			if (vo.getAdherantVo()!=null && adherant) {
+				item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+			}
+			if (vo.getComptableVo()!=null && comptable) {
+				item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+			}
 			return item;
 		}
 	}
@@ -100,7 +111,12 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 			if (ListUtil.isNotEmpty(item.getCpcSousClasses()) && cpcSousClasses) {
 				vo.setCpcSousClassesVo(cpcSousClasseConverter.toVo(item.getCpcSousClasses()));
 			}
-
+			if (item.getAdherant()!=null && adherant) {
+				item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+			}
+			if (item.getComptable()!=null && comptable) {
+				item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+			}
 			return vo;
 		}
 	}
@@ -133,6 +149,20 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 	public void setCpcSousClasseConverter(CpcSousClasseConverter cpcSousClasseConverter) {
 		this.cpcSousClasseConverter = cpcSousClasseConverter;
 	}
-	
-	
+
+	public Boolean getAdherant() {
+		return adherant;
+	}
+
+	public void setAdherant(Boolean adherant) {
+		this.adherant = adherant;
+	}
+
+	public Boolean getComptable() {
+		return comptable;
+	}
+
+	public void setComptable(Boolean comptable) {
+		this.comptable = comptable;
+	}
 }

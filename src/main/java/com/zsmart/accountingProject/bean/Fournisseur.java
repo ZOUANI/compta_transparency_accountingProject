@@ -3,11 +3,7 @@ package com.zsmart.accountingProject.bean;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Fournisseur implements Serializable {
@@ -21,14 +17,32 @@ public class Fournisseur implements Serializable {
 	private String code;
 	@OneToMany(mappedBy = "fournisseur")
 	private List<FactureFournisseur> factureFournisseurs;
-	
-	
+	@ManyToOne
+	private Adherant adherant;
+	@ManyToOne
+	private Comptable comptable;
 	public List<FactureFournisseur> getFactureFournisseurs() {
 		return factureFournisseurs;
 	}
 
 	public void setFactureFournisseurs(List<FactureFournisseur> factureFournisseurs) {
 		this.factureFournisseurs = factureFournisseurs;
+	}
+
+	public Adherant getAdherant() {
+		return adherant;
+	}
+
+	public void setAdherant(Adherant adherant) {
+		this.adherant = adherant;
+	}
+
+	public Comptable getComptable() {
+		return comptable;
+	}
+
+	public void setComptable(Comptable comptable) {
+		this.comptable = comptable;
 	}
 
 	public Long getId() {

@@ -10,10 +10,26 @@ private String id ;
 private String libelle ;
 private String code ;
 private List<OperationComptableVo>operationComptablesVo;
+    private AdherantVo adherantVo;
+    private ComptableVo comptableVo;
 
+    public AdherantVo getAdherantVo() {
+        return adherantVo;
+    }
 
+    public void setAdherantVo(AdherantVo adherantVo) {
+        this.adherantVo = adherantVo;
+    }
 
-public String  getId(){
+    public ComptableVo getComptableVo() {
+        return comptableVo;
+    }
+
+    public void setComptableVo(ComptableVo comptableVo) {
+        this.comptableVo = comptableVo;
+    }
+
+    public String  getId(){
     return id;
 }
 

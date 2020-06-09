@@ -18,7 +18,12 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
     @Autowired
     private EtatFactureConverter etatFactureConverter;
     private boolean paimentFactures;
-
+    @Autowired
+    private AdherantConverter adherantConverter;
+    @Autowired
+    private ComptableConverter comptableConverter;
+    private Boolean adherant;
+    private Boolean comptable;
     @Autowired
     private PaiementFactureConverter paiementFactureConverter;
     private boolean operationComptable;
@@ -119,7 +124,12 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             if (ListUtil.isNotEmpty(vo.getFactureItemsVo()) && factureItems) {
                 item.setFactureItems(factureItemConverter.toItem(vo.getFactureItemsVo()));
             }
-
+            if (vo.getAdherantVo()!=null && adherant) {
+                item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+            }
+            if (vo.getComptableVo()!=null && comptable) {
+                item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+            }
             return item;
         }
     }
@@ -228,7 +238,12 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
                 vo.setTotalFactureItems(NumberUtil.toString(total));
                 vo.setFactureItemsVo(factureItemConverter.toVo(item.getFactureItems()));
             }
-
+            if (item.getAdherant()!=null && adherant) {
+                vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+            }
+            if (item.getComptable()!=null && comptable) {
+                vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
+            }
             return vo;
         }
     }
@@ -307,6 +322,22 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
 
     public void setOperationComptableConverter(OperationComptableConverter operationComptableConverter) {
         this.operationComptableConverter = operationComptableConverter;
+    }
+
+    public Boolean getAdherant() {
+        return adherant;
+    }
+
+    public void setAdherant(Boolean adherant) {
+        this.adherant = adherant;
+    }
+
+    public Boolean getComptable() {
+        return comptable;
+    }
+
+    public void setComptable(Boolean comptable) {
+        this.comptable = comptable;
     }
 
     public boolean isFactureItems() {

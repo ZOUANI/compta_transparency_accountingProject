@@ -11,6 +11,24 @@ public class DeclarationTvaVo {
     private List<FactureVo> facturesGain;
     private List<FactureVo> facturescharge;
     private SocieteVo societeVo;
+    private AdherantVo adherantVo;
+    private ComptableVo comptableVo;
+
+    public AdherantVo getAdherantVo() {
+        return adherantVo;
+    }
+
+    public void setAdherantVo(AdherantVo adherantVo) {
+        this.adherantVo = adherantVo;
+    }
+
+    public ComptableVo getComptableVo() {
+        return comptableVo;
+    }
+
+    public void setComptableVo(ComptableVo comptableVo) {
+        this.comptableVo = comptableVo;
+    }
 
     public SocieteVo getSocieteVo() {
         return societeVo;

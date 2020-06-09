@@ -12,45 +12,55 @@ public class ClientConverter extends AbstractConverter<Client,ClientVo>{
 private boolean factureClients; 
 
  @Autowired
- private FactureClientConverter factureClientConverter ; 
-
+ private FactureClientConverter factureClientConverter ;
+  @Autowired
+  private AdherantConverter adherantConverter;
+  @Autowired
+  private ComptableConverter comptableConverter;
+  private Boolean adherant;
+  private Boolean comptable;
  @Override 
  public Client toItem(ClientVo vo) {
- if (vo == null) {
-    return null;
-      } else {
-Client item = new Client();
+       if (vo == null) {
+          return null;
+            } else {
+      Client item = new Client();
 
- if (StringUtil.isNotEmpty(vo.getIce())) {
- item.setIce(vo.getIce());
-} 
+       if (StringUtil.isNotEmpty(vo.getIce())) {
+       item.setIce(vo.getIce());
+      }
 
- if (StringUtil.isNotEmpty(vo.getIdentifiantFiscale())) {
- item.setIdentifiantFiscale(vo.getIdentifiantFiscale());
-} 
+       if (StringUtil.isNotEmpty(vo.getIdentifiantFiscale())) {
+       item.setIdentifiantFiscale(vo.getIdentifiantFiscale());
+      }
 
- if (StringUtil.isNotEmpty(vo.getRc())) {
- item.setRc(vo.getRc());
-} 
+       if (StringUtil.isNotEmpty(vo.getRc())) {
+       item.setRc(vo.getRc());
+      }
 
- if (StringUtil.isNotEmpty(vo.getLibelle())) {
- item.setLibelle(vo.getLibelle());
-} 
+       if (StringUtil.isNotEmpty(vo.getLibelle())) {
+       item.setLibelle(vo.getLibelle());
+      }
 
- if (StringUtil.isNotEmpty(vo.getCode())) {
- item.setCode(vo.getCode());
-} 
+       if (StringUtil.isNotEmpty(vo.getCode())) {
+       item.setCode(vo.getCode());
+      }
 
- if (vo.getId() != null) {
- item.setId(NumberUtil.toLong(vo.getId()));
-} 
+       if (vo.getId() != null) {
+       item.setId(NumberUtil.toLong(vo.getId()));
+      }
 
- if (ListUtil.isNotEmpty(vo.getFactureClientsVo ()) && factureClients) {
- item.setFactureClients(factureClientConverter.toItem(vo.getFactureClientsVo())); 
-} 
-
-return item;
- }
+       if (ListUtil.isNotEmpty(vo.getFactureClientsVo ()) && factureClients) {
+       item.setFactureClients(factureClientConverter.toItem(vo.getFactureClientsVo()));
+      }
+           if (vo.getAdherantVo()!=null && adherant) {
+               item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+           }
+           if (vo.getComptableVo()!=null && comptable) {
+               item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+           }
+      return item;
+       }
  }
 
   @Override 
@@ -86,13 +96,34 @@ ClientVo vo = new ClientVo();
 
  if(ListUtil.isNotEmpty(item.getFactureClients()) && factureClients) {
  vo.setFactureClientsVo(factureClientConverter.toVo(item.getFactureClients()));
-} 
-
+}
+     if (item.getAdherant()!=null && adherant) {
+         vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+     }
+     if (item.getComptable()!=null && comptable) {
+         vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
+     }
 return vo;
  }
  }
-public void init() { 
 
+  public Boolean getAdherant() {
+   return adherant;
+  }
+
+  public void setAdherant(Boolean adherant) {
+   this.adherant = adherant;
+  }
+
+  public Boolean getComptable() {
+   return comptable;
+  }
+
+  public void setComptable(Boolean comptable) {
+   this.comptable = comptable;
+  }
+
+  public void init() {
 factureClients = true; 
 }
  } 

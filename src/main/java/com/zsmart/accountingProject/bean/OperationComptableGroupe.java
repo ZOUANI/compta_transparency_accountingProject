@@ -8,12 +8,7 @@ package com.zsmart.accountingProject.bean;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
+import javax.persistence.*;
 
 /**
  *
@@ -30,6 +25,25 @@ public class OperationComptableGroupe implements Serializable {
     @OneToMany(mappedBy = "operationComptableGroupe")
     private List<OperationComptable> operationComptables;
     private String code;
+    @ManyToOne
+    private Adherant adherant;
+    @ManyToOne
+    private Comptable comptable;
+    public Adherant getAdherant() {
+        return adherant;
+    }
+
+    public void setAdherant(Adherant adherant) {
+        this.adherant = adherant;
+    }
+
+    public Comptable getComptable() {
+        return comptable;
+    }
+
+    public void setComptable(Comptable comptable) {
+        this.comptable = comptable;
+    }
 
     public String getLibelle() {
         return libelle;

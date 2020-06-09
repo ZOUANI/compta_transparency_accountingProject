@@ -16,7 +16,12 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
     private FactureConverter factureConverter;
 
     private boolean facture;
-
+    @Autowired
+    private AdherantConverter adherantConverter;
+    @Autowired
+    private ComptableConverter comptableConverter;
+    private Boolean adherant;
+    private Boolean comptable;
     @Override
     public Societe toItem(SocieteVo vo) {
         if (vo == null) {
@@ -61,7 +66,12 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
             if (ListUtil.isNotEmpty(vo.getFacturesVo()) && facture) {
                 item.setFactures(factureConverter.toItem(vo.getFacturesVo()));
             }
-
+            if (vo.getAdherantVo()!=null && adherant) {
+                item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+            }
+            if (vo.getComptableVo()!=null && comptable) {
+                item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+            }
             return item;
         }
     }
@@ -116,7 +126,12 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
             if (ListUtil.isNotEmpty(item.getFactures()) && facture) {
                 vo.setFacturesVo(factureConverter.toVo(item.getFactures()));
             }
-
+            if (item.getAdherant()!=null && adherant) {
+                vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+            }
+            if (item.getComptable()!=null && comptable) {
+                vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
+            }
             return vo;
         }
     }
@@ -124,7 +139,21 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
 
        facture=true;
     }
+    public Boolean isAdherant() {
+        return adherant;
+    }
 
+    public void setAdherant(Boolean adherant) {
+        this.adherant = adherant;
+    }
+
+    public Boolean isComptable() {
+        return comptable;
+    }
+
+    public void setComptable(Boolean comptable) {
+        this.comptable = comptable;
+    }
     public FactureConverter getFactureConverter() {
         return factureConverter;
     }

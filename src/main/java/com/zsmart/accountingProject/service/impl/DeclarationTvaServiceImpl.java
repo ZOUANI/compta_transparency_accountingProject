@@ -71,7 +71,7 @@ public class DeclarationTvaServiceImpl implements DeclarationTvaService {
                     facturesCharge.add(element);
                 }
                 declarationTva.setSociete(element.getSociete());
-
+           if (element.getDeclarationTva()!=null)    declarationTva.setId(element.getDeclarationTva().getId());
             }
             declarationTva.setFacturesGain(facturesGain);
             declarationTva.setFacturescharge(facturesCharge);
@@ -93,18 +93,40 @@ public class DeclarationTvaServiceImpl implements DeclarationTvaService {
 
     @Override
     public List<DeclarationTva> findByCriteria( Societe societe) {
-        return entityManager.createQuery(constructQuery(societe)).getResultList();
+        return sortFactures(entityManager.createQuery(constructQuery(societe)).getResultList());
     }
 
+        private List<DeclarationTva> sortFactures(List<DeclarationTva> declarationTvas)
+        {
 
 
+            for (DeclarationTva element : declarationTvas ){
+                List<Facture> newfacturegain = new ArrayList<Facture>();
+                List<Facture> newfacturecharge=new ArrayList<Facture>();
+      if (element.getFacturesGain()!=null)         {
+                    for (Facture elementfacture : element.getFacturesGain()) {
+                        if (elementfacture.getTypeFacture().equals("deductible")) {
+                            newfacturecharge.add(elementfacture);
+                        } else {
+                            newfacturegain.add(elementfacture);
+                        }
+                    }
+                    element.setFacturesGain(newfacturegain);
+                    element.setFacturescharge(newfacturecharge);
+                }
+            }
+            return declarationTvas;
+        }
     private String constructQuery(  Societe societe) {
-        String query = "SELECT d FROM DeclarationTva f where 1=1";
-
-        query += SearchUtil.addConstraint("f", "societe.raisonSocial", "=", societe.getRaisonSocial());
-        query += SearchUtil.addConstraint("f", "societe.ice","=", societe.getIce());
-        query += SearchUtil.addConstraint("f", "societe.identifiantFiscal","=", societe.getIdentifiantFiscal());
-
+        String query = "SELECT d FROM DeclarationTva d where 1=1";
+        query += SearchUtil.addConstraint("d", "societe.raisonSocial", "=", societe.getRaisonSocial());
+        query += SearchUtil.addConstraint("d", "societe.nom", "=", societe.getNom());
+        query += SearchUtil.addConstraint("d", "societe.prenom", "=", societe.getPrenom());
+        query += SearchUtil.addConstraint("d", "societe.registreComerce", "=", societe.getRegistreComerce());
+        query += SearchUtil.addConstraint("d", "societe.authentificationCnss", "=", societe.getAuthentificationCnss());
+        query += SearchUtil.addConstraint("d", "societe.juridiction", "=", societe.getJuridiction());
+        query += SearchUtil.addConstraint("d", "societe.ice","=", societe.getIce());
+        query += SearchUtil.addConstraint("d", "societe.identifiantFiscal","=", societe.getIdentifiantFiscal());
 
         return query;
     }

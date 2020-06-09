@@ -16,8 +16,13 @@ private boolean banque;
 private boolean operationComptables; 
 
  @Autowired
- private OperationComptableConverter operationComptableConverter ; 
-
+ private OperationComptableConverter operationComptableConverter ;
+  @Autowired
+  private AdherantConverter adherantConverter;
+  @Autowired
+  private ComptableConverter comptableConverter;
+  private Boolean adherant;
+  private Boolean comptable;
  @Override 
  public CompteBanquaire toItem(CompteBanquaireVo vo) {
  if (vo == null) {
@@ -47,7 +52,13 @@ CompteBanquaire item = new CompteBanquaire();
 
  if (ListUtil.isNotEmpty(vo.getOperationComptablesVo ()) && operationComptables) {
  item.setOperationComptables(operationComptableConverter.toItem(vo.getOperationComptablesVo())); 
-} 
+}
+     if (vo.getAdherantVo()!=null && adherant) {
+         item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+     }
+     if (vo.getComptableVo()!=null && comptable) {
+         item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+     }
 
 return item;
  }
@@ -82,8 +93,13 @@ CompteBanquaireVo vo = new CompteBanquaireVo();
 
  if(ListUtil.isNotEmpty(item.getOperationComptables()) && operationComptables) {
  vo.setOperationComptablesVo(operationComptableConverter.toVo(item.getOperationComptables()));
-} 
-
+}
+  if (item.getAdherant()!=null && adherant) {
+   vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+  }
+  if (item.getComptable()!=null && comptable) {
+   vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
+  }
 return vo;
  }
  }
@@ -93,4 +109,20 @@ banque = true;
 
 operationComptables = true; 
 }
- } 
+
+  public Boolean getAdherant() {
+   return adherant;
+  }
+
+  public void setAdherant(Boolean adherant) {
+   this.adherant = adherant;
+  }
+
+  public Boolean getComptable() {
+   return comptable;
+  }
+
+  public void setComptable(Boolean comptable) {
+   this.comptable = comptable;
+  }
+ }

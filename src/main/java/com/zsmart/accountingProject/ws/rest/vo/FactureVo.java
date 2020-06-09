@@ -54,6 +54,24 @@ public class FactureVo {
     private List<OperationComptableVo> operationComptablesVo;
     private List<FactureItemVo> factureItemsVo;
     private DeclarationTvaVo declarationTvaVo;
+    private AdherantVo adherantVo;
+    private ComptableVo comptableVo;
+
+    public AdherantVo getAdherantVo() {
+        return adherantVo;
+    }
+
+    public void setAdherantVo(AdherantVo adherantVo) {
+        this.adherantVo = adherantVo;
+    }
+
+    public ComptableVo getComptableVo() {
+        return comptableVo;
+    }
+
+    public void setComptableVo(ComptableVo comptableVo) {
+        this.comptableVo = comptableVo;
+    }
 
     public Boolean getTraiter() {
         return traiter;

@@ -13,7 +13,12 @@ private boolean factureFournisseurs;
 
  @Autowired
  private FactureFournisseurConverter factureFournisseurConverter ; 
-
+    @Autowired
+    private AdherantConverter adherantConverter;
+    @Autowired
+    private ComptableConverter comptableConverter;
+    private Boolean adherant;
+    private Boolean comptable;
  @Override 
  public Fournisseur toItem(FournisseurVo vo) {
  if (vo == null) {
@@ -48,7 +53,12 @@ Fournisseur item = new Fournisseur();
  if (ListUtil.isNotEmpty(vo.getFactureFournisseursVo ()) && factureFournisseurs) {
  item.setFactureFournisseurs(factureFournisseurConverter.toItem(vo.getFactureFournisseursVo())); 
 } 
-
+            if (vo.getAdherantVo()!=null && adherant) {
+                item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+            }
+            if (vo.getComptableVo()!=null && comptable) {
+                item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+            }
 return item;
  }
  }
@@ -87,6 +97,12 @@ FournisseurVo vo = new FournisseurVo();
  if(ListUtil.isNotEmpty(item.getFactureFournisseurs()) && factureFournisseurs) {
  vo.setFactureFournisseursVo(factureFournisseurConverter.toVo(item.getFactureFournisseurs()));
 } 
+           if (item.getAdherant()!=null && adherant) {
+                vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+            }
+            if (item.getComptable()!=null && comptable) {
+                vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
+            }
 
 return vo;
  }
@@ -95,4 +111,20 @@ public void init() {
 
 factureFournisseurs = true; 
 }
- } 
+
+  public Boolean getAdherant() {
+   return adherant;
+  }
+
+  public void setAdherant(Boolean adherant) {
+   this.adherant = adherant;
+  }
+
+  public Boolean getComptable() {
+   return comptable;
+  }
+
+  public void setComptable(Boolean comptable) {
+   this.comptable = comptable;
+  }
+ }

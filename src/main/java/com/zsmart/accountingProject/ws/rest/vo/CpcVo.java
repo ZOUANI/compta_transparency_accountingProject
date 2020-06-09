@@ -24,10 +24,26 @@ private String resultat;
 private String resultatMin ;
 private String resultatMax ;
 private List<CpcSousClasseVo>cpcSousClassesVo;
+    private AdherantVo adherantVo;
+    private ComptableVo comptableVo;
 
+    public AdherantVo getAdherantVo() {
+        return adherantVo;
+    }
 
+    public void setAdherantVo(AdherantVo adherantVo) {
+        this.adherantVo = adherantVo;
+    }
 
-public String  getId(){
+    public ComptableVo getComptableVo() {
+        return comptableVo;
+    }
+
+    public void setComptableVo(ComptableVo comptableVo) {
+        this.comptableVo = comptableVo;
+    }
+
+    public String  getId(){
     return id;
 }
 
