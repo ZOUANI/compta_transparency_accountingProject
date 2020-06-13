@@ -30,7 +30,27 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
            Societe item=new Societe();
 
 
-
+            if (StringUtil.isNotEmpty(vo.getContratBail())) {
+                item.setContratBail(vo.getContratBail());
+            }
+            if (StringUtil.isNotEmpty(vo.getCertificatNegatif())) {
+                item.setCertificatNegatif(vo.getCertificatNegatif());
+            }
+            if (StringUtil.isNotEmpty(vo.getRegistreCommerceimage())) {
+                item.setRegistreCommerceimage(vo.getRegistreCommerceimage());
+            }
+            if (StringUtil.isNotEmpty(vo.getPatente())) {
+                item.setPatente(vo.getPatente());
+            }
+            if (StringUtil.isNotEmpty(vo.getStatuet())) {
+                item.setStatuet(vo.getStatuet());
+            }
+            if (StringUtil.isNotEmpty(vo.getReleverBanquaire())) {
+                item.setReleverBanquaire(vo.getReleverBanquaire());
+            }
+            if (StringUtil.isNotEmpty(vo.getPublicationCreationBo())) {
+                item.setPublicationCreationBo(vo.getPublicationCreationBo());
+            }
             if (StringUtil.isNotEmpty(vo.getRaisonSocial())) {
                 item.setRaisonSocial(vo.getRaisonSocial());
             }
@@ -89,6 +109,34 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
 
             if (StringUtil.isNotEmpty(item.getRaisonSocial())) {
                 vo.setRaisonSocial(item.getRaisonSocial());
+            }
+
+            if (StringUtil.isNotEmpty(item.getContratBail())) {
+                vo.setContratBail(item.getContratBail());
+            }
+
+            if (StringUtil.isNotEmpty(item.getCertificatNegatif())) {
+                vo.setCertificatNegatif(item.getCertificatNegatif());
+            }
+
+            if (StringUtil.isNotEmpty(item.getRegistreCommerceimage())) {
+                vo.setRegistreCommerceimage(item.getRegistreCommerceimage());
+            }
+
+            if (StringUtil.isNotEmpty(item.getPatente())) {
+                vo.setPatente(item.getPatente());
+            }
+
+            if (StringUtil.isNotEmpty(item.getStatuet())) {
+                vo.setStatuet(item.getStatuet());
+            }
+
+            if (StringUtil.isNotEmpty(item.getReleverBanquaire())) {
+                vo.setReleverBanquaire(item.getReleverBanquaire());
+            }
+
+            if (StringUtil.isNotEmpty(item.getPublicationCreationBo())) {
+                vo.setPublicationCreationBo(item.getPublicationCreationBo());
             }
 
 

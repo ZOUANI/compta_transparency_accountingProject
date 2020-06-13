@@ -74,6 +74,7 @@ public class DeclarationTvaRest {
 
         Societe societe = societeConverter.toItem(societeVo);
         declarationTvaConverter.setFacture(true);
+        declarationTvaConverter.setSociete(true);
         return declarationTvaConverter.toVo(declarationTvaService.findByCriteria(societe));
     }
 

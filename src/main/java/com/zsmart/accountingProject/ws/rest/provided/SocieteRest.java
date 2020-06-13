@@ -6,6 +6,7 @@ import com.zsmart.accountingProject.ws.rest.converter.SocieteConverter;
 import com.zsmart.accountingProject.ws.rest.vo.SocieteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,8 +23,27 @@ public class SocieteRest {
 
 
     @PostMapping("/")
-    public SocieteVo save(@RequestBody SocieteVo societeVo){
+    public SocieteVo save(@RequestPart(value = "societe", required = true) SocieteVo societeVo,
+                          @RequestPart(value = "contratBail", required = true) MultipartFile contratBail,
+                          @RequestPart(value = "certificatNegatif", required = true) MultipartFile certificatnegatif,
+                          @RequestPart(value = "registreComercialImage", required = true) MultipartFile registreComercialImage,
+                          @RequestPart(value = "patente", required = true) MultipartFile patente,
+                          @RequestPart(value = "statue", required = true) MultipartFile statue,
+                          @RequestPart(value = "releverBanquaire", required = true) MultipartFile releverBanquaire,
+                          @RequestPart(value = "publicationCreationBO", required = true) MultipartFile publicationCreationBO
+                          ){
+
         Societe societe= societeConverter.toItem(societeVo);
+        societeService.uploadfiles(
+                contratBail,
+                certificatnegatif,
+                registreComercialImage,
+                patente,
+                statue,
+                releverBanquaire,
+                publicationCreationBO,
+                societe
+                );
         return societeConverter.toVo(societeService.save(societe));
     }
     @DeleteMapping("/delete/{id}")

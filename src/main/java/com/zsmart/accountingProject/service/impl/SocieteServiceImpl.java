@@ -8,9 +8,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +22,8 @@ import java.util.List;
 public class SocieteServiceImpl implements SocieteService {
     @Autowired
     private SocieteDao societeDao;
+    private final Path root = Paths.get("src\\main\\resources\\uploads");
+
     @Override
     public List<Societe> findAll() {
         return societeDao.findAll();
@@ -71,7 +77,7 @@ public class SocieteServiceImpl implements SocieteService {
 
                 list.add(rowing);
                 list1.add(rowing1);
-            }
+                }
             societe.setRaisonSocial(list.get(0));
             societe.setIce(list1.get(2));
             societe.setIdentifiantFiscal(list1.get(3));
@@ -83,5 +89,54 @@ public class SocieteServiceImpl implements SocieteService {
                 return societe;
         }
       else   return null;
+    }
+
+    @Override
+    public void uploadfiles(MultipartFile contratBail,
+                            MultipartFile certificatnegatif,
+                            MultipartFile registreComercialImage,
+                            MultipartFile patente,
+                            MultipartFile statue,
+                            MultipartFile releverBanquaire,
+                            MultipartFile publicationCreationBO,
+                            Societe societe)
+    {
+        if (societe!=null){
+            try {
+                if (societe.getId()!=null){
+                    Files.delete(this.root.resolve(societe.getIce() + "contratBail" + societe.getJuridiction()));
+                    Files.delete(this.root.resolve(societe.getIce() + "certificatnegatif" + societe.getJuridiction()));
+                    Files.delete(this.root.resolve(societe.getIce() + "registreComercialImage" + societe.getJuridiction()));
+                    Files.delete(this.root.resolve(societe.getIce() + "patente" + societe.getJuridiction()));
+                    Files.delete(this.root.resolve(societe.getIce() + "statue" + societe.getJuridiction()));
+                    Files.delete(this.root.resolve(societe.getIce() + "releverBanquaire" + societe.getJuridiction()));
+                    Files.delete(this.root.resolve(societe.getIce() + "publicationCreationBO" + societe.getJuridiction()));
+                }
+
+                Files.copy(contratBail.getInputStream(), this.root.resolve(societe.getIce() + "contratBail" + societe.getJuridiction()));
+                societe.setContratBail(societe.getIce() + "contratBail" + societe.getJuridiction());
+
+                Files.copy(certificatnegatif.getInputStream(), this.root.resolve(societe.getIce() + "certificatnegatif" + societe.getJuridiction()));
+                societe.setCertificatNegatif(societe.getIce() + "certificatnegatif" + societe.getJuridiction());
+
+                Files.copy(registreComercialImage.getInputStream(),this.root.resolve(societe.getIce() + "registreComercialImage" + societe.getJuridiction()));
+                societe.setRegistreCommerceimage(societe.getIce() + "registreComercialImage" + societe.getJuridiction());
+
+                Files.copy(patente.getInputStream(), this.root.resolve(societe.getIce() + "patente" + societe.getJuridiction()));
+                societe.setPatente(societe.getIce() + "patente" + societe.getJuridiction());
+
+                Files.copy(statue.getInputStream(), this.root.resolve(societe.getIce() + "statue" + societe.getJuridiction()));
+                societe.setStatuet(societe.getIce() + "statue" + societe.getJuridiction());
+
+                Files.copy(releverBanquaire.getInputStream(), this.root.resolve(societe.getIce() + "releverBanquaire" + societe.getJuridiction()));
+                societe.setReleverBanquaire(societe.getIce() + "releverBanquaire" + societe.getJuridiction());
+
+                Files.copy(publicationCreationBO.getInputStream(),this.root.resolve(societe.getIce() + "publicationCreationBO" + societe.getJuridiction()));
+                societe.setPublicationCreationBo(societe.getIce() + "publicationCreationBO" + societe.getJuridiction());
+
+            } catch (Exception e) {
+                throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+            }
+        }
     }
 }

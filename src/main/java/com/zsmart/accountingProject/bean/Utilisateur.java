@@ -18,7 +18,8 @@ public class Utilisateur {
     private Integer role;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date datenaissance;
-    @OneToOne
+    @OneToOne  //delete this later but you need to think about the loggin process before hand
+
     private Adherant adherant;
     @OneToOne
     private Comptable comptable;

@@ -18,6 +18,70 @@ public class SocieteVo {
     private List<FactureVo> facturesVo;
     private AdherantVo adherantVo;
     private ComptableVo comptableVo;
+    private String  contratBail;
+    private String certificatNegatif;
+    private String registreCommerceimage;
+    private String patente;
+    private String statuet;
+    private String releverBanquaire;
+    private String publicationCreationBo;
+
+    public String getContratBail() {
+        return contratBail;
+    }
+
+    public void setContratBail(String contratBail) {
+        this.contratBail = contratBail;
+    }
+
+    public String getCertificatNegatif() {
+        return certificatNegatif;
+    }
+
+    public void setCertificatNegatif(String certificatNegatif) {
+        this.certificatNegatif = certificatNegatif;
+    }
+
+    public String getRegistreCommerceimage() {
+        return registreCommerceimage;
+    }
+
+    public void setRegistreCommerceimage(String registreCommerceimage) {
+        this.registreCommerceimage = registreCommerceimage;
+    }
+
+
+    public String getPatente() {
+        return patente;
+    }
+
+    public void setPatente(String patente) {
+        this.patente = patente;
+    }
+
+    public String getStatuet() {
+        return statuet;
+    }
+
+    public void setStatuet(String statuet) {
+        this.statuet = statuet;
+    }
+
+    public String getReleverBanquaire() {
+        return releverBanquaire;
+    }
+
+    public void setReleverBanquaire(String releverBanquaire) {
+        this.releverBanquaire = releverBanquaire;
+    }
+
+    public String getPublicationCreationBo() {
+        return publicationCreationBo;
+    }
+
+    public void setPublicationCreationBo(String publicationCreationBo) {
+        this.publicationCreationBo = publicationCreationBo;
+    }
 
     public String getAdresse() {
         return adresse;
