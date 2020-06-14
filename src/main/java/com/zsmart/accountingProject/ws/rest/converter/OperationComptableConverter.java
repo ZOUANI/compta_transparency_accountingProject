@@ -14,6 +14,9 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
     @Autowired
     private CaisseConverter caisseConverter;
     private boolean typeOperationComptable;
+    @Autowired
+    private JournalConverter journalConverter;
+    private boolean journal;
 
     @Autowired
     private TypeOperationComptableConverter typeOperationComptableConverter;
@@ -67,6 +70,9 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
             if (facture && vo.getFactureVo() != null) {
                 item.setFacture(factureConverter.toItem(vo.getFactureVo()));
             }
+            if (journal && vo.getJournalVo() != null) {
+                item.setJournal(journalConverter.toItem(vo.getJournalVo()));
+            }
 
             if (StringUtil.isNotEmpty(vo.getLibelle())) {
                 item.setLibelle(vo.getLibelle());
@@ -110,7 +116,9 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
             if (caisse && item.getCaisse() != null) {
                 vo.setCaisseVo(caisseConverter.toVo(item.getCaisse()));
             }
-
+            if (journal && item.getJournal() != null) {
+                vo.setJournalVo(journalConverter.toVo(item.getJournal()));
+            }
             if (typeOperationComptable && item.getTypeOperationComptable() != null) {
                 vo.setTypeOperationComptableVo(typeOperationComptableConverter.toVo(item.getTypeOperationComptable()));
             }
@@ -161,6 +169,14 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
 
             return vo;
         }
+    }
+
+    public boolean isJournal() {
+        return journal;
+    }
+
+    public void setJournal(boolean journal) {
+        this.journal = journal;
     }
 
     public boolean isSociete() {

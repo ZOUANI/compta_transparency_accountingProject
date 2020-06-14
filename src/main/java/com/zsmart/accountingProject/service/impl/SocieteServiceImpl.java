@@ -113,27 +113,35 @@ public class SocieteServiceImpl implements SocieteService {
                     Files.delete(this.root.resolve(societe.getIce() + "publicationCreationBO" + societe.getJuridiction()));
                 }
 
-                Files.copy(contratBail.getInputStream(), this.root.resolve(societe.getIce() + "contratBail" + societe.getJuridiction()));
-                societe.setContratBail(societe.getIce() + "contratBail" + societe.getJuridiction());
+                if (contratBail!=null){
+                    Files.copy(contratBail.getInputStream(), this.root.resolve(societe.getIce() + "contratBail" + societe.getJuridiction()));
+                    societe.setContratBail(societe.getIce() + "contratBail" + societe.getJuridiction());
+                }
 
-                Files.copy(certificatnegatif.getInputStream(), this.root.resolve(societe.getIce() + "certificatnegatif" + societe.getJuridiction()));
-                societe.setCertificatNegatif(societe.getIce() + "certificatnegatif" + societe.getJuridiction());
-
-                Files.copy(registreComercialImage.getInputStream(),this.root.resolve(societe.getIce() + "registreComercialImage" + societe.getJuridiction()));
-                societe.setRegistreCommerceimage(societe.getIce() + "registreComercialImage" + societe.getJuridiction());
-
-                Files.copy(patente.getInputStream(), this.root.resolve(societe.getIce() + "patente" + societe.getJuridiction()));
-                societe.setPatente(societe.getIce() + "patente" + societe.getJuridiction());
-
-                Files.copy(statue.getInputStream(), this.root.resolve(societe.getIce() + "statue" + societe.getJuridiction()));
-                societe.setStatuet(societe.getIce() + "statue" + societe.getJuridiction());
-
-                Files.copy(releverBanquaire.getInputStream(), this.root.resolve(societe.getIce() + "releverBanquaire" + societe.getJuridiction()));
-                societe.setReleverBanquaire(societe.getIce() + "releverBanquaire" + societe.getJuridiction());
-
-                Files.copy(publicationCreationBO.getInputStream(),this.root.resolve(societe.getIce() + "publicationCreationBO" + societe.getJuridiction()));
-                societe.setPublicationCreationBo(societe.getIce() + "publicationCreationBO" + societe.getJuridiction());
-
+                if (certificatnegatif!=null){
+                    Files.copy(certificatnegatif.getInputStream(), this.root.resolve(societe.getIce() + "certificatnegatif" + societe.getJuridiction()));
+                    societe.setCertificatNegatif(societe.getIce() + "certificatnegatif" + societe.getJuridiction());
+                }
+                if (registreComercialImage!=null){
+                    Files.copy(registreComercialImage.getInputStream(), this.root.resolve(societe.getIce() + "registreComercialImage" + societe.getJuridiction()));
+                    societe.setRegistreCommerceimage(societe.getIce() + "registreComercialImage" + societe.getJuridiction());
+                }
+                if (patente!=null){
+                    Files.copy(patente.getInputStream(), this.root.resolve(societe.getIce() + "patente" + societe.getJuridiction()));
+                    societe.setPatente(societe.getIce() + "patente" + societe.getJuridiction());
+                }
+                if (statue!=null){
+                    Files.copy(statue.getInputStream(), this.root.resolve(societe.getIce() + "statue" + societe.getJuridiction()));
+                    societe.setStatuet(societe.getIce() + "statue" + societe.getJuridiction());
+                }
+                if(releverBanquaire!=null){
+                    Files.copy(releverBanquaire.getInputStream(), this.root.resolve(societe.getIce() + "releverBanquaire" + societe.getJuridiction()));
+                    societe.setReleverBanquaire(societe.getIce() + "releverBanquaire" + societe.getJuridiction());
+                }
+                if (publicationCreationBO!=null){
+                    Files.copy(publicationCreationBO.getInputStream(), this.root.resolve(societe.getIce() + "publicationCreationBO" + societe.getJuridiction()));
+                    societe.setPublicationCreationBo(societe.getIce() + "publicationCreationBO" + societe.getJuridiction());
+                }
             } catch (Exception e) {
                 throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
             }

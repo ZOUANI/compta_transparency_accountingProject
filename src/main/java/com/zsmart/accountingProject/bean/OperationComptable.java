@@ -41,13 +41,22 @@ public class OperationComptable implements Serializable {
     private OperationComptableGroupe operationComptableGroupe;
     @ManyToOne
     private Facture facture;
-
+    @ManyToOne
+    private Journal journal;
     public OperationComptable() {
     }
 
     public OperationComptable(BigDecimal montant, CompteComptable compteComptable) {
         this.montant = montant;
         this.compteComptable = compteComptable;
+    }
+
+    public Journal getJournal() {
+        return journal;
+    }
+
+    public void setJournal(Journal journal) {
+        this.journal = journal;
     }
 
     public OperationComptableGroupe getOperationComptableGroupe() {

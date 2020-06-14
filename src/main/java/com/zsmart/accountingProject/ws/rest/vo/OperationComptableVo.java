@@ -25,10 +25,17 @@ private CompteBanquaireVo compteBanquaireVo ;
 private CompteComptableVo compteComptableVo ;
 private OperationComptableGroupeVo operationComptableGroupeVo ;
 private FactureVo factureVo ;
+private JournalVo journalVo;
 
+    public JournalVo getJournalVo() {
+        return journalVo;
+    }
 
+    public void setJournalVo(JournalVo journalVo) {
+        this.journalVo = journalVo;
+    }
 
-public String  getId(){
+    public String  getId(){
     return id;
 }
 

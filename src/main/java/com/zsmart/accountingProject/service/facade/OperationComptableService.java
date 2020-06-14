@@ -40,4 +40,5 @@ public interface OperationComptableService {
  List<Object[]> findGroupeByClasseCompteComptable(Date dateDebut, Date dateFin, String code, Long socId);
 
  List<Object[]> findGroupeByCompteComptable(Date dateDebut, Date dateFin, int code, Long socId);
+
 }
