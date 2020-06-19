@@ -1,12 +1,14 @@
 package com.zsmart.accountingProject.ws.rest.vo;
 
+import com.zsmart.accountingProject.bean.OperationComptableGroupe;
+
 import java.util.List;
 
 public class JournalVo {
 
     private String id ;
     private String libele ;
-    private List<OperationComptableVo> operationComptableVos;
+    private List<OperationComptableGroupeVo> operationComptableGroupeVos;
     private String datedebut;
     private String datefin;
 
@@ -26,12 +28,12 @@ public class JournalVo {
         this.libele = libele;
     }
 
-    public List<OperationComptableVo> getOperationComptableVos() {
-        return operationComptableVos;
+    public List<OperationComptableGroupeVo> getOperationComptableGroupeVos() {
+        return operationComptableGroupeVos;
     }
 
-    public void setOperationComptableVos(List<OperationComptableVo> operationComptableVos) {
-        this.operationComptableVos = operationComptableVos;
+    public void setOperationComptableGroupeVos(List<OperationComptableGroupeVo> operationComptableGroupeVos) {
+        this.operationComptableGroupeVos = operationComptableGroupeVos;
     }
 
     public String getDatedebut() {

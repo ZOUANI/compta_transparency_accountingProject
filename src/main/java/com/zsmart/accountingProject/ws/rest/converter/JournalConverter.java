@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 
 public class JournalConverter extends AbstractConverter<Journal, JournalVo>{
     @Autowired
-    private OperationComptableConverter operationComptableConverter;
-    private Boolean operationComptable;
+    private OperationComptableGroupeConverter operationComptableGroupeConverter;
+    private Boolean operationComptableGroupe;
     @Override
     public Journal toItem(JournalVo vo) {
         if (vo == null) {
@@ -34,8 +34,8 @@ public class JournalConverter extends AbstractConverter<Journal, JournalVo>{
             if (vo.getDatefin() != null) {
                 item.setDatefin(DateUtil.parse(vo.getDatefin()));
             }
-            if (ListUtil.isNotEmpty(vo.getOperationComptableVos ()) && operationComptable) {
-                item.setOperationComptables(operationComptableConverter.toItem(vo.getOperationComptableVos()));
+            if (ListUtil.isNotEmpty(vo.getOperationComptableGroupeVos ()) &&  operationComptableGroupe) {
+                item.setOperationComptablesGroupe(operationComptableGroupeConverter.toItem(vo.getOperationComptableGroupeVos()));
             }
             return item;
         }
@@ -60,19 +60,21 @@ public class JournalConverter extends AbstractConverter<Journal, JournalVo>{
             if (item.getDatedebut() != null) {
                 vo.setDatedebut(DateUtil.formateDate(item.getDatedebut()));
             }
-            if(ListUtil.isNotEmpty(item.getOperationComptables()) && operationComptable) {
-                vo.setOperationComptableVos(operationComptableConverter.toVo(item.getOperationComptables()));
+            if(ListUtil.isNotEmpty(item.getOperationComptablesGroupe()) && operationComptableGroupe) {
+                vo.setOperationComptableGroupeVos(operationComptableGroupeConverter.toVo(item.getOperationComptablesGroupe()));
             }
             return vo;
 
         }
     }
 
-    public Boolean getOperationComptable() {
-        return operationComptable;
+    public Boolean getOperationComptableGroupe() {
+        return operationComptableGroupe;
     }
 
-    public void setOperationComptable(Boolean operationComptable) {
-        this.operationComptable = operationComptable;
+    public void setOperationComptableGroupe(Boolean operationComptableGroupe) {
+        this.operationComptableGroupe = operationComptableGroupe;
     }
+
+
 }

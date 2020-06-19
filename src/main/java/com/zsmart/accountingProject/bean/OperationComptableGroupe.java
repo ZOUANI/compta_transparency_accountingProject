@@ -6,7 +6,7 @@
 package com.zsmart.accountingProject.bean;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -29,6 +29,26 @@ public class OperationComptableGroupe implements Serializable {
     private Adherant adherant;
     @ManyToOne
     private Comptable comptable;
+    @ManyToOne
+    private Journal journal;
+    private Date dateSaisie;
+
+    public Date getDateSaisie() {
+        return dateSaisie;
+    }
+
+    public void setDateSaisie(Date dateSaisie) {
+        this.dateSaisie = dateSaisie;
+    }
+
+    public Journal getJournal() {
+        return journal;
+    }
+
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
+
     public Adherant getAdherant() {
         return adherant;
     }

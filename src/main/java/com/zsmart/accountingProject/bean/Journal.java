@@ -9,12 +9,12 @@ public class Journal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date datedebut;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date datefin;
     @OneToMany(mappedBy = "journal")
-    private List<OperationComptable> operationComptables;
+    private List<OperationComptableGroupe> operationComptablesGroupe;
     private String libele;
 
     public Long getId() {
@@ -41,12 +41,12 @@ public class Journal {
         this.datefin = datefin;
     }
 
-    public List<OperationComptable> getOperationComptables() {
-        return operationComptables;
+    public List<OperationComptableGroupe> getOperationComptablesGroupe() {
+        return operationComptablesGroupe;
     }
 
-    public void setOperationComptables(List<OperationComptable> operationComptables) {
-        this.operationComptables = operationComptables;
+    public void setOperationComptablesGroupe(List<OperationComptableGroupe> operationComptablesGroupe) {
+        this.operationComptablesGroupe = operationComptablesGroupe;
     }
 
     public String getLibele() {

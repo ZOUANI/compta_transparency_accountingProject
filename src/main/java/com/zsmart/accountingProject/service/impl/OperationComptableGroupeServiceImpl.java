@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,9 +38,14 @@ public class OperationComptableGroupeServiceImpl implements OperationComptableGr
         if (operationcomptablegroupe == null) {
             return null;
         } else {
+            for (OperationComptable element : operationcomptablegroupe.getOperationComptables())
+            {
+                operationcomptablegroupe.setDateSaisie(element.getDateOperationComptable());
+            }
             operationcomptablegroupeDao.save(operationcomptablegroupe);
             return operationcomptablegroupe;
         }
+
     }
 
     @Override
@@ -118,16 +124,16 @@ public class OperationComptableGroupeServiceImpl implements OperationComptableGr
     }
 
     @Override
-    public List<OperationComptableGroupe> findByCriteria(String libelle, String code, Long idMin, Long idMax) {
-        return entityManager.createQuery(constructQuery(libelle, code, idMin, idMax)).getResultList();
+    public List<OperationComptableGroupe> findByCriteria(String libelle, String code, Long idMin, Long idMax, Date dateSaisieMin,Date dateSaisieMax) {
+        return entityManager.createQuery(constructQuery(libelle, code, idMin, idMax,dateSaisieMin,dateSaisieMax)).getResultList();
     }
 
-    private String constructQuery(String libelle, String code, Long idMin, Long idMax) {
+    private String constructQuery(String libelle, String code, Long idMin, Long idMax,Date dateSaisieMin,Date dateSaisieMax) {
         String query = "SELECT o FROM OperationComptableGroupe o where 1=1 ";
         query += SearchUtil.addConstraint("o", "libelle", "=", libelle);
         query += SearchUtil.addConstraint("o", "code", "=", code);
         query += SearchUtil.addConstraintMinMax("o", "id", idMin, idMax);
-
+        query += SearchUtil.addConstraintMinMaxDate("o", " dateSaisie", dateSaisieMin, dateSaisieMax);
         return query;
     }
 }

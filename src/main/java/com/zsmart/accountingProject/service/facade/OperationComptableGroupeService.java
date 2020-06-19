@@ -15,6 +15,6 @@ public void  deleteById(Long id);
 public void clone(OperationComptableGroupe operationcomptablegroupe,OperationComptableGroupe operationcomptablegroupeClone);
 public OperationComptableGroupe clone(OperationComptableGroupe operationcomptablegroupe);
 public List<OperationComptableGroupe> clone(List<OperationComptableGroupe>operationcomptablegroupes);
- public List<OperationComptableGroupe>  findByCriteria(String libelle,String code,Long idMin,Long idMax);
+ public List<OperationComptableGroupe>  findByCriteria(String libelle,String code,Long idMin,Long idMax,Date dateSaisieMin,Date dateSaisieMax);
 
 }

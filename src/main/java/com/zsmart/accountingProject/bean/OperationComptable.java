@@ -4,13 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
+import javax.persistence.*;
 
 @Entity
 public class OperationComptable implements Serializable {
@@ -25,9 +19,9 @@ public class OperationComptable implements Serializable {
     @Column(precision = 16, scale = 4)
     private BigDecimal montant;
    
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateOperationComptable;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateSaisie;
     @ManyToOne
     private Caisse caisse;
@@ -41,8 +35,7 @@ public class OperationComptable implements Serializable {
     private OperationComptableGroupe operationComptableGroupe;
     @ManyToOne
     private Facture facture;
-    @ManyToOne
-    private Journal journal;
+
     public OperationComptable() {
     }
 
@@ -51,13 +44,6 @@ public class OperationComptable implements Serializable {
         this.compteComptable = compteComptable;
     }
 
-    public Journal getJournal() {
-        return journal;
-    }
-
-    public void setJournal(Journal journal) {
-        this.journal = journal;
-    }
 
     public OperationComptableGroupe getOperationComptableGroupe() {
         return operationComptableGroupe;

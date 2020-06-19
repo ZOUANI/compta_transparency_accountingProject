@@ -1,6 +1,7 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
 import com.zsmart.accountingProject.bean.OperationComptableGroupe;
+import com.zsmart.accountingProject.service.util.DateUtil;
 import com.zsmart.accountingProject.service.util.ListUtil;
 import com.zsmart.accountingProject.service.util.NumberUtil;
 import com.zsmart.accountingProject.service.util.StringUtil;
@@ -18,6 +19,7 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
     private ComptableConverter comptableConverter;
     private Boolean adherant;
     private Boolean comptable;
+
     @Autowired
     private OperationComptableConverter operationComptableConverter;
 
@@ -35,7 +37,9 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
             if (StringUtil.isNotEmpty(vo.getCode())) {
                 item.setCode(vo.getCode());
             }
-
+            if (vo.getDateSaisie() != null) {
+                item.setDateSaisie(DateUtil.parse(vo.getDateSaisie()));
+            }
             if (vo.getId() != null) {
                 item.setId(NumberUtil.toLong(vo.getId()));
             }
@@ -80,6 +84,9 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
             }
             if (item.getComptable()!=null && comptable) {
                 vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
+            }
+            if (item.getDateSaisie() != null) {
+                vo.setDateSaisie(DateUtil.formateDate(item.getDateSaisie()));
             }
             return vo;
         }

@@ -2,8 +2,10 @@ package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.Journal;
 import com.zsmart.accountingProject.bean.OperationComptable;
+import com.zsmart.accountingProject.bean.OperationComptableGroupe;
 import com.zsmart.accountingProject.dao.JournalDao;
 import com.zsmart.accountingProject.service.facade.JournalService;
+import com.zsmart.accountingProject.service.facade.OperationComptableGroupeService;
 import com.zsmart.accountingProject.service.facade.OperationComptableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ public class JournalServiceImpl implements JournalService {
     @Autowired
     JournalDao journalDao;
     @Autowired
-    OperationComptableService operationComptableService;
+    OperationComptableGroupeService operationComptableGroupeService;
     @Override
     public Journal save(Journal journal) {
         if (journal!=null) {
@@ -39,22 +41,9 @@ public class JournalServiceImpl implements JournalService {
         journal.setDatedebut(datedebut);
         journal.setDatefin(datefin);
 
-        journal.setOperationComptables(operationComptableService.findByCriteria(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                datedebut,
-                datefin,
-                null,
-                null,
-                null,
-                null
-                ));
-        journal.setLibele("Journal comptable du" + journal.getDatedebut().toString() + "au" + journal.getDatefin() +".");
+        List<OperationComptableGroupe> operationComptableGroupes= operationComptableGroupeService.findByCriteria(null,null,null, null, datedebut, datefin);
+        journal.setOperationComptablesGroupe(operationComptableGroupes);
+        journal.setLibele("Journal comptable du " + journal.getDatedebut().toString() + " au " + journal.getDatefin() +".");
         return journal;
     }
 }

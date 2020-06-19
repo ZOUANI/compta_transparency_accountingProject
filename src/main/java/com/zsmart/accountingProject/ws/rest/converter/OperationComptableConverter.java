@@ -70,9 +70,7 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
             if (facture && vo.getFactureVo() != null) {
                 item.setFacture(factureConverter.toItem(vo.getFactureVo()));
             }
-            if (journal && vo.getJournalVo() != null) {
-                item.setJournal(journalConverter.toItem(vo.getJournalVo()));
-            }
+
 
             if (StringUtil.isNotEmpty(vo.getLibelle())) {
                 item.setLibelle(vo.getLibelle());
@@ -116,9 +114,7 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
             if (caisse && item.getCaisse() != null) {
                 vo.setCaisseVo(caisseConverter.toVo(item.getCaisse()));
             }
-            if (journal && item.getJournal() != null) {
-                vo.setJournalVo(journalConverter.toVo(item.getJournal()));
-            }
+
             if (typeOperationComptable && item.getTypeOperationComptable() != null) {
                 vo.setTypeOperationComptableVo(typeOperationComptableConverter.toVo(item.getTypeOperationComptable()));
             }

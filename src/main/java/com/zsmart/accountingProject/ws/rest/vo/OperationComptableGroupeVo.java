@@ -1,17 +1,39 @@
 package com.zsmart.accountingProject.ws.rest.vo;
 
+import com.zsmart.accountingProject.bean.Journal;
+
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class OperationComptableGroupeVo{
 
-private String id ;
-private String libelle ;
-private String code ;
-private List<OperationComptableVo>operationComptablesVo;
+    private String id ;
+    private String libelle ;
+    private String code ;
+    private List<OperationComptableVo> operationComptablesVo;
+    private String dateSaisie;
     private AdherantVo adherantVo;
     private ComptableVo comptableVo;
+    @ManyToOne
+    private JournalVo journalVo;
+
+    public String getDateSaisie() {
+        return dateSaisie;
+    }
+
+    public void setDateSaisie(String dateSaisie) {
+        this.dateSaisie = dateSaisie;
+    }
+
+    public JournalVo getJournalVo() {
+        return journalVo;
+    }
+
+    public void setJournalVo(JournalVo journalVo) {
+        this.journalVo = journalVo;
+    }
 
     public AdherantVo getAdherantVo() {
         return adherantVo;
