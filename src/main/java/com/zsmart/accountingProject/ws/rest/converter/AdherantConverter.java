@@ -1,11 +1,9 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
 import com.zsmart.accountingProject.bean.Adherant;
-import com.zsmart.accountingProject.bean.Comptable;
 import com.zsmart.accountingProject.service.util.ListUtil;
 import com.zsmart.accountingProject.service.util.NumberUtil;
 import com.zsmart.accountingProject.ws.rest.vo.AdherantVo;
-import com.zsmart.accountingProject.ws.rest.vo.ComptableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -78,9 +76,7 @@ public class AdherantConverter extends AbstractConverter<Adherant, AdherantVo> {
             if (ListUtil.isNotEmpty(vo.getOperationComptableGroupesVo()) && isOperationComptable()) {
                 item.setOperationComptableGroupes(operationComptableGroupeConverter.toItem(vo.getOperationComptableGroupesVo()));
             }
-            if (vo.getUtilisateurVo()!=null && isUtilisateur()) {
-                item.setUtilisateur(utilisateurConverter.toItem(vo.getUtilisateurVo()));
-            }
+
             if (vo.getComptableVo()!=null && isComptable()) {
                 item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
             }
@@ -118,9 +114,7 @@ public class AdherantConverter extends AbstractConverter<Adherant, AdherantVo> {
             if (ListUtil.isNotEmpty(item.getOperationComptableGroupes()) && isOperationComptable()) {
                 vo.setOperationComptableGroupesVo(operationComptableGroupeConverter.toVo(item.getOperationComptableGroupes()));
             }
-            if (item.getUtilisateur()!=null && isUtilisateur()) {
-                vo.setUtilisateurVo(utilisateurConverter.toVo(item.getUtilisateur()));
-            }
+
             if (item.getId() != null) {
                 vo.setId(NumberUtil.toString(item.getId()));
             }

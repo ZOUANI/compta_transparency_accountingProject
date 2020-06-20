@@ -1,11 +1,11 @@
 package com.zsmart.accountingProject.service.util;
- 
- 
- 
+
+
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;public class DateUtil {
+import java.util.Date;
+
+public class DateUtil {
 
     public static String formateDate(Date date) {
         return formateDate("yyyy-MM-dd hh:mm:ss.SSS", date);

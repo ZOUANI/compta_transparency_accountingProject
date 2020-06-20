@@ -8,4 +8,6 @@ import java.util.List;
 public interface AdherantService {
     public List<Adherant> findByComptable(Comptable comptable);
 
+    public Adherant findById(Long id);
+
 }

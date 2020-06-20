@@ -1,16 +1,9 @@
 package com.zsmart.accountingProject.bean;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
 
 @Entity
 public class PaiementFacture implements Serializable {
@@ -31,7 +24,37 @@ public class PaiementFacture implements Serializable {
 	@ManyToOne
 	private TypePaiement typePaiment;
 	@ManyToOne
+	private Caisse caisse;
+	@ManyToOne
+	private CompteBanquaire compteBanquaire;
+	@ManyToOne
 	private Facture facture;
+	@OneToOne
+	private OperationComptable operationComptable;
+
+	public Caisse getCaisse() {
+		return caisse;
+	}
+
+	public void setCaisse(Caisse caisse) {
+		this.caisse = caisse;
+	}
+
+	public OperationComptable getOperationComptable() {
+		return operationComptable;
+	}
+
+	public void setOperationComptable(OperationComptable operationComptable) {
+		this.operationComptable = operationComptable;
+	}
+
+	public CompteBanquaire getCompteBanquaire() {
+		return compteBanquaire;
+	}
+
+	public void setCompteBanquaire(CompteBanquaire compteBanquaire) {
+		this.compteBanquaire = compteBanquaire;
+	}
 
 	public Long getId() {
 		return id;

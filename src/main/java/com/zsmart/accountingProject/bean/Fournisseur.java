@@ -1,9 +1,8 @@
 package com.zsmart.accountingProject.bean;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.*;
 
 @Entity
 public class Fournisseur implements Serializable {
@@ -19,8 +18,7 @@ public class Fournisseur implements Serializable {
 	private List<FactureFournisseur> factureFournisseurs;
 	@ManyToOne
 	private Adherant adherant;
-	@ManyToOne
-	private Comptable comptable;
+
 	public List<FactureFournisseur> getFactureFournisseurs() {
 		return factureFournisseurs;
 	}
@@ -37,13 +35,6 @@ public class Fournisseur implements Serializable {
 		this.adherant = adherant;
 	}
 
-	public Comptable getComptable() {
-		return comptable;
-	}
-
-	public void setComptable(Comptable comptable) {
-		this.comptable = comptable;
-	}
 
 	public Long getId() {
 		return id;

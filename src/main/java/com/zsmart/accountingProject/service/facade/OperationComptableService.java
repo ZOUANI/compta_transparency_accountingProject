@@ -9,36 +9,39 @@ import java.util.List;
 
 public interface OperationComptableService {
 
- public OperationComptable save(OperationComptable operationcomptable);
+    public OperationComptable save(OperationComptable operationcomptable);
 
- public List<OperationComptable> findAll();
+    public List<OperationComptable> findAll();
 
- public OperationComptable findById(Long id);
+    public OperationComptable findById(Long id);
 
- public List<OperationComptable> findBySocId(Long id);
+    public List<OperationComptable> findBySocId(Long id);
 
- public int delete(OperationComptable operationcomptable);
+    public int delete(OperationComptable operationcomptable);
 
- public void deleteById(Long id);
+    public void deleteById(Long id);
 
- public void clone(OperationComptable operationcomptable, OperationComptable operationcomptableClone);
+    public OperationComptable findByAdherantIdAndId(Long adherentId, Long id);
 
- public OperationComptable clone(OperationComptable operationcomptable);
+    public void deleteByAdherantIdAndId(Long adherentId, Long id);
 
- public List<OperationComptable> clone(List<OperationComptable> operationcomptables);
+    public void clone(OperationComptable operationcomptable, OperationComptable operationcomptableClone);
 
- public List<OperationComptable> findByCriteria(String libelle, String raisonSocial, String referenceFacture, Long idMin, Long idMax, BigDecimal montantMin, BigDecimal montantMax, Date dateOperationComptableMin, Date dateOperationComptableMax, Date dateSaisieMin, Date dateSaisieMax, String codeCompteComptable, String codeTypeOperation);
+    public OperationComptable clone(OperationComptable operationcomptable);
 
- public List<OperationComptable> findOperationComptable(Date dateDebut, Date dateFin, String code);
+    public List<OperationComptable> clone(List<OperationComptable> operationcomptables);
 
- public List<OperationComptable> findOperationComptablee(Date dateDebut, Date dateFin);
+    public List<OperationComptable> findByCriteria(String libelle, String raisonSocial, String referenceFacture, Long idMin, Long idMax, BigDecimal montantMin, BigDecimal montantMax, Date dateOperationComptableMin, Date dateOperationComptableMax, Date dateSaisieMin, Date dateSaisieMax, String codeCompteComptable, String codeTypeOperation, Long adherentId, String opGroupeLibelle);
 
- public Resource generateExcelFile(List<OperationComptable> operationComptables);
+    public List<OperationComptable> findOperationComptable(Date dateDebut, Date dateFin, String code);
 
- List<Object[]> findGroupeBySousClasseCompteComptable(Date dateDebut, Date dateFin, String code, Long socId);
+    public List<OperationComptable> findOperationComptablee(Date dateDebut, Date dateFin);
 
- List<Object[]> findGroupeByClasseCompteComptable(Date dateDebut, Date dateFin, String code, Long socId);
+    public Resource generateExcelFile(List<OperationComptable> operationComptables);
 
- List<Object[]> findGroupeByCompteComptable(Date dateDebut, Date dateFin, int code, Long socId);
+    List<Object[]> findGroupeBySousClasseCompteComptable(Date dateDebut, Date dateFin, String code, Long socId);
 
+    List<Object[]> findGroupeByClasseCompteComptable(Date dateDebut, Date dateFin, String code, Long socId);
+
+    List<Object[]> findGroupeByCompteComptable(Date dateDebut, Date dateFin, int code, Long socId);
 }

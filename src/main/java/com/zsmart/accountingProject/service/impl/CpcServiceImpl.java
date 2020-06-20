@@ -77,6 +77,32 @@ public class CpcServiceImpl implements CpcService {
 	}
 
 	@Override
+	public Cpc findByDateDebutAndDateFin(Date dateDebut, Date dateFin) {
+		try {
+			return cpcDao.findCpcByDateDebutAndDateFin(dateDebut, dateFin);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Transactional
+	@Override
+	public void deleteByAdherantIdAndId(Long adherentId, Long id) {
+
+		cpcDao.deleteByAdherantIdAndId(adherentId, id);
+
+	}
+
+	@Override
+	public Cpc findCpcByAdherantIdAndId(Long adherentId, Long id) {
+		try {
+			return cpcDao.findCpcByAdherantIdAndId(adherentId, id);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
 	public Cpc save(Cpc cpc) {
 
 		if (cpc == null) {
@@ -91,6 +117,8 @@ public class CpcServiceImpl implements CpcService {
 	public Cpc saveWithCpcSousClasses(Cpc cpc) {
 
 		if (cpc == null) {
+			return null;
+		} else if (findByDateDebutAndDateFin(cpc.getDateDebut(), cpc.getDateFin()) != null) {
 			return null;
 		} else {
 			if (ListUtil.isEmpty(cpc.getCpcSousClasses())) {
@@ -180,20 +208,21 @@ public class CpcServiceImpl implements CpcService {
 	}
 
 	@Override
-	public List<Cpc> findByCriteria(String referenceSociete, Long idMin, Long idMax, Date dateDebutMin,
-			Date dateDebutMax, Date dateFinMin, Date dateFinMax, BigDecimal totalChargeMin, BigDecimal totalChargeMax,
-			BigDecimal totalProduitMin, BigDecimal totalProduitMax, BigDecimal resultatMin, BigDecimal resultatMax) {
+	public List<Cpc> findByCriteria(Long socId, Long adherentId, Long idMin, Long idMax, Date dateDebutMin,
+									Date dateDebutMax, Date dateFinMin, Date dateFinMax, BigDecimal totalChargeMin, BigDecimal totalChargeMax,
+									BigDecimal totalProduitMin, BigDecimal totalProduitMax, BigDecimal resultatMin, BigDecimal resultatMax) {
 		return entityManager.createQuery(
-				constructQuery(referenceSociete, idMin, idMax, dateDebutMin, dateDebutMax, dateFinMin, dateFinMax,
+				constructQuery(socId, adherentId, idMin, idMax, dateDebutMin, dateDebutMax, dateFinMin, dateFinMax,
 						totalChargeMin, totalChargeMax, totalProduitMin, totalProduitMax, resultatMin, resultatMax))
 				.getResultList();
 	}
 
-	private String constructQuery(String referenceSociete, Long idMin, Long idMax, Date dateDebutMin, Date dateDebutMax,
-			Date dateFinMin, Date dateFinMax, BigDecimal totalChargeMin, BigDecimal totalChargeMax,
-			BigDecimal totalProduitMin, BigDecimal totalProduitMax, BigDecimal resultatMin, BigDecimal resultatMax) {
+	private String constructQuery(Long socId, Long adherentId, Long idMin, Long idMax, Date dateDebutMin, Date dateDebutMax,
+								  Date dateFinMin, Date dateFinMax, BigDecimal totalChargeMin, BigDecimal totalChargeMax,
+								  BigDecimal totalProduitMin, BigDecimal totalProduitMax, BigDecimal resultatMin, BigDecimal resultatMax) {
 		String query = "SELECT c FROM Cpc c where 1=1 ";
-		query += SearchUtil.addConstraint("c", "referenceSociete", "=", referenceSociete);
+		query += SearchUtil.addConstraint("c", "societe.id", "=", socId);
+		query += SearchUtil.addConstraint("c", "adherant.id", "=", adherentId);
 		query += SearchUtil.addConstraintMinMax("c", "id", idMin, idMax);
 		query += SearchUtil.addConstraintMinMaxDate("c", " dateDebut", dateDebutMin, dateDebutMax);
 		query += SearchUtil.addConstraintMinMaxDate("c", " dateFin", dateFinMin, dateFinMax);

@@ -1,141 +1,161 @@
 package com.zsmart.accountingProject.ws.rest.vo;
 
-import java.util.ArrayList;
-import java.util.List;
 
+public class PaiementFactureVo {
 
-public class PaiementFactureVo{
+    private String id;
+    private String datePaiment;
+    private String datePaimentMin;
+    private String datePaimentMax;
+    private String dateSaisie;
+    private String dateSaisieMin;
+    private String dateSaisieMax;
+    private String montant;
+    private String montantMin;
+    private String montantMax;
+    private String description;
+    private String scan;
+    private TypePaiementVo typePaimentVo;
+    private CaisseVo caisseVo;
+    private CompteBanquaireVo compteBanquaireVo;
+    private FactureVo factureVo;
+    private OperationComptableVo operationComptableVo;
 
-private String id ;
-private String datePaiment;
-private String datePaimentMin ;
-private String datePaimentMax ;
-private String dateSaisie;
-private String dateSaisieMin ;
-private String dateSaisieMax ;
-private String montant;
-private String montantMin ;
-private String montantMax ;
-private String description ;
-private String scan ;
-private TypePaiementVo typePaimentVo ;
-private FactureVo factureVo ;
+    public OperationComptableVo getOperationComptableVo() {
+        return operationComptableVo;
+    }
 
+    public void setOperationComptableVo(OperationComptableVo operationComptableVo) {
+        this.operationComptableVo = operationComptableVo;
+    }
 
+    public CaisseVo getCaisseVo() {
+        return caisseVo;
+    }
 
-public String  getId(){
-    return id;
-}
+    public void setCaisseVo(CaisseVo caisseVo) {
+        this.caisseVo = caisseVo;
+    }
 
-public void setId(String  id){
-     this.id = id;
-}
+    public CompteBanquaireVo getCompteBanquaireVo() {
+        return compteBanquaireVo;
+    }
 
-public String  getDatePaiment(){
-    return datePaiment;
-}
+    public void setCompteBanquaireVo(CompteBanquaireVo compteBanquaireVo) {
+        this.compteBanquaireVo = compteBanquaireVo;
+    }
 
-public void setDatePaiment(String  datePaiment){
-     this.datePaiment = datePaiment;
-}
+    public String getId() {
+        return id;
+    }
 
-public String  getDatePaimentMin(){
-    return datePaimentMin;
-}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-public void setDatePaimentMin(String  datePaimentMin){
-     this.datePaimentMin = datePaimentMin;
-}
+    public String getDatePaiment() {
+        return datePaiment;
+    }
 
-public String  getDatePaimentMax(){
-    return datePaimentMax;
-}
+    public void setDatePaiment(String datePaiment) {
+        this.datePaiment = datePaiment;
+    }
 
-public void setDatePaimentMax(String  datePaimentMax){
-     this.datePaimentMax = datePaimentMax;
-}
+    public String getDatePaimentMin() {
+        return datePaimentMin;
+    }
 
-public String  getDateSaisie(){
-    return dateSaisie;
-}
+    public void setDatePaimentMin(String datePaimentMin) {
+        this.datePaimentMin = datePaimentMin;
+    }
 
-public void setDateSaisie(String  dateSaisie){
-     this.dateSaisie = dateSaisie;
-}
+    public String getDatePaimentMax() {
+        return datePaimentMax;
+    }
 
-public String  getDateSaisieMin(){
-    return dateSaisieMin;
-}
+    public void setDatePaimentMax(String datePaimentMax) {
+        this.datePaimentMax = datePaimentMax;
+    }
 
-public void setDateSaisieMin(String  dateSaisieMin){
-     this.dateSaisieMin = dateSaisieMin;
-}
+    public String getDateSaisie() {
+        return dateSaisie;
+    }
 
-public String  getDateSaisieMax(){
-    return dateSaisieMax;
-}
+    public void setDateSaisie(String dateSaisie) {
+        this.dateSaisie = dateSaisie;
+    }
 
-public void setDateSaisieMax(String  dateSaisieMax){
-     this.dateSaisieMax = dateSaisieMax;
-}
+    public String getDateSaisieMin() {
+        return dateSaisieMin;
+    }
 
-public String  getMontant(){
-    return montant;
-}
+    public void setDateSaisieMin(String dateSaisieMin) {
+        this.dateSaisieMin = dateSaisieMin;
+    }
 
-public void setMontant(String  montant){
-     this.montant = montant;
-}
+    public String getDateSaisieMax() {
+        return dateSaisieMax;
+    }
 
-public String  getMontantMin(){
-    return montantMin;
-}
+    public void setDateSaisieMax(String dateSaisieMax) {
+        this.dateSaisieMax = dateSaisieMax;
+    }
 
-public void setMontantMin(String  montantMin){
-     this.montantMin = montantMin;
-}
+    public String getMontant() {
+        return montant;
+    }
 
-public String  getMontantMax(){
-    return montantMax;
-}
+    public void setMontant(String montant) {
+        this.montant = montant;
+    }
 
-public void setMontantMax(String  montantMax){
-     this.montantMax = montantMax;
-}
+    public String getMontantMin() {
+        return montantMin;
+    }
 
-public String  getDescription(){
-    return description;
-}
+    public void setMontantMin(String montantMin) {
+        this.montantMin = montantMin;
+    }
 
-public void setDescription(String  description){
-     this.description = description;
-}
+    public String getMontantMax() {
+        return montantMax;
+    }
 
-public String  getScan(){
-    return scan;
-}
+    public void setMontantMax(String montantMax) {
+        this.montantMax = montantMax;
+    }
 
-public void setScan(String  scan){
-     this.scan = scan;
-}
+    public String getDescription() {
+        return description;
+    }
 
-public TypePaiementVo  getTypePaimentVo (){
-    return typePaimentVo ;
-}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-public void setTypePaimentVo (TypePaiementVo  typePaimentVo ){
-     this.typePaimentVo  = typePaimentVo ;
-}
+    public String getScan() {
+        return scan;
+    }
 
-public FactureVo  getFactureVo (){
-    return factureVo ;
-}
+    public void setScan(String scan) {
+        this.scan = scan;
+    }
 
-public void setFactureVo (FactureVo  factureVo ){
-     this.factureVo  = factureVo ;
-}
+    public TypePaiementVo getTypePaimentVo() {
+        return typePaimentVo;
+    }
 
+    public void setTypePaimentVo(TypePaiementVo typePaimentVo) {
+        this.typePaimentVo = typePaimentVo;
+    }
 
+    public FactureVo getFactureVo() {
+        return factureVo;
+    }
+
+    public void setFactureVo(FactureVo factureVo) {
+        this.factureVo = factureVo;
+    }
 
 
 }

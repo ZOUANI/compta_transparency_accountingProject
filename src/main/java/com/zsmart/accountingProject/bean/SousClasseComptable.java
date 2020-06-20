@@ -5,17 +5,12 @@
  */
 package com.zsmart.accountingProject.bean;
 
-import java.io.Serializable;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -31,7 +26,6 @@ public class SousClasseComptable implements Serializable {
     @JsonProperty(access = Access.WRITE_ONLY)
     @ManyToOne
     private ClasseComptable classeComptable;
-    @JsonProperty(access = Access.WRITE_ONLY)
     @OneToMany(mappedBy = "sousClasseComptable")
     private List<CompteComptable> compteComptables;
     private String libelle;

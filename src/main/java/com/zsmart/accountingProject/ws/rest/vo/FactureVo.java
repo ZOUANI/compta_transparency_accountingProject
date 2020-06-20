@@ -1,6 +1,5 @@
 package com.zsmart.accountingProject.ws.rest.vo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,7 +28,7 @@ public class FactureVo {
     private String totalTtcMin;
     private String totalTtcMax;
     private String tva;
-    private String tauxTva;
+    private TauxTvaVo tauxTvaVo;
     private String totalDebit;
     private String totalCredit;
     private String totalFactureItems;
@@ -77,9 +76,18 @@ public class FactureVo {
         return traiter;
     }
 
+    public TauxTvaVo getTauxTvaVo() {
+        return tauxTvaVo;
+    }
+
+    public void setTauxTvaVo(TauxTvaVo tauxTvaVo) {
+        this.tauxTvaVo = tauxTvaVo;
+    }
+
     public void setTraiter(Boolean traiter) {
         this.traiter = traiter;
     }
+
     public DeclarationTvaVo getDeclarationTvaVo() {
         return declarationTvaVo;
     }
@@ -102,14 +110,6 @@ public class FactureVo {
 
     public void setScanPath(String scanPath) {
         this.scanPath = scanPath;
-    }
-
-    public String getTauxTva() {
-        return tauxTva;
-    }
-
-    public void setTauxTva(String tauxTva) {
-        this.tauxTva = tauxTva;
     }
 
     public String getTotalDebit() {

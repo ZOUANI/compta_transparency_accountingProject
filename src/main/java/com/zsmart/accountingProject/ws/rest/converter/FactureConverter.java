@@ -1,12 +1,15 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.Facture;
 import com.zsmart.accountingProject.bean.FactureItem;
 import com.zsmart.accountingProject.bean.OperationComptable;
+import com.zsmart.accountingProject.service.util.DateUtil;
+import com.zsmart.accountingProject.service.util.ListUtil;
+import com.zsmart.accountingProject.service.util.NumberUtil;
+import com.zsmart.accountingProject.service.util.StringUtil;
+import com.zsmart.accountingProject.ws.rest.vo.FactureVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.Facture;
-import com.zsmart.accountingProject.ws.rest.vo.FactureVo;
 
 import java.math.BigDecimal;
 
@@ -22,8 +25,8 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
     private AdherantConverter adherantConverter;
     @Autowired
     private ComptableConverter comptableConverter;
-    private Boolean adherant;
-    private Boolean comptable;
+    private boolean adherant;
+    private boolean comptable;
     @Autowired
     private PaiementFactureConverter paiementFactureConverter;
     private boolean operationComptable;
@@ -37,9 +40,12 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
     @Autowired
     private DeclarationTvaConverter declarationTvaConverter;
     @Autowired
+    private TauxTvaConverter tauxTvaConverter;
+    @Autowired
     private SocieteConverter societeConverter;
     private boolean societe;
     private boolean declarationtva;
+
     @Override
     public Facture toItem(FactureVo vo) {
         if (vo == null) {
@@ -124,11 +130,12 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             if (ListUtil.isNotEmpty(vo.getFactureItemsVo()) && factureItems) {
                 item.setFactureItems(factureItemConverter.toItem(vo.getFactureItemsVo()));
             }
-            if (vo.getAdherantVo()!=null && adherant) {
+            if (vo.getAdherantVo() != null && adherant) {
                 item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
             }
-            if (vo.getComptableVo()!=null && comptable) {
-                item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
+
+            if (vo.getTauxTvaVo() != null) {
+                item.setTauxTva(tauxTvaConverter.toItem(vo.getTauxTvaVo()));
             }
             return item;
         }
@@ -230,19 +237,20 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
             }
 
             if (ListUtil.isNotEmpty(item.getFactureItems()) && factureItems) {
-                BigDecimal total=BigDecimal.ZERO;
-                for (FactureItem fi:item.getFactureItems()
+                BigDecimal total = BigDecimal.ZERO;
+                for (FactureItem fi : item.getFactureItems()
                 ) {
-                    total=total.add(fi.getMontant().multiply(fi.getQuantite()));
+                    total = total.add(fi.getMontant().multiply(fi.getQuantite()));
                 }
                 vo.setTotalFactureItems(NumberUtil.toString(total));
                 vo.setFactureItemsVo(factureItemConverter.toVo(item.getFactureItems()));
             }
-            if (item.getAdherant()!=null && adherant) {
+            if (item.getAdherant() != null && adherant) {
                 vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
             }
-            if (item.getComptable()!=null && comptable) {
-                vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
+
+            if (item.getTauxTva() != null) {
+                vo.setTauxTvaVo(tauxTvaConverter.toVo(item.getTauxTva()));
             }
             return vo;
         }
@@ -328,7 +336,7 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
         return adherant;
     }
 
-    public void setAdherant(Boolean adherant) {
+    public void setAdherant(boolean adherant) {
         this.adherant = adherant;
     }
 
@@ -336,7 +344,7 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
         return comptable;
     }
 
-    public void setComptable(Boolean comptable) {
+    public void setComptable(boolean comptable) {
         this.comptable = comptable;
     }
 
@@ -354,5 +362,13 @@ public class FactureConverter extends AbstractConverter<Facture, FactureVo> {
 
     public void setFactureItemConverter(FactureItemConverter factureItemConverter) {
         this.factureItemConverter = factureItemConverter;
+    }
+
+    public SocieteConverter getSocieteConverter() {
+        return societeConverter;
+    }
+
+    public void setSocieteConverter(SocieteConverter societeConverter) {
+        this.societeConverter = societeConverter;
     }
 }

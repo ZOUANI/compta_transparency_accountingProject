@@ -6,6 +6,7 @@ import com.zsmart.accountingProject.service.facade.CpcSousClasseService;
 import com.zsmart.accountingProject.ws.rest.converter.CpcSousClasseConverter;
 import com.zsmart.accountingProject.ws.rest.vo.CpcSousClasseVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,23 +22,26 @@ public class CpcSousClasseRest {
     @Autowired
     private CpcSousClasseConverter cpcSousClasseConverter;
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public CpcSousClasseVo save(@RequestBody CpcSousClasseVo cpcSousClasseVo) {
         CpcSousClasse cpcSousClasse = cpcSousClasseConverter.toItem(cpcSousClasseVo);
         return cpcSousClasseConverter.toVo(cpcSousClasseService.save(cpcSousClasse));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         cpcSousClasseService.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/")
     public List<CpcSousClasseVo> findAll() {
         return cpcSousClasseConverter.toVo(cpcSousClasseService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/findAllCpcSousClasse/{numero}")
     public List<CpcSousClasseVo> findAllCpcSousClasse(@PathVariable int numero) {
         cpcSousClasseConverter.setCpc(false);

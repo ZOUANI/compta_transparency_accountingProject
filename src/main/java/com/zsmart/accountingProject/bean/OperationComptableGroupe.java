@@ -5,10 +5,10 @@
  */
 package com.zsmart.accountingProject.bean;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
 
 /**
  *
@@ -27,8 +27,7 @@ public class OperationComptableGroupe implements Serializable {
     private String code;
     @ManyToOne
     private Adherant adherant;
-    @ManyToOne
-    private Comptable comptable;
+
     @ManyToOne
     private Journal journal;
     private Date dateSaisie;
@@ -57,13 +56,6 @@ public class OperationComptableGroupe implements Serializable {
         this.adherant = adherant;
     }
 
-    public Comptable getComptable() {
-        return comptable;
-    }
-
-    public void setComptable(Comptable comptable) {
-        this.comptable = comptable;
-    }
 
     public String getLibelle() {
         return libelle;

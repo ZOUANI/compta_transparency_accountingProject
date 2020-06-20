@@ -1,10 +1,8 @@
 package com.zsmart.accountingProject.service.facade;
 
-import com.zsmart.accountingProject.bean.Facture;
 import com.zsmart.accountingProject.bean.Societe;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface SocieteService {
@@ -13,6 +11,7 @@ public interface SocieteService {
     public Societe save(Societe societe);
     public void deleteById(Long id);
     public Societe findbyscraping(String ice);
+
     public void uploadfiles(MultipartFile contratBail,
                             MultipartFile certificatnegatif,
                             MultipartFile registreComercialImage,
@@ -21,6 +20,8 @@ public interface SocieteService {
                             MultipartFile releverBanquaire,
                             MultipartFile publicationCreationBO,
                             Societe societe
-                            )     ;
+    );
+
+    public List<Societe> findByUtilisateurId(Long id);
 
 }

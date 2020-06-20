@@ -57,9 +57,7 @@ public class DeclarationTvaConverter extends AbstractConverter<DeclarationTva, D
                     if (vo.getAdherantVo()!=null && adherant) {
                         item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
                     }
-                    if (vo.getComptableVo()!=null && comptable) {
-                        item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
-                    }
+
 
                     return item;
     }

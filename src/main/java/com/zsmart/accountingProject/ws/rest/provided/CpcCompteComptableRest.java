@@ -8,6 +8,7 @@ import com.zsmart.accountingProject.ws.rest.converter.CpcConverter;
 import com.zsmart.accountingProject.ws.rest.vo.CpcCompteComptableVo;
 import com.zsmart.accountingProject.ws.rest.vo.CpcVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,22 +28,26 @@ public class CpcCompteComptableRest {
     @Autowired
     private CpcConverter cpcConverter;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public CpcCompteComptableVo save(@RequestBody CpcCompteComptableVo cpcCompteComptableVo) {
         CpcCompteComptable cpcCompteComptable = cpcCompteComptableConverter.toItem(cpcCompteComptableVo);
         return cpcCompteComptableConverter.toVo(cpcCompteComptableService.save(cpcCompteComptable));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         cpcCompteComptableService.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/")
     public List<CpcCompteComptableVo> findAll() {
         return cpcCompteComptableConverter.toVo(cpcCompteComptableService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/find/")
     public List<CpcCompteComptableVo> find(@RequestBody CpcVo cpcVo) {
         cpcConverter.getSocieteConverter().setFacture(false);

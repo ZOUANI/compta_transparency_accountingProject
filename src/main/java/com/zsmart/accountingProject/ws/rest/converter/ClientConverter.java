@@ -1,44 +1,47 @@
 package com.zsmart.accountingProject.ws.rest.converter;
- 
+
+import com.zsmart.accountingProject.bean.Client;
+import com.zsmart.accountingProject.service.util.ListUtil;
+import com.zsmart.accountingProject.service.util.NumberUtil;
+import com.zsmart.accountingProject.service.util.StringUtil;
+import com.zsmart.accountingProject.ws.rest.vo.ClientVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.Client; 
-import com.zsmart.accountingProject.ws.rest.vo.ClientVo; 
 
- @Component 
-public class ClientConverter extends AbstractConverter<Client,ClientVo>{ 
+@Component
+public class ClientConverter extends AbstractConverter<Client, ClientVo> {
 
-private boolean factureClients; 
+    private boolean factureClients;
 
- @Autowired
- private FactureClientConverter factureClientConverter ;
-  @Autowired
-  private AdherantConverter adherantConverter;
-  @Autowired
-  private ComptableConverter comptableConverter;
-  private Boolean adherant;
-  private Boolean comptable;
- @Override 
- public Client toItem(ClientVo vo) {
-       if (vo == null) {
-          return null;
-            } else {
-      Client item = new Client();
+    @Autowired
+    private FactureClientConverter factureClientConverter;
+    @Autowired
+    private AdherantConverter adherantConverter;
+    @Autowired
+    private ComptableConverter comptableConverter;
+    private boolean adherant;
+    private boolean comptable;
 
-       if (StringUtil.isNotEmpty(vo.getIce())) {
-       item.setIce(vo.getIce());
-      }
+    @Override
+    public Client toItem(ClientVo vo) {
+        if (vo == null) {
+            return null;
+        } else {
+            Client item = new Client();
 
-       if (StringUtil.isNotEmpty(vo.getIdentifiantFiscale())) {
-       item.setIdentifiantFiscale(vo.getIdentifiantFiscale());
-      }
+            if (StringUtil.isNotEmpty(vo.getIce())) {
+                item.setIce(vo.getIce());
+            }
 
-       if (StringUtil.isNotEmpty(vo.getRc())) {
-       item.setRc(vo.getRc());
-      }
+            if (StringUtil.isNotEmpty(vo.getIdentifiantFiscale())) {
+                item.setIdentifiantFiscale(vo.getIdentifiantFiscale());
+            }
 
-       if (StringUtil.isNotEmpty(vo.getLibelle())) {
+            if (StringUtil.isNotEmpty(vo.getRc())) {
+                item.setRc(vo.getRc());
+            }
+
+            if (StringUtil.isNotEmpty(vo.getLibelle())) {
        item.setLibelle(vo.getLibelle());
       }
 
@@ -56,9 +59,7 @@ private boolean factureClients;
            if (vo.getAdherantVo()!=null && adherant) {
                item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
            }
-           if (vo.getComptableVo()!=null && comptable) {
-               item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
-           }
+
       return item;
        }
  }
@@ -100,30 +101,28 @@ ClientVo vo = new ClientVo();
      if (item.getAdherant()!=null && adherant) {
          vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
      }
-     if (item.getComptable()!=null && comptable) {
-         vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
-     }
-return vo;
+
+     return vo;
  }
- }
-
-  public Boolean getAdherant() {
-   return adherant;
   }
 
-  public void setAdherant(Boolean adherant) {
-   this.adherant = adherant;
-  }
+    public Boolean getAdherant() {
+        return adherant;
+    }
 
-  public Boolean getComptable() {
-   return comptable;
-  }
+    public void setAdherant(boolean adherant) {
+        this.adherant = adherant;
+    }
 
-  public void setComptable(Boolean comptable) {
-   this.comptable = comptable;
-  }
+    public Boolean getComptable() {
+        return comptable;
+    }
 
-  public void init() {
-factureClients = true; 
+    public void setComptable(boolean comptable) {
+        this.comptable = comptable;
+    }
+
+    public void init() {
+        factureClients = true;
+    }
 }
- } 

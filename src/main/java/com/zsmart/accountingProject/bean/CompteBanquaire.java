@@ -1,16 +1,9 @@
 package com.zsmart.accountingProject.bean;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity
 public class CompteBanquaire implements Serializable {
@@ -28,8 +21,7 @@ public class CompteBanquaire implements Serializable {
 	private List<OperationComptable> operationComptables;
 	@ManyToOne
 	private Adherant adherant;
-	@ManyToOne
-	private Comptable comptable;
+
 
 	public List<OperationComptable> getOperationComptables() {
 		return operationComptables;
@@ -47,13 +39,7 @@ public class CompteBanquaire implements Serializable {
 		this.adherant = adherant;
 	}
 
-	public Comptable getComptable() {
-		return comptable;
-	}
 
-	public void setComptable(Comptable comptable) {
-		this.comptable = comptable;
-	}
 
 	public BigDecimal getSolde() {
 		return solde;

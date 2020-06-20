@@ -6,29 +6,22 @@ import com.zsmart.accountingProject.bean.Societe;
 import com.zsmart.accountingProject.dao.OperationComptableDao;
 import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.service.util.DateUtil;
+import com.zsmart.accountingProject.service.util.ExcelUtil;
 import com.zsmart.accountingProject.service.util.NumberUtil;
 import com.zsmart.accountingProject.service.util.SearchUtil;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -130,40 +123,56 @@ public class OperationComptableServiceImpl implements OperationComptableService 
 		return operationcomptableDao.findBySociete(societe);
 	}
 
-	@Override
-	public int delete(OperationComptable operationcomptable) {
-		if (operationcomptable == null) {
-			return -1;
-		} else {
-			operationcomptableDao.delete(operationcomptable);
-			return 1;
-		}
-	}
+    @Override
+    public int delete(OperationComptable operationcomptable) {
+        if (operationcomptable == null) {
+            return -1;
+        } else {
+            operationcomptableDao.delete(operationcomptable);
+            return 1;
+        }
+    }
 
-	@Override
-	public void deleteById(Long id) {
-		operationcomptableDao.deleteById(id);
-	}
+    @Override
+    public void deleteById(Long id) {
+        operationcomptableDao.deleteById(id);
+    }
 
-	public void clone(OperationComptable operationcomptable, OperationComptable operationcomptableClone) {
-		if (operationcomptable != null && operationcomptableClone != null) {
-			operationcomptableClone.setId(operationcomptable.getId());
-			operationcomptableClone.setLibelle(operationcomptable.getLibelle());
-			operationcomptableClone.setSociete(operationcomptable.getSociete());
-			operationcomptableClone.setReferenceFacture(operationcomptable.getReferenceFacture());
-			operationcomptableClone.setMontant(operationcomptable.getMontant());
-			operationcomptableClone.setDateOperationComptable(operationcomptable.getDateOperationComptable());
-			operationcomptableClone.setDateSaisie(operationcomptable.getDateSaisie());
-			operationcomptableClone.setCaisse(caisseService.clone(operationcomptable.getCaisse()));
-			operationcomptableClone.setTypeOperationComptable(
-					typeoperationcomptableService.clone(operationcomptable.getTypeOperationComptable()));
-			operationcomptableClone
-					.setCompteBanquaire(comptebanquaireService.clone(operationcomptable.getCompteBanquaire()));
-			operationcomptableClone
-					.setCompteComptable(comptecomptableService.clone(operationcomptable.getCompteComptable()));
-			operationcomptableClone.setOperationComptableGroupe(
-					operationcomptablegroupeService.clone(operationcomptable.getOperationComptableGroupe()));
-			operationcomptableClone.setFacture(factureService.clone(operationcomptable.getFacture()));
+    @Override
+    public OperationComptable findByAdherantIdAndId(Long adherentId, Long id) {
+        try {
+            return operationcomptableDao.findByAdherantIdAndId(adherentId, id);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteByAdherantIdAndId(Long adherentId, Long id) {
+        operationcomptableDao.deleteByAdherantIdAndId(adherentId, id);
+    }
+
+    public void clone(OperationComptable operationcomptable, OperationComptable operationcomptableClone) {
+        if (operationcomptable != null && operationcomptableClone != null) {
+            operationcomptableClone.setId(operationcomptable.getId());
+            operationcomptableClone.setLibelle(operationcomptable.getLibelle());
+            operationcomptableClone.setSociete(operationcomptable.getSociete());
+            operationcomptableClone.setReferenceFacture(operationcomptable.getReferenceFacture());
+            operationcomptableClone.setMontant(operationcomptable.getMontant());
+            operationcomptableClone.setDateOperationComptable(operationcomptable.getDateOperationComptable());
+            operationcomptableClone.setDateSaisie(operationcomptable.getDateSaisie());
+            operationcomptableClone.setCaisse(caisseService.clone(operationcomptable.getCaisse()));
+            operationcomptableClone.setTypeOperationComptable(
+                    typeoperationcomptableService.clone(operationcomptable.getTypeOperationComptable()));
+            operationcomptableClone
+                    .setCompteBanquaire(comptebanquaireService.clone(operationcomptable.getCompteBanquaire()));
+            operationcomptableClone
+                    .setCompteComptable(comptecomptableService.clone(operationcomptable.getCompteComptable()));
+            operationcomptableClone.setOperationComptableGroupe(
+                    operationcomptablegroupeService.clone(operationcomptable.getOperationComptableGroupe()));
+            operationcomptableClone.setFacture(factureService.clone(operationcomptable.getFacture()));
 		}
 	}
 
@@ -179,198 +188,99 @@ public class OperationComptableServiceImpl implements OperationComptableService 
 
 	public List<OperationComptable> clone(List<OperationComptable> operationcomptables) {
 		if (operationcomptables == null) {
-			return null;
-		} else {
-			List<OperationComptable> operationcomptablesClone = new ArrayList();
-			operationcomptables.forEach((operationcomptable) -> {
-				operationcomptablesClone.add(clone(operationcomptable));
-			});
-			return operationcomptablesClone;
-		}
-	}
+            return null;
+        } else {
+            List<OperationComptable> operationcomptablesClone = new ArrayList();
+            operationcomptables.forEach((operationcomptable) -> {
+                operationcomptablesClone.add(clone(operationcomptable));
+            });
+            return operationcomptablesClone;
+        }
+    }
 
-	@Override
-	public List<OperationComptable> findByCriteria(String libelle, String raisonSocial, String referenceFacture,
-												   Long idMin, Long idMax, BigDecimal montantMin, BigDecimal montantMax, Date dateOperationComptableMin,
-												   Date dateOperationComptableMax, Date dateSaisieMin, Date dateSaisieMax, String codeCompteComptable, String codeTypeOperation) {
-		return entityManager
-				.createQuery(constructQuery(libelle, raisonSocial, referenceFacture, idMin, idMax, montantMin,
-						montantMax, dateOperationComptableMin, dateOperationComptableMax, dateSaisieMin, dateSaisieMax, codeCompteComptable, codeTypeOperation))
-				.getResultList();
-	}
+    @Override
+    public List<OperationComptable> findByCriteria(String libelle, String raisonSocial, String referenceFacture,
+                                                   Long idMin, Long idMax, BigDecimal montantMin, BigDecimal montantMax, Date dateOperationComptableMin,
+                                                   Date dateOperationComptableMax, Date dateSaisieMin, Date dateSaisieMax, String codeCompteComptable, String codeTypeOperation, Long adherentId, String opGroupeLibelle) {
+        return entityManager
+                .createQuery(constructQuery(libelle, raisonSocial, referenceFacture, idMin, idMax, montantMin,
+                        montantMax, dateOperationComptableMin, dateOperationComptableMax, dateSaisieMin, dateSaisieMax, codeCompteComptable, codeTypeOperation, adherentId, opGroupeLibelle))
+                .getResultList();
+    }
 
-	private String constructQuery(String libelle, String raisonSocial, String referenceFacture, Long idMin,
-								  Long idMax, BigDecimal montantMin, BigDecimal montantMax, Date dateOperationComptableMin,
-								  Date dateOperationComptableMax, Date dateSaisieMin, Date dateSaisieMax, String codeCompteComptable, String codeTypeOperation) {
-		String query = "SELECT o FROM OperationComptable o where 1=1 ";
-		query += SearchUtil.addConstraint("o", "libelle", "LIKE", libelle);
-		query += SearchUtil.addConstraint("o", "compteComptable.code", "LIKE", codeCompteComptable);
-		query += SearchUtil.addConstraint("o", "societe.raisonSocial", "=", raisonSocial);
-		query += SearchUtil.addConstraint("o", "typeOperationComptable.code", "=", codeTypeOperation);
-		query += SearchUtil.addConstraint("o", "referenceFacture", "=", referenceFacture);
-		query += SearchUtil.addConstraintMinMax("o", "id", idMin, idMax);
-		query += SearchUtil.addConstraintMinMax("o", "montant", montantMin, montantMax);
-		query += SearchUtil.addConstraintMinMaxDate("o", " dateOperationComptable", dateOperationComptableMin,
-				dateOperationComptableMax);
-		query += SearchUtil.addConstraintMinMaxDate("o", " dateSaisie", dateSaisieMin, dateSaisieMax);
+    private String constructQuery(String libelle, String raisonSocial, String referenceFacture, Long idMin,
+                                  Long idMax, BigDecimal montantMin, BigDecimal montantMax, Date dateOperationComptableMin,
+                                  Date dateOperationComptableMax, Date dateSaisieMin, Date dateSaisieMax, String codeCompteComptable, String codeTypeOperation, Long adherentId, String opGroupeLibelle) {
+        String query = "SELECT o FROM OperationComptable o where 1=1 ";
+        query += SearchUtil.addConstraint("o", "libelle", "LIKE", libelle);
+        query += SearchUtil.addConstraint("o", "compteComptable.code", "LIKE", codeCompteComptable);
+        query += SearchUtil.addConstraint("o", "operationComptableGroupe.libelle", "LIKE", opGroupeLibelle);
+        query += SearchUtil.addConstraint("o", "societe.raisonSocial", "=", raisonSocial);
+        query += SearchUtil.addConstraint("o", "typeOperationComptable.code", "=", codeTypeOperation);
+        query += SearchUtil.addConstraint("o", "referenceFacture", "=", referenceFacture);
+        query += SearchUtil.addConstraint("o", "adherant.id", "=", adherentId);
+        query += SearchUtil.addConstraintMinMax("o", "id", idMin, idMax);
+        query += SearchUtil.addConstraintMinMax("o", "montant", montantMin, montantMax);
+        query += SearchUtil.addConstraintMinMaxDate("o", " dateOperationComptable", dateOperationComptableMin,
+                dateOperationComptableMax);
+        query += SearchUtil.addConstraintMinMaxDate("o", " dateSaisie", dateSaisieMin, dateSaisieMax);
 
-		return query;
-	}
+        return query;
+    }
 
-	@Override
-	public List<OperationComptable> findOperationComptable(Date dateDebut, Date dateFin, String code) {
-		return findByCriteria(null, null, null, null, null, null, null, dateDebut, dateFin, null, null, code, null);
+    @Override
+    public List<OperationComptable> findOperationComptable(Date dateDebut, Date dateFin, String code) {
+        return findByCriteria(null, null, null, null, null, null, null, dateDebut, dateFin, null, null, code, null, null, null);
 
-	}
+    }
 
 	@Override
 	public List<OperationComptable> findOperationComptablee(Date dateDebut, Date dateFin) {
-		return findByCriteria(null, null, null, null, null, null, null, dateDebut, dateFin, null, null, null, null);
+        return findByCriteria(null, null, null, null, null, null, null, dateDebut, dateFin, null, null, null, null, null, null);
 
-	}
+    }
 
 	@Override
 	public Resource generateExcelFile(List<OperationComptable> operationComptables) {
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		XSSFSheet sheet = workbook.createSheet("Operations Comptable");
-
-		sheet.setColumnWidth(0, 4000);
-		sheet.setColumnWidth(1, 4000);
-		sheet.setColumnWidth(2, 8000);
-		sheet.setColumnWidth(3, 6000);
-		sheet.setColumnWidth(4, 6000);
-		sheet.setColumnWidth(5, 6000);
-		sheet.setColumnWidth(6, 4000);
-		sheet.setColumnWidth(7, 4000);
-		sheet.setColumnWidth(8, 4000);
-
-		Row header = sheet.createRow(0);
-		CellStyle headerStyle = workbook.createCellStyle();
-
-		XSSFFont font = (workbook).createFont();
-		font.setFontName("Arial");
-		font.setFontHeightInPoints((short) 10);
-		font.setBold(true);
-		headerStyle.setFont(font);
-
-		Cell headerCell = header.createCell(0);
-		headerCell.setCellValue("Libelle");
-		headerCell.setCellStyle(headerStyle);
-
-		headerCell = header.createCell(1);
-		headerCell.setCellValue("Societe");
-		headerCell.setCellStyle(headerStyle);
-
-		headerCell = header.createCell(2);
-		headerCell.setCellValue("Groupe Operation Comptable");
-		headerCell.setCellStyle(headerStyle);
-
-		headerCell = header.createCell(3);
-		headerCell.setCellValue("Date Operation");
-		headerCell.setCellStyle(headerStyle);
-
-		headerCell = header.createCell(4);
-		headerCell.setCellValue("Date Saisie");
-		headerCell.setCellStyle(headerStyle);
-
-		headerCell = header.createCell(5);
-		headerCell.setCellValue("Compte Comptable");
-		headerCell.setCellStyle(headerStyle);
-
-		headerCell = header.createCell(6);
-		headerCell.setCellValue("Type Operation");
-		headerCell.setCellStyle(headerStyle);
-
-		headerCell = header.createCell(7);
-		headerCell.setCellValue("Type Paiement");
-		headerCell.setCellStyle(headerStyle);
-
-		headerCell = header.createCell(8);
-		headerCell.setCellValue("Montant");
-		headerCell.setCellStyle(headerStyle);
+        XSSFWorkbook workbook = new XSSFWorkbook();
 
 
-		int rowNum = 1;
+        CellStyle headerStyle = workbook.createCellStyle();
+        XSSFFont font = (workbook).createFont();
+        font.setFontName("Arial");
+        font.setFontHeightInPoints((short) 10);
+        font.setBold(true);
+        headerStyle.setFont(font);
 
-		CellStyle style = workbook.createCellStyle();
-		style.setWrapText(true);
+        List<String> headerData = Arrays.asList("Libelle", "Societe", "Groupe Operation Comptable", "Date Operation", "Date Saisie", "Compte Comptable", "Type Operation", "Type Paiement", "Montant");
 
-		for (OperationComptable operationComptable : operationComptables) {
-			Row row = sheet.createRow(rowNum++);
+        XSSFSheet sheet = ExcelUtil.initSheet(workbook, "Operations Comptable", null, headerData, headerStyle);
 
-			Cell cell = row.createCell(0);
-			cell.setCellValue(operationComptable.getLibelle());
-			cell.setCellStyle(style);
+        List<List<String>> cellData = new ArrayList<>();
 
-			cell = row.createCell(1);
-			cell.setCellValue(operationComptable.getSociete().getRaisonSocial());
-			cell.setCellStyle(style);
+        CellStyle style = workbook.createCellStyle();
+        style.setWrapText(true);
 
-			cell = row.createCell(2);
-			cell.setCellValue(operationComptable.getOperationComptableGroupe().getLibelle());
-			cell.setCellStyle(style);
+        for (OperationComptable operationComptable : operationComptables) {
 
-			cell = row.createCell(3);
-			cell.setCellValue(DateUtil.formateDate(operationComptable.getDateOperationComptable()));
-			cell.setCellStyle(style);
+            String compte = operationComptable.getCompteComptable() == null ? "none" : operationComptable.getCompteComptable().getCode() + " " + operationComptable.getCompteComptable().getLibelle();
+            String type = operationComptable.getCaisse() == null ? operationComptable.getCompteBanquaire() == null ? "--" : operationComptable.getCompteBanquaire().getLibelle() : operationComptable.getCaisse().getLibelle();
+            cellData.add(Arrays.asList(operationComptable.getLibelle(),
+                    operationComptable.getSociete().getRaisonSocial(),
+                    operationComptable.getOperationComptableGroupe().getLibelle(),
+                    DateUtil.formateDate(operationComptable.getDateOperationComptable()),
+                    DateUtil.formateDate(operationComptable.getDateSaisie()),
+                    compte,
+                    operationComptable.getTypeOperationComptable().getLibelle(),
+                    type,
+                    NumberUtil.toString(operationComptable.getMontant())));
 
-			cell = row.createCell(4);
-			cell.setCellValue(DateUtil.formateDate(operationComptable.getDateSaisie()));
-			cell.setCellStyle(style);
+        }
+        ExcelUtil.fillTable(sheet, cellData, style, 1);
 
-			String compte = operationComptable.getCompteComptable() == null ? "none" : operationComptable.getCompteComptable().getCode() + " " + operationComptable.getCompteComptable().getLibelle();
-			cell = row.createCell(5);
-			cell.setCellValue(compte);
-			cell.setCellStyle(style);
+        return ExcelUtil.exportBlob(workbook);
 
-			cell = row.createCell(6);
-			cell.setCellValue(operationComptable.getTypeOperationComptable().getLibelle());
-			cell.setCellStyle(style);
-
-			String type = operationComptable.getCaisse() == null ? operationComptable.getCompteBanquaire() == null ? "--" : operationComptable.getCompteBanquaire().getLibelle() : operationComptable.getCaisse().getLibelle();
-			cell = row.createCell(7);
-			cell.setCellValue(type);
-			cell.setCellStyle(style);
-
-			cell = row.createCell(8);
-			cell.setCellValue(NumberUtil.toString(operationComptable.getMontant()));
-			cell.setCellStyle(style);
-
-		}
-
-		try {
-			try {
-				FileUtils.cleanDirectory(new File("src\\main\\resources\\excelFiles\\"));
-			} catch (IOException e) {
-				;
-			}
-
-			Long milli = new Date().getTime();
-			File currDir = new File(".");
-			String path = currDir.getAbsolutePath();
-			System.out.println(path);
-			String fileLocation = path.substring(0, path.length() - 1) + "src\\main\\resources\\excelFiles\\" + milli + "_temp.xlsx";
-
-			FileOutputStream outputStream = new FileOutputStream(fileLocation);
-			workbook.write(outputStream);
-			workbook.close();
-			Path path1 = Paths.get(path.substring(0, path.length() - 1) + "src\\main\\resources\\excelFiles\\");
-			Path file = path1.resolve(milli + "_temp.xlsx");
-			Resource resource = new UrlResource(file.toUri());
-			if (resource.exists() || resource.isReadable()) {
-				return resource;
-			} else {
-				throw new RuntimeException("Could not read the file!");
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-	}
+    }
 
 
 }

@@ -1,7 +1,6 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
 import com.zsmart.accountingProject.bean.Societe;
-import com.zsmart.accountingProject.bean.SousClasseComptable;
 import com.zsmart.accountingProject.service.util.ListUtil;
 import com.zsmart.accountingProject.service.util.NumberUtil;
 import com.zsmart.accountingProject.service.util.StringUtil;
@@ -20,14 +19,15 @@ public class SocieteConverter extends AbstractConverter<Societe, SocieteVo> {
     private AdherantConverter adherantConverter;
     @Autowired
     private ComptableConverter comptableConverter;
-    private Boolean adherant;
-    private Boolean comptable;
+    private boolean adherant;
+    private boolean comptable;
+
     @Override
     public Societe toItem(SocieteVo vo) {
         if (vo == null) {
             return null;
         } else {
-           Societe item=new Societe();
+            Societe item = new Societe();
 
 
             if (StringUtil.isNotEmpty(vo.getContratBail())) {

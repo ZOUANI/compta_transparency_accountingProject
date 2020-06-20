@@ -1,20 +1,10 @@
 package com.zsmart.accountingProject.bean;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
 
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
@@ -59,22 +49,24 @@ public class Facture implements Serializable {
 	private DeclarationTva declarationTva;
 	@ManyToOne
 	private Adherant adherant;
+
 	@ManyToOne
-	private Comptable comptable;
+	private TauxTva tauxTva;
+
 	public Adherant getAdherant() {
 		return adherant;
 	}
 
-	public Comptable getComptable() {
-		return comptable;
-	}
-
-	public void setComptable(Comptable comptable) {
-		this.comptable = comptable;
-	}
-
 	public void setAdherant(Adherant adherant) {
 		this.adherant = adherant;
+	}
+
+	public TauxTva getTauxTva() {
+		return tauxTva;
+	}
+
+	public void setTauxTva(TauxTva tauxTva) {
+		this.tauxTva = tauxTva;
 	}
 
 	public Boolean getTraiter() {

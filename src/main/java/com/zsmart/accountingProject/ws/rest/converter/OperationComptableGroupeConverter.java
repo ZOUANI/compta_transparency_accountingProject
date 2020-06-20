@@ -17,9 +17,8 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
     private AdherantConverter adherantConverter;
     @Autowired
     private ComptableConverter comptableConverter;
-    private Boolean adherant;
-    private Boolean comptable;
-
+    private boolean adherant;
+    private boolean comptable;
     @Autowired
     private OperationComptableConverter operationComptableConverter;
 
@@ -50,9 +49,7 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
             if (vo.getAdherantVo()!=null && adherant) {
                 item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
             }
-            if (vo.getComptableVo()!=null && comptable) {
-                item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
-            }
+
             return item;
         }
     }
@@ -82,12 +79,11 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
             if (item.getAdherant()!=null && adherant) {
                 vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
             }
-            if (item.getComptable()!=null && comptable) {
-                vo.setComptableVo(comptableConverter.toVo(item.getComptable()));
-            }
+
             if (item.getDateSaisie() != null) {
                 vo.setDateSaisie(DateUtil.formateDate(item.getDateSaisie()));
             }
+
             return vo;
         }
     }
@@ -100,11 +96,11 @@ public class OperationComptableGroupeConverter extends AbstractConverter<Operati
         return adherant;
     }
 
-    public void setAdherant(Boolean adherant) {
+    public void setAdherant(boolean adherant) {
         this.adherant = adherant;
     }
 
-    public Boolean isComptable() {
+    public boolean isComptable() {
         return comptable;
     }
 

@@ -1,9 +1,5 @@
 package com.zsmart.accountingProject.ws.rest.vo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class OperationComptableVo{
 
 private String id ;
@@ -26,6 +22,7 @@ private CompteComptableVo compteComptableVo ;
 private OperationComptableGroupeVo operationComptableGroupeVo ;
 private FactureVo factureVo ;
 private JournalVo journalVo;
+    private AdherantVo adherantVo;
 
     public JournalVo getJournalVo() {
         return journalVo;
@@ -35,21 +32,29 @@ private JournalVo journalVo;
         this.journalVo = journalVo;
     }
 
-    public String  getId(){
-    return id;
-}
+    public String getId() {
+        return id;
+    }
 
-public void setId(String  id){
-     this.id = id;
-}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-public String  getLibelle(){
-    return libelle;
-}
+    public String getLibelle() {
+        return libelle;
+    }
 
-public void setLibelle(String  libelle){
-     this.libelle = libelle;
-}
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public AdherantVo getAdherantVo() {
+        return adherantVo;
+    }
+
+    public void setAdherantVo(AdherantVo adherantVo) {
+        this.adherantVo = adherantVo;
+    }
 
     public SocieteVo getSocieteVo() {
         return societeVo;
@@ -59,9 +64,9 @@ public void setLibelle(String  libelle){
         this.societeVo = societeVo;
     }
 
-    public String  getReferenceFacture(){
-    return referenceFacture;
-}
+    public String getReferenceFacture() {
+        return referenceFacture;
+    }
 
 public void setReferenceFacture(String  referenceFacture){
      this.referenceFacture = referenceFacture;

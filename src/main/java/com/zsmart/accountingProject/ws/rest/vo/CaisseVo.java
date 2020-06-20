@@ -1,46 +1,53 @@
 package com.zsmart.accountingProject.ws.rest.vo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class CaisseVo{
+public class CaisseVo {
 
-private String id ;
-private String libelle ;
-private String code ;
-private String solde;
-private String soldeMin ;
-private String soldeMax ;
-private List<OperationComptableVo>operationComptablesVo;
+    private String id;
+    private String libelle;
+    private String code;
+    private String solde;
+    private String soldeMin;
+    private String soldeMax;
+    private List<OperationComptableVo> operationComptablesVo;
+    private AdherantVo adherantVo;
 
 
+    public String getId() {
+        return id;
+    }
 
-public String  getId(){
-    return id;
-}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-public void setId(String  id){
-     this.id = id;
-}
+    public AdherantVo getAdherantVo() {
+        return adherantVo;
+    }
 
-public String  getLibelle(){
-    return libelle;
-}
+    public void setAdherantVo(AdherantVo adherantVo) {
+        this.adherantVo = adherantVo;
+    }
 
-public void setLibelle(String  libelle){
-     this.libelle = libelle;
-}
+    public String getLibelle() {
+        return libelle;
+    }
 
-public String  getCode(){
-    return code;
-}
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
 
-public void setCode(String  code){
-     this.code = code;
-}
+    public String getCode() {
+        return code;
+    }
 
-public String  getSolde(){
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getSolde() {
     return solde;
 }
 

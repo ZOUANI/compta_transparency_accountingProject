@@ -1,14 +1,17 @@
 package com.zsmart.accountingProject.ws.rest.provided;
 
 import com.zsmart.accountingProject.bean.Societe;
+import com.zsmart.accountingProject.bean.Utilisateur;
 import com.zsmart.accountingProject.service.facade.SocieteService;
 import com.zsmart.accountingProject.ws.rest.converter.SocieteConverter;
+import com.zsmart.accountingProject.ws.rest.converter.UtilisateurConverter;
 import com.zsmart.accountingProject.ws.rest.vo.SocieteVo;
+import com.zsmart.accountingProject.ws.rest.vo.UtilisateurVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,8 +23,10 @@ public class SocieteRest {
     private SocieteService societeService;
     @Autowired
     private SocieteConverter societeConverter;
+    @Autowired
+    private UtilisateurConverter utilisateurConverter;
 
-
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ADHERENT') ")
     @PostMapping("/")
     public SocieteVo save(@RequestPart(value = "societe", required = true) SocieteVo societeVo,
                           @RequestPart(value = "contratBail", required = true) MultipartFile contratBail,
@@ -31,9 +36,9 @@ public class SocieteRest {
                           @RequestPart(value = "statue", required = true) MultipartFile statue,
                           @RequestPart(value = "releverBanquaire", required = true) MultipartFile releverBanquaire,
                           @RequestPart(value = "publicationCreationBO", required = true) MultipartFile publicationCreationBO
-                          ){
+    ) {
 
-        Societe societe= societeConverter.toItem(societeVo);
+        Societe societe = societeConverter.toItem(societeVo);
         societeService.uploadfiles(
                 contratBail,
                 certificatnegatif,
@@ -43,21 +48,26 @@ public class SocieteRest {
                 releverBanquaire,
                 publicationCreationBO,
                 societe
-                );
+        );
         return societeConverter.toVo(societeService.save(societe));
     }
+
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ADHERENT') ")
     @DeleteMapping("/delete/{id}")
-    public void deleteById(@PathVariable Long id){
+    public void deleteById(@PathVariable Long id) {
         societeService.deleteById(id);
     }
+
     @GetMapping("/")
-    public List<SocieteVo> findAll(){
+    @PreAuthorize("hasRole('ADMIN') ")
+    public List<SocieteVo> findAll() {
         societeConverter.setFacture(false);
         return societeConverter.toVo(societeService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ADHERENT') ")
     @GetMapping("/{id}")
-    public SocieteVo findById(@PathVariable Long id){
+    public SocieteVo findById(@PathVariable Long id) {
         societeConverter.getFactureConverter().setOperationComptable(true);
         societeConverter.getFactureConverter().setFactureItems(true);
         societeConverter.getFactureConverter().getFactureItemConverter().setFacture(false);
@@ -69,10 +79,19 @@ public class SocieteRest {
         return societeConverter.toVo(societeService.findById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ADHERENT') ")
     @GetMapping("/findbyscraping/{ice}")
     public SocieteVo findbyscraping(@PathVariable String ice) {
 
         return societeConverter.toVo(societeService.findbyscraping(ice));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ADHERENT') or hasRole('COMPTABLE')")
+    @PostMapping("/findByUser")
+    public List<SocieteVo> findByUtilisateur(@RequestBody UtilisateurVo utilisateurVo) {
+        societeConverter.setAdherant(true);
+        Utilisateur utilisateur = utilisateurConverter.toItem(utilisateurVo);
+        return societeConverter.toVo(societeService.findByUtilisateurId(utilisateur.getId()));
     }
 
 }

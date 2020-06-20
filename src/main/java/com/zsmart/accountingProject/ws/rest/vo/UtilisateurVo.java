@@ -1,21 +1,37 @@
 package com.zsmart.accountingProject.ws.rest.vo;
 
 
+import java.util.List;
+
 public class UtilisateurVo {
-    private String id ;
+    private String id;
     private String nom;
     private String prenom;
     private String email;
-    private String mdp;
+    private String password;
     private String adresse;
     private String ville;
-    private String role;
     private String datenaissance;
-    private AdherantVo adherantVo;
-    private ComptableVo comptableVo;
+    private List<RoleVo> authorities;
 
     public String getId() {
         return id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<RoleVo> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<RoleVo> authorities) {
+        this.authorities = authorities;
     }
 
     public void setId(String id) {
@@ -46,13 +62,6 @@ public class UtilisateurVo {
         this.email = email;
     }
 
-    public String getMdp() {
-        return mdp;
-    }
-
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
-    }
 
     public String getAdresse() {
         return adresse;
@@ -70,13 +79,6 @@ public class UtilisateurVo {
         this.ville = ville;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getDatenaissance() {
         return datenaissance;
@@ -86,19 +88,4 @@ public class UtilisateurVo {
         this.datenaissance = datenaissance;
     }
 
-    public AdherantVo getAdherantVo() {
-        return adherantVo;
-    }
-
-    public void setAdherantVo(AdherantVo adherantVo) {
-        this.adherantVo = adherantVo;
-    }
-
-    public ComptableVo getComptableVo() {
-        return comptableVo;
-    }
-
-    public void setComptableVo(ComptableVo comptableVo) {
-        this.comptableVo = comptableVo;
-    }
 }

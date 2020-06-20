@@ -3,8 +3,8 @@ package com.zsmart.accountingProject.ws.rest.vo;
 
 import java.util.List;
 
-public class AdherantVo {
-    private String id ;
+public class AdherantVo extends UtilisateurVo {
+    private String id;
     private List<SocieteVo> societesVo;
     private List<FactureVo> facturesVo;
     private List<CpcVo> cpcsVo;
@@ -13,7 +13,6 @@ public class AdherantVo {
     private List<FournisseurVo> fournisseursVo;
     private List<CompteBanquaireVo> compteBanquairesVo;
     private List<OperationComptableGroupeVo> operationComptableGroupesVo;
-    private UtilisateurVo utilisateurVo;
     private ComptableVo comptableVo;
 
     public String getId() {
@@ -88,13 +87,6 @@ public class AdherantVo {
         this.operationComptableGroupesVo = operationComptableGroupesVo;
     }
 
-    public UtilisateurVo getUtilisateurVo() {
-        return utilisateurVo;
-    }
-
-    public void setUtilisateurVo(UtilisateurVo utilisateurVo) {
-        this.utilisateurVo = utilisateurVo;
-    }
 
     public ComptableVo getComptableVo() {
         return comptableVo;

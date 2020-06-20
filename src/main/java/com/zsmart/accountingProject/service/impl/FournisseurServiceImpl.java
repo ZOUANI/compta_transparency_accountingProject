@@ -1,24 +1,20 @@
 
 package com.zsmart.accountingProject.service.impl;
 
-import com.zsmart.accountingProject.service.facade.FournisseurService;
-import com.zsmart.accountingProject.dao.FournisseurDao;
-import com.zsmart.accountingProject.service.util.SearchUtil;
-import com.zsmart.accountingProject.bean.Fournisseur;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.math.BigDecimal;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.Date;
-
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import com.zsmart.accountingProject.service.facade.FactureFournisseurService;
+import com.zsmart.accountingProject.bean.Adherant;
 import com.zsmart.accountingProject.bean.FactureFournisseur;
+import com.zsmart.accountingProject.bean.Fournisseur;
+import com.zsmart.accountingProject.dao.FournisseurDao;
+import com.zsmart.accountingProject.service.facade.FactureFournisseurService;
+import com.zsmart.accountingProject.service.facade.FournisseurService;
+import com.zsmart.accountingProject.service.util.SearchUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 
@@ -78,6 +74,11 @@ public class FournisseurServiceImpl implements FournisseurService {
     }
 
     @Override
+    public List<Fournisseur> findByAdherent(Adherant adherant) {
+        return fournisseurDao.findByAdherant(adherant);
+    }
+
+    @Override
     public int delete(Fournisseur fournisseur) {
         if (fournisseur == null) {
             return -1;
@@ -90,6 +91,11 @@ public class FournisseurServiceImpl implements FournisseurService {
     @Override
     public void deleteById(Long id) {
         fournisseurDao.deleteById(id);
+    }
+
+    @Override
+    public Fournisseur findByAdherantIdAndId(Long adherentId, Long id) {
+        return fournisseurDao.findByAdherantIdAndId(adherentId, id);
     }
 
     public void clone(Fournisseur fournisseur, Fournisseur fournisseurClone) {
@@ -127,18 +133,24 @@ public class FournisseurServiceImpl implements FournisseurService {
     }
 
     @Override
-    public List<Fournisseur> findByCriteria(String ice, String identifiantFiscale, String rc, String libelle, String code, Long idMin, Long idMax) {
-        return entityManager.createQuery(constructQuery(ice, identifiantFiscale, rc, libelle, code, idMin, idMax)).getResultList();
+    public List<Fournisseur> findByCriteria(String ice, String identifiantFiscale, String rc, String libelle, String code, Long adherentId) {
+        return entityManager.createQuery(constructQuery(ice, identifiantFiscale, rc, libelle, code, adherentId)).getResultList();
     }
 
-    private String constructQuery(String ice, String identifiantFiscale, String rc, String libelle, String code, Long idMin, Long idMax) {
+    @Transactional
+    @Override
+    public void deleteByAdherantIdAndId(Long adherentId, Long id) {
+        fournisseurDao.deleteByAdherantIdAndId(adherentId, id);
+    }
+
+    private String constructQuery(String ice, String identifiantFiscale, String rc, String libelle, String code, Long adherentId) {
         String query = "SELECT f FROM Fournisseur f where 1=1 ";
         query += SearchUtil.addConstraint("f", "ice", "=", ice);
         query += SearchUtil.addConstraint("f", "identifiantFiscale", "=", identifiantFiscale);
         query += SearchUtil.addConstraint("f", "rc", "=", rc);
-        query += SearchUtil.addConstraint("f", "libelle", "=", libelle);
+        query += SearchUtil.addConstraint("f", "libelle", "LIKE", libelle);
         query += SearchUtil.addConstraint("f", "code", "=", code);
-        query += SearchUtil.addConstraintMinMax("f", "id", idMin, idMax);
+        query += SearchUtil.addConstraint("f", "adherant.id", "=", adherentId);
 
         return query;
     }

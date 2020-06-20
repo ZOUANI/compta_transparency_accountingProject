@@ -30,21 +30,30 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
     @Autowired
     private OperationComptableConverter operationComptableConverter;
     private boolean factureItems;
+    private boolean societe;
 
     @Autowired
     private ClientConverter clientConverter;
+    @Autowired
+    private TauxTvaConverter tauxTvaConverter;
     @Autowired
     private FactureItemConverter factureItemConverter;
 
     @Autowired
     private SocieteConverter societeConverter;
+    @Autowired
+    private AdherantConverter adherantConverter;
+    @Autowired
+    private ComptableConverter comptableConverter;
+    private boolean adherant;
+    private boolean comptable;
 
     @Override
     public FactureClient toItem(FactureClientVo vo) {
         if (vo == null) {
             return null;
         } else {
-            FactureClient item= new FactureClient();
+            FactureClient item = new FactureClient();
 
             if (etatFacture && vo.getEtatFactureVo() != null) {
                 item.setEtatFacture(etatFactureConverter.toItem(vo.getEtatFactureVo()));
@@ -58,7 +67,7 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
                 item.setTypeFacture(vo.getTypeFacture());
             }
 
-            if (vo.getSocieteVo()!=null) {
+            if (vo.getSocieteVo() != null && societe) {
                 item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
             }
 
@@ -121,6 +130,12 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
             if (client && vo.getClientVo() != null) {
                 item.setClient(clientConverter.toItem(vo.getClientVo()));
             }
+            if (vo.getTauxTvaVo() != null) {
+                item.setTauxTva(tauxTvaConverter.toItem(vo.getTauxTvaVo()));
+            }
+            if (vo.getAdherantVo() != null && adherant) {
+                item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+            }
 
 
             return item;
@@ -146,7 +161,7 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
                 vo.setTypeFacture(item.getTypeFacture());
             }
 
-            if (item.getSociete()!=null) {
+            if (item.getSociete() != null && societe) {
                 vo.setSocieteVo(societeConverter.toVo(item.getSociete()));
             }
 
@@ -229,6 +244,13 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
             if (item.getId() != null) {
                 vo.setId(NumberUtil.toString(item.getId()));
             }
+            if (item.getTauxTva() != null) {
+                vo.setTauxTvaVo(tauxTvaConverter.toVo(item.getTauxTva()));
+            }
+            if (item.getAdherant() != null && adherant) {
+                vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+            }
+
 
             return vo;
         }
@@ -237,15 +259,71 @@ public class FactureClientConverter extends AbstractConverter<FactureClient, Fac
     public void init() {
 
         client = true;
-        etatFacture=true;
-        paimentFactures=true;
-        factureItems=true;
-        operationComptable=true;
+        etatFacture = true;
+        paimentFactures = true;
+        factureItems = true;
+        operationComptable = true;
 
+    }
+
+    public AdherantConverter getAdherantConverter() {
+        return adherantConverter;
+    }
+
+    public void setAdherantConverter(AdherantConverter adherantConverter) {
+        this.adherantConverter = adherantConverter;
+    }
+
+    public ComptableConverter getComptableConverter() {
+        return comptableConverter;
+    }
+
+    public void setComptableConverter(ComptableConverter comptableConverter) {
+        this.comptableConverter = comptableConverter;
+    }
+
+    public boolean isAdherant() {
+        return adherant;
+    }
+
+    public void setAdherant(boolean adherant) {
+        this.adherant = adherant;
+    }
+
+    public boolean isComptable() {
+        return comptable;
+    }
+
+    public void setComptable(boolean comptable) {
+        this.comptable = comptable;
     }
 
     public boolean isClient() {
         return client;
+    }
+
+    public boolean isSociete() {
+        return societe;
+    }
+
+    public void setSociete(boolean societe) {
+        this.societe = societe;
+    }
+
+    public TauxTvaConverter getTauxTvaConverter() {
+        return tauxTvaConverter;
+    }
+
+    public void setTauxTvaConverter(TauxTvaConverter tauxTvaConverter) {
+        this.tauxTvaConverter = tauxTvaConverter;
+    }
+
+    public SocieteConverter getSocieteConverter() {
+        return societeConverter;
+    }
+
+    public void setSocieteConverter(SocieteConverter societeConverter) {
+        this.societeConverter = societeConverter;
     }
 
     public void setClient(boolean client) {

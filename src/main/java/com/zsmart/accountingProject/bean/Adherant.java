@@ -1,14 +1,14 @@
 package com.zsmart.accountingProject.bean;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Adherant implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id ;
+public class Adherant extends Utilisateur implements Serializable {
+
     @OneToMany(mappedBy = "adherant")
     private List<Societe> societes;
     @OneToMany(mappedBy = "adherant")
@@ -25,19 +25,11 @@ public class Adherant implements Serializable {
     private List<CompteBanquaire> compteBanquaires;
     @OneToMany(mappedBy = "adherant")
     private List<OperationComptableGroupe> operationComptableGroupes;
-    @OneToOne(mappedBy = "adherant")
-    private Utilisateur utilisateur;
+
     @ManyToOne
     private Comptable comptable;
 
 
-    public Utilisateur getUtilisateur() {
-        return utilisateur;
-    }
-
-    public void setUtilisateur(Utilisateur utilisateur) {
-        this.utilisateur = utilisateur;
-    }
 
     public Comptable getComptable() {
         return comptable;
@@ -55,13 +47,7 @@ public class Adherant implements Serializable {
         this.operationComptableGroupes = operationComptableGroupes;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public List<Societe> getSocietes() {
         return societes;

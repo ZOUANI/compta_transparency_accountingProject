@@ -124,11 +124,22 @@ public class OperationComptableGroupeServiceImpl implements OperationComptableGr
     }
 
     @Override
-    public List<OperationComptableGroupe> findByCriteria(String libelle, String code, Long idMin, Long idMax, Date dateSaisieMin,Date dateSaisieMax) {
-        return entityManager.createQuery(constructQuery(libelle, code, idMin, idMax,dateSaisieMin,dateSaisieMax)).getResultList();
+    public List<OperationComptableGroupe> findByCriteria(String libelle, String code, Long idMin, Long idMax, Date dateSaisieMin, Date dateSaisieMax) {
+        return entityManager.createQuery(constructQuery(libelle, code, idMin, idMax, dateSaisieMin, dateSaisieMax)).getResultList();
     }
 
-    private String constructQuery(String libelle, String code, Long idMin, Long idMax,Date dateSaisieMin,Date dateSaisieMax) {
+    @Override
+    public List<OperationComptableGroupe> findByAdherantId(Long adherentId) {
+        return operationcomptablegroupeDao.findByAdherantId(adherentId);
+    }
+
+    @Override
+    public OperationComptableGroupe findByAdherantIdAndId(Long adherentId, Long id) {
+        return operationcomptablegroupeDao.findByAdherantIdAndId(adherentId, id);
+    }
+
+
+    private String constructQuery(String libelle, String code, Long idMin, Long idMax, Date dateSaisieMin, Date dateSaisieMax) {
         String query = "SELECT o FROM OperationComptableGroupe o where 1=1 ";
         query += SearchUtil.addConstraint("o", "libelle", "=", libelle);
         query += SearchUtil.addConstraint("o", "code", "=", code);

@@ -1,11 +1,12 @@
 package com.zsmart.accountingProject.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Societe {
+public class Societe implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

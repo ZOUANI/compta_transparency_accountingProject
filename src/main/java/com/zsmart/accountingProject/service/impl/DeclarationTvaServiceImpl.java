@@ -2,7 +2,6 @@ package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.DeclarationTva;
 import com.zsmart.accountingProject.bean.Facture;
-import com.zsmart.accountingProject.bean.FactureItem;
 import com.zsmart.accountingProject.bean.Societe;
 import com.zsmart.accountingProject.dao.DeclarationTvaDao;
 import com.zsmart.accountingProject.service.facade.DeclarationTvaService;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class DeclarationTvaServiceImpl implements DeclarationTvaService {
     @Override
     public DeclarationTva findbyFacture(Facture facture) {
     if (facture!=null) {
-    return sortByTypefacture(factureService.findByCriteria(facture));
+    return sortByTypefacture(factureService.findByCriteria(facture, null, null, null, null));
         }
     else return null;
     }

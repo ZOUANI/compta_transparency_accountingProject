@@ -13,9 +13,20 @@ import java.util.List;
 public class AdherantServiceImpl implements AdherantService {
     @Autowired
     AdherantDao adherantDao;
+
     @Override
     public List<Adherant> findByComptable(Comptable comptable) {
         return adherantDao.findByComptable(comptable);
+    }
+
+    @Override
+    public Adherant findById(Long id) {
+        try {
+            return adherantDao.getOne(id);
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
 }

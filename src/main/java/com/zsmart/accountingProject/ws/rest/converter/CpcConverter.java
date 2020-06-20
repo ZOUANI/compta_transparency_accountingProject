@@ -22,8 +22,8 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 	private AdherantConverter adherantConverter;
 	@Autowired
 	private ComptableConverter comptableConverter;
-	private Boolean adherant;
-	private Boolean comptable;
+	private boolean adherant;
+	private boolean comptable;
 
 	@Override
 	public Cpc toItem(CpcVo vo) {
@@ -32,7 +32,7 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 		} else {
 			Cpc item = new Cpc();
 
-			if (vo.getSocieteVo()!=null) {
+			if (vo.getSocieteVo() != null) {
 				item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
 			}
 
@@ -66,9 +66,7 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 			if (vo.getAdherantVo()!=null && adherant) {
 				item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
 			}
-			if (vo.getComptableVo()!=null && comptable) {
-				item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
-			}
+
 			return item;
 		}
 	}
@@ -111,12 +109,10 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 			if (ListUtil.isNotEmpty(item.getCpcSousClasses()) && cpcSousClasses) {
 				vo.setCpcSousClassesVo(cpcSousClasseConverter.toVo(item.getCpcSousClasses()));
 			}
-			if (item.getAdherant()!=null && adherant) {
+			if (item.getAdherant() != null && adherant) {
 				item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
 			}
-			if (item.getComptable()!=null && comptable) {
-				item.setComptable(comptableConverter.toItem(vo.getComptableVo()));
-			}
+
 			return vo;
 		}
 	}
@@ -154,7 +150,7 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 		return adherant;
 	}
 
-	public void setAdherant(Boolean adherant) {
+	public void setAdherant(boolean adherant) {
 		this.adherant = adherant;
 	}
 
@@ -162,7 +158,7 @@ public class CpcConverter extends AbstractConverter<Cpc, CpcVo> {
 		return comptable;
 	}
 
-	public void setComptable(Boolean comptable) {
+	public void setComptable(boolean comptable) {
 		this.comptable = comptable;
 	}
 }

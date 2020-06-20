@@ -1,6 +1,6 @@
 package com.zsmart.accountingProject.dao;
-import com.zsmart.accountingProject.bean.EtatFacture;
 
+import com.zsmart.accountingProject.bean.EtatFacture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
  public interface EtatFactureDao extends JpaRepository<EtatFacture,Long> {
 
 
-
+    public EtatFacture findEtatFactureByLibelleLike(String libelle);
 
 }

@@ -27,8 +27,7 @@ public class DeclarationTva  implements Serializable {
     private List<Facture> facturescharge;
     @ManyToOne
     private Adherant adherant;
-    @ManyToOne
-    private Comptable comptable;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     private Societe societe;
@@ -37,13 +36,6 @@ public class DeclarationTva  implements Serializable {
         return adherant;
     }
 
-    public Comptable getComptable() {
-        return comptable;
-    }
-
-    public void setComptable(Comptable comptable) {
-        this.comptable = comptable;
-    }
 
     public void setAdherant(Adherant adherant) {
         this.adherant = adherant;

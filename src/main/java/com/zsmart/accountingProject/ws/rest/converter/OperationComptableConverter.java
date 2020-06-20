@@ -1,10 +1,12 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.OperationComptable;
+import com.zsmart.accountingProject.service.util.DateUtil;
+import com.zsmart.accountingProject.service.util.NumberUtil;
+import com.zsmart.accountingProject.service.util.StringUtil;
+import com.zsmart.accountingProject.ws.rest.vo.OperationComptableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.OperationComptable;
-import com.zsmart.accountingProject.ws.rest.vo.OperationComptableVo;
 
 @Component
 public class OperationComptableConverter extends AbstractConverter<OperationComptable, OperationComptableVo> {
@@ -29,6 +31,9 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
     @Autowired
     private CompteComptableConverter compteComptableConverter;
     private boolean operationComptableGroupe;
+    @Autowired
+    private AdherantConverter adherantConverter;
+    private boolean adherent;
 
     @Autowired
     private OperationComptableGroupeConverter operationComptableGroupeConverter;
@@ -70,13 +75,16 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
             if (facture && vo.getFactureVo() != null) {
                 item.setFacture(factureConverter.toItem(vo.getFactureVo()));
             }
+            if (adherent && vo.getAdherantVo() != null) {
+                item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+            }
 
 
             if (StringUtil.isNotEmpty(vo.getLibelle())) {
                 item.setLibelle(vo.getLibelle());
             }
 
-            if (vo.getSocieteVo()!=null  && societe) {
+            if (vo.getSocieteVo() != null && societe) {
                 item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
             }
 
@@ -134,12 +142,15 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
             if (facture && item.getFacture() != null) {
                 vo.setFactureVo(factureConverter.toVo(item.getFacture()));
             }
+            if (adherent && item.getAdherant() != null) {
+                vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+            }
 
             if (StringUtil.isNotEmpty(item.getLibelle())) {
                 vo.setLibelle(item.getLibelle());
             }
 
-            if (item.getSociete()!=null && societe) {
+            if (item.getSociete() != null && societe) {
                 vo.setSocieteVo(societeConverter.toVo(item.getSociete()));
             }
 
@@ -297,6 +308,22 @@ public class OperationComptableConverter extends AbstractConverter<OperationComp
 
     public FactureConverter getFactureConverter() {
         return factureConverter;
+    }
+
+    public AdherantConverter getAdherantConverter() {
+        return adherantConverter;
+    }
+
+    public void setAdherantConverter(AdherantConverter adherantConverter) {
+        this.adherantConverter = adherantConverter;
+    }
+
+    public boolean isAdherent() {
+        return adherent;
+    }
+
+    public void setAdherent(boolean adherent) {
+        this.adherent = adherent;
     }
 
     public void setFactureConverter(FactureConverter factureConverter) {

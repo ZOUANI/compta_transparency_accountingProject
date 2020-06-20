@@ -1,10 +1,9 @@
 package com.zsmart.accountingProject.bean;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import javax.persistence.*;
 
 @Entity
 public class OperationComptable implements Serializable {
@@ -26,7 +25,7 @@ public class OperationComptable implements Serializable {
     @ManyToOne
     private Caisse caisse;
     @ManyToOne
-    private TypeOperationComptable typeOperationComptable; 
+    private TypeOperationComptable typeOperationComptable;
     @ManyToOne
     private CompteBanquaire compteBanquaire;
     @ManyToOne
@@ -35,6 +34,8 @@ public class OperationComptable implements Serializable {
     private OperationComptableGroupe operationComptableGroupe;
     @ManyToOne
     private Facture facture;
+    @ManyToOne
+    private Adherant adherant;
 
     public OperationComptable() {
     }
@@ -44,6 +45,13 @@ public class OperationComptable implements Serializable {
         this.compteComptable = compteComptable;
     }
 
+    public Adherant getAdherant() {
+        return adherant;
+    }
+
+    public void setAdherant(Adherant adherant) {
+        this.adherant = adherant;
+    }
 
     public OperationComptableGroupe getOperationComptableGroupe() {
         return operationComptableGroupe;

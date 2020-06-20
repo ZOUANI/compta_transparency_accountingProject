@@ -1,12 +1,15 @@
 package com.zsmart.accountingProject.ws.rest.converter;
 
+import com.zsmart.accountingProject.bean.FactureFournisseur;
 import com.zsmart.accountingProject.bean.FactureItem;
 import com.zsmart.accountingProject.bean.OperationComptable;
+import com.zsmart.accountingProject.service.util.DateUtil;
+import com.zsmart.accountingProject.service.util.ListUtil;
+import com.zsmart.accountingProject.service.util.NumberUtil;
+import com.zsmart.accountingProject.service.util.StringUtil;
+import com.zsmart.accountingProject.ws.rest.vo.FactureFournisseurVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.zsmart.accountingProject.service.util.*;
-import com.zsmart.accountingProject.bean.FactureFournisseur;
-import com.zsmart.accountingProject.ws.rest.vo.FactureFournisseurVo;
 
 import java.math.BigDecimal;
 
@@ -19,6 +22,7 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
     private FournisseurConverter fournisseurConverter;
 
     private boolean etatFacture;
+    private boolean societe;
 
     @Autowired
     private EtatFactureConverter etatFactureConverter;
@@ -39,6 +43,15 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
 
     @Autowired
     private SocieteConverter societeConverter;
+
+    @Autowired
+    private TauxTvaConverter tauxTvaConverter;
+    @Autowired
+    private AdherantConverter adherantConverter;
+    @Autowired
+    private ComptableConverter comptableConverter;
+    private boolean adherant;
+    private boolean comptable;
 
     @Override
     public FactureFournisseur toItem(FactureFournisseurVo vo) {
@@ -66,7 +79,7 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
                 item.setScanPath(vo.getScanPath());
             }
 
-            if (vo.getSocieteVo()!=null) {
+            if (vo.getSocieteVo() != null && societe) {
                 item.setSociete(societeConverter.toItem(vo.getSocieteVo()));
             }
 
@@ -125,6 +138,12 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
             if (ListUtil.isNotEmpty(vo.getFactureItemsVo()) && factureItems) {
                 item.setFactureItems(factureItemConverter.toItem(vo.getFactureItemsVo()));
             }
+            if (vo.getTauxTvaVo() != null) {
+                item.setTauxTva(tauxTvaConverter.toItem(vo.getTauxTvaVo()));
+            }
+            if (vo.getAdherantVo() != null && adherant) {
+                item.setAdherant(adherantConverter.toItem(vo.getAdherantVo()));
+            }
 
             return item;
         }
@@ -152,7 +171,8 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
                 vo.setTypeFacture(item.getTypeFacture());
             }
 
-            if (item.getSociete()!=null) {
+
+            if (item.getSociete() != null && societe) {
                 vo.setSocieteVo(societeConverter.toVo(item.getSociete()));
             }
 
@@ -235,21 +255,84 @@ public class FactureFournisseurConverter extends AbstractConverter<FactureFourni
             if (item.getId() != null) {
                 vo.setId(NumberUtil.toString(item.getId()));
             }
+            if (item.getTauxTva() != null) {
+                vo.setTauxTvaVo(tauxTvaConverter.toVo(item.getTauxTva()));
+            }
+            if (item.getAdherant() != null && adherant) {
+                vo.setAdherantVo(adherantConverter.toVo(item.getAdherant()));
+            }
 
             return vo;
         }
     }
+
     public void init() {
-        etatFacture=true;
-        paimentFactures=true;
-        factureItems=true;
-        operationComptable=true;
+        etatFacture = true;
+        paimentFactures = true;
+        factureItems = true;
+        operationComptable = true;
 
         fournisseur = true;
     }
 
+    public AdherantConverter getAdherantConverter() {
+        return adherantConverter;
+    }
+
+    public void setAdherantConverter(AdherantConverter adherantConverter) {
+        this.adherantConverter = adherantConverter;
+    }
+
+    public ComptableConverter getComptableConverter() {
+        return comptableConverter;
+    }
+
+    public void setComptableConverter(ComptableConverter comptableConverter) {
+        this.comptableConverter = comptableConverter;
+    }
+
+    public boolean isAdherant() {
+        return adherant;
+    }
+
+    public void setAdherant(boolean adherant) {
+        this.adherant = adherant;
+    }
+
+    public boolean isComptable() {
+        return comptable;
+    }
+
+    public void setComptable(boolean comptable) {
+        this.comptable = comptable;
+    }
+
     public boolean isFournisseur() {
         return fournisseur;
+    }
+
+    public boolean isSociete() {
+        return societe;
+    }
+
+    public void setSociete(boolean societe) {
+        this.societe = societe;
+    }
+
+    public SocieteConverter getSocieteConverter() {
+        return societeConverter;
+    }
+
+    public void setSocieteConverter(SocieteConverter societeConverter) {
+        this.societeConverter = societeConverter;
+    }
+
+    public TauxTvaConverter getTauxTvaConverter() {
+        return tauxTvaConverter;
+    }
+
+    public void setTauxTvaConverter(TauxTvaConverter tauxTvaConverter) {
+        this.tauxTvaConverter = tauxTvaConverter;
     }
 
     public void setFournisseur(boolean fournisseur) {

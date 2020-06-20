@@ -1,8 +1,13 @@
 package com.zsmart.accountingProject.service.impl;
 
+import com.zsmart.accountingProject.bean.Adherant;
+import com.zsmart.accountingProject.bean.Comptable;
 import com.zsmart.accountingProject.bean.Societe;
+import com.zsmart.accountingProject.bean.Utilisateur;
 import com.zsmart.accountingProject.dao.SocieteDao;
 import com.zsmart.accountingProject.service.facade.SocieteService;
+import com.zsmart.accountingProject.service.facade.UtilisateurService;
+import com.zsmart.accountingProject.service.util.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,6 +26,8 @@ import java.util.List;
 public class SocieteServiceImpl implements SocieteService {
     @Autowired
     private SocieteDao societeDao;
+    @Autowired
+    private UtilisateurService utilisateurService;
     private final Path root = Paths.get("src\\main\\resources\\uploads");
 
     @Override
@@ -31,7 +37,7 @@ public class SocieteServiceImpl implements SocieteService {
 
     @Override
     public Societe findById(Long id) {
-        if (id!=null)return societeDao.getOne(id);
+        if (id != null) return societeDao.getOne(id);
         else return null;
     }
 
@@ -134,11 +140,11 @@ public class SocieteServiceImpl implements SocieteService {
                     Files.copy(statue.getInputStream(), this.root.resolve(societe.getIce() + "statue" + societe.getJuridiction()));
                     societe.setStatuet(societe.getIce() + "statue" + societe.getJuridiction());
                 }
-                if(releverBanquaire!=null){
+                if (releverBanquaire != null) {
                     Files.copy(releverBanquaire.getInputStream(), this.root.resolve(societe.getIce() + "releverBanquaire" + societe.getJuridiction()));
                     societe.setReleverBanquaire(societe.getIce() + "releverBanquaire" + societe.getJuridiction());
                 }
-                if (publicationCreationBO!=null){
+                if (publicationCreationBO != null) {
                     Files.copy(publicationCreationBO.getInputStream(), this.root.resolve(societe.getIce() + "publicationCreationBO" + societe.getJuridiction()));
                     societe.setPublicationCreationBo(societe.getIce() + "publicationCreationBO" + societe.getJuridiction());
                 }
@@ -147,4 +153,21 @@ public class SocieteServiceImpl implements SocieteService {
             }
         }
     }
+
+    @Override
+    public List<Societe> findByUtilisateurId(Long id) {
+
+        Utilisateur user = utilisateurService.findById(id);
+
+        if (Util.instanceOf(user, Adherant.class)) {
+            return societeDao.findByAdherantId(user.getId());
+        } else if (Util.instanceOf(user, Comptable.class)) {
+
+            return societeDao.findByComptableId(id);
+        } else {
+
+            return null;
+        }
+    }
+
 }
