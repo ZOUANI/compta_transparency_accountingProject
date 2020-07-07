@@ -29,13 +29,13 @@ public class SocieteRest {
     @PreAuthorize("hasRole('ADMIN') OR hasRole('ADHERENT') ")
     @PostMapping("/")
     public SocieteVo save(@RequestPart(value = "societe", required = true) SocieteVo societeVo,
-                          @RequestPart(value = "contratBail", required = true) MultipartFile contratBail,
-                          @RequestPart(value = "certificatNegatif", required = true) MultipartFile certificatnegatif,
-                          @RequestPart(value = "registreComercialImage", required = true) MultipartFile registreComercialImage,
-                          @RequestPart(value = "patente", required = true) MultipartFile patente,
-                          @RequestPart(value = "statue", required = true) MultipartFile statue,
-                          @RequestPart(value = "releverBanquaire", required = true) MultipartFile releverBanquaire,
-                          @RequestPart(value = "publicationCreationBO", required = true) MultipartFile publicationCreationBO
+                          @RequestPart(value = "contratBail", required = false) MultipartFile contratBail,
+                          @RequestPart(value = "certificatNegatif", required = false) MultipartFile certificatnegatif,
+                          @RequestPart(value = "registreComercialImage", required = false) MultipartFile registreComercialImage,
+                          @RequestPart(value = "patente", required = false) MultipartFile patente,
+                          @RequestPart(value = "statue", required = false) MultipartFile statue,
+                          @RequestPart(value = "releverBanquaire", required = false) MultipartFile releverBanquaire,
+                          @RequestPart(value = "publicationCreationBO", required = false) MultipartFile publicationCreationBO
     ) {
 
         Societe societe = societeConverter.toItem(societeVo);
@@ -90,6 +90,7 @@ public class SocieteRest {
     @PostMapping("/findByUser")
     public List<SocieteVo> findByUtilisateur(@RequestBody UtilisateurVo utilisateurVo) {
         societeConverter.setAdherant(true);
+        societeConverter.getAdherantConverter().setSociete(false);
         Utilisateur utilisateur = utilisateurConverter.toItem(utilisateurVo);
         return societeConverter.toVo(societeService.findByUtilisateurId(utilisateur.getId()));
     }

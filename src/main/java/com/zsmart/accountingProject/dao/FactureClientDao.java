@@ -17,12 +17,14 @@ public interface FactureClientDao extends JpaRepository<FactureClient, Long> {
 
     public FactureClient findByAdherantIdAndId(Long adhrentId, Long id);
 
+    public FactureClient findByAdherantIdAndIdAndSocieteId(Long adhrentId, Long id, Long socId);
+
     public void deleteByAdherantIdAndId(Long adherentId, Long id);
 
     public int deleteByClient(Client client);
 
     public FactureClient findBySocieteAndReference(Societe societe, String ref);
 
-    public List<FactureClient> findByAnneeAndSocieteAndMois(int annee, Societe societe, int mois);
+    public List<FactureClient> findByAnneeAndSocieteIdAndAdherantIdAndMois(int annee, Long socId, Long adhrentId, int mois);
 
 }

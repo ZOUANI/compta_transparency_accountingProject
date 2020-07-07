@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -38,6 +39,14 @@ public class FactureClientRest {
     public FactureClientVo save(@RequestBody FactureClientVo factureClientVo) {
         FactureClient factureClient = factureClientConverter.toItem(factureClientVo);
         return factureClientConverter.toVo(factureClientService.save(factureClient));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT') or hasRole('COMPTABLE')")
+    @PostMapping("/pdf")
+    public Resource pdf(@RequestBody FactureClientVo factureClientVo) throws IOException {
+        FactureClient factureClient = factureClientConverter.toItem(factureClientVo);
+        return factureClientService.toPdf(factureClient);
+
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT')")
@@ -110,6 +119,29 @@ public class FactureClientRest {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT') or hasRole('COMPTABLE')")
+    @GetMapping("/adherent/{adherentId}/societe/{socId}/dateMin/{dateMin}/dateMax/{dateMax}")
+    public BigDecimal findByAdherentAndId(@PathVariable Long adherentId, @PathVariable Long socId, @PathVariable Date dateMin, @PathVariable Date dateMax) {
+
+        return factureClientService.getTotalIncome(adherentId, socId, dateMin, dateMax);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT') or hasRole('COMPTABLE')")
+    @GetMapping("/adherent/{adherentId}/id/{id}/societe/{socId}")
+    public FactureClientVo findByAdherantIdAndIdAndSocieteId(@PathVariable Long adherentId, @PathVariable Long id, @PathVariable Long socId) {
+        try {
+            factureClientConverter.setFactureItems(true);
+            factureClientConverter.setOperationComptable(true);
+            factureClientConverter.setSociete(true);
+            factureClientConverter.setEtatFacture(true);
+            factureClientConverter.setClient(true);
+            return factureClientConverter.toVo(factureClientService.findByAdherantIdAndIdAndSocieteId(adherentId, id, socId));
+        } catch (EntityNotFoundException e) {
+            return null;
+        }
+
+    }
+
     @DeleteMapping("/delete/{id}")
     public void deleteById(@PathVariable Long id) {
         factureClientService.deleteById(id);
@@ -120,9 +152,10 @@ public class FactureClientRest {
         return factureClientConverter.toVo(factureClientService.findAll());
     }
 
-    @GetMapping("/calculateGainByAnneeAndSocieteId/{annee}/{id}")
-    public List<BigDecimal> calculateChargeByAnneeAndRefSoc(@PathVariable int annee, @PathVariable Long id) {
-        return factureClientService.calculateGainParAnneeEtSocieteId(annee, id);
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT') or hasRole('COMPTABLE')")
+    @GetMapping("/calculateGain/{annee}/{socId}/{adherentId}")
+    public List<BigDecimal> calculateChargeByAnneeAndRefSoc(@PathVariable int annee, @PathVariable Long socId, @PathVariable Long adherentId) {
+        return factureClientService.calculateGain(annee, socId, adherentId);
     }
 
     @GetMapping("/findByRefAndSocieteId/{id}/{ref}")

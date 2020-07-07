@@ -4,10 +4,7 @@ package com.zsmart.accountingProject.service.impl;
 import com.zsmart.accountingProject.bean.*;
 import com.zsmart.accountingProject.dao.FactureClientDao;
 import com.zsmart.accountingProject.service.facade.*;
-import com.zsmart.accountingProject.service.util.DateUtil;
-import com.zsmart.accountingProject.service.util.ExcelUtil;
-import com.zsmart.accountingProject.service.util.NumberUtil;
-import com.zsmart.accountingProject.service.util.SearchUtil;
+import com.zsmart.accountingProject.service.util.*;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -18,6 +15,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
@@ -39,6 +37,9 @@ public class FactureClientServiceImpl implements FactureClientService {
     @Autowired
 
     private FactureClientDao factureclientDao;
+    @Autowired
+
+    private SpringTemplateEngine templateEngine;
 
     @Autowired
 
@@ -108,6 +109,7 @@ public class FactureClientServiceImpl implements FactureClientService {
                     groupe.setLibelle("GroupFacture" + factureClient.getReference() + factureClient.getSociete().getRaisonSocial());
                     groupe.setCode("CodeGroup" + factureClient.getReference() + factureClient.getSociete().getRaisonSocial());
                     groupe.setAdherant(factureClient.getAdherant());
+                    groupe.setDateSaisie(factureClient.getDateSaisie());
                     operationComptableGroupeService.save(groupe);
 
                 } else {
@@ -233,6 +235,11 @@ public class FactureClientServiceImpl implements FactureClientService {
     }
 
     @Override
+    public FactureClient findByAdherantIdAndIdAndSocieteId(Long adhrentId, Long id, Long socId) {
+        return factureclientDao.findByAdherantIdAndIdAndSocieteId(adhrentId, id, socId);
+    }
+
+    @Override
     public void deleteFacWithAll(Long adherentId, Long facId) throws IOException {
         FactureClient factureClient = factureclientDao.findByAdherantIdAndId(adherentId, facId);
         if (factureClient != null) {
@@ -258,6 +265,31 @@ public class FactureClientServiceImpl implements FactureClientService {
             }
             factureclientDao.delete(factureClient);
         }
+    }
+
+    @Override
+    public Resource toPdf(FactureClient factureClient) throws IOException {
+        FactureClient facture = findById(factureClient.getId());
+        return PdfUtil.htmlToPdf(facture, templateEngine, "factureClient");
+    }
+
+    @Override
+    public BigDecimal getTotalIncome(Long adherentId, Long socId, Date dateDebut, Date dateFin) {
+        FactureClient facture = new FactureClient();
+        Societe societe = societeService.findById(socId);
+        facture.setAdherant(new Adherant());
+        facture.getAdherant().setId(adherentId);
+        facture.setSociete(societe);
+
+        List<FactureClient> factureClients = findByCriteria(facture, dateDebut, dateFin, null, null);
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (FactureClient factureClient : factureClients
+        ) {
+            total = total.add(factureClient.getTotalPayerHt());
+        }
+        return total;
     }
 
 
@@ -312,15 +344,14 @@ public class FactureClientServiceImpl implements FactureClientService {
     }
 
     @Override
-    public List<BigDecimal> calculateGainParAnneeEtSocieteId(int annee,Long id) {
-        List<BigDecimal> data=new ArrayList<>();
-        Societe societe=societeService.findById(id);
-        for (int i = 1; i <13 ; i++) {
-            List<FactureClient> factureFournisseurs=factureclientDao.findByAnneeAndSocieteAndMois(annee,societe,i);
-            BigDecimal total=BigDecimal.ZERO;
-            for (FactureClient f:factureFournisseurs
+    public List<BigDecimal> calculateGain(int annee, Long socId, Long adherentId) {
+        List<BigDecimal> data = new ArrayList<>();
+        for (int i = 1; i < 13; i++) {
+            List<FactureClient> factureFournisseurs = factureclientDao.findByAnneeAndSocieteIdAndAdherantIdAndMois(annee, socId, adherentId, i);
+            BigDecimal total = BigDecimal.ZERO;
+            for (FactureClient f : factureFournisseurs
             ) {
-                total=total.add(f.getTotalTtc());
+                total = total.add(f.getTotalPayerHt());
             }
             data.add(total);
         }

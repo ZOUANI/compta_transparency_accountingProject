@@ -17,4 +17,6 @@ public interface UtilisateurService {
     public AuthResponse authentificate(String login, String pass);
 
     public int signUp(SignupRequest user);
+
+    public int adminsignUp(SignupRequest user);
 }

@@ -38,9 +38,10 @@ public class OperationComptableGroupeServiceImpl implements OperationComptableGr
         if (operationcomptablegroupe == null) {
             return null;
         } else {
-            for (OperationComptable element : operationcomptablegroupe.getOperationComptables())
-            {
-                operationcomptablegroupe.setDateSaisie(element.getDateOperationComptable());
+            if (operationcomptablegroupe.getOperationComptables() != null && !operationcomptablegroupe.getOperationComptables().isEmpty()) {
+                for (OperationComptable element : operationcomptablegroupe.getOperationComptables()) {
+                    operationcomptablegroupe.setDateSaisie(element.getDateOperationComptable());
+                }
             }
             operationcomptablegroupeDao.save(operationcomptablegroupe);
             return operationcomptablegroupe;

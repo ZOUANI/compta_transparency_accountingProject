@@ -7,6 +7,7 @@ import com.zsmart.accountingProject.service.facade.FactureService;
 import com.zsmart.accountingProject.service.util.DateUtil;
 import com.zsmart.accountingProject.ws.rest.converter.FactureConverter;
 import com.zsmart.accountingProject.ws.rest.converter.PaiementFactureConverter;
+import com.zsmart.accountingProject.ws.rest.vo.ChartData;
 import com.zsmart.accountingProject.ws.rest.vo.FactureVo;
 import com.zsmart.accountingProject.ws.rest.vo.PaiementFactureVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -106,12 +108,27 @@ public class FactureRest {
         return factureConverter.toVo(factureService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COMPTABLE') or hasRole('ADHERENT')  ")
+    @GetMapping("/Chart/adherent/{adherentId}/societe/{socId}/dateMin/{dateMin}/dateMax/{dateMax}")
+    public ChartData getChartData(@PathVariable Long adherentId, @PathVariable Long socId, @PathVariable Date dateMin, @PathVariable Date dateMax) {
+
+
+        return factureService.generateChartData(adherentId, socId, dateMin, dateMax);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COMPTABLE') or hasRole('ADHERENT')  ")
+    @GetMapping("/countParEtat/adherent/{adherentId}/societe/{socId}/etat/{etat}")
+    public int countEtatFacture(@PathVariable Long adherentId, @PathVariable Long socId, @PathVariable String etat) {
+        return factureService.countByAdherantIdAndSocieteIdAndEtatFactureLibelleLike(adherentId, socId, etat);
+    }
+
     @GetMapping("/AdherentId/{adherentId}/Ref/{ref}/SocId/{societeId}")
     public boolean isRefExists(@PathVariable Long adherentId, @PathVariable String ref, @PathVariable Long societeId) {
 
 
         return factureService.existsByAdherantIdAndReferenceAndSocieteId(adherentId, ref, societeId);
     }
+
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT')")
     @GetMapping("/adherent/{adherentId}/id/{id}")

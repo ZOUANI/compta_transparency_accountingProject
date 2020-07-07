@@ -118,8 +118,6 @@ public class DeclarationTvaServiceImpl implements DeclarationTvaService {
     private String constructQuery(  Societe societe) {
         String query = "SELECT d FROM DeclarationTva d where 1=1";
         query += SearchUtil.addConstraint("d", "societe.raisonSocial", "=", societe.getRaisonSocial());
-        query += SearchUtil.addConstraint("d", "societe.nom", "=", societe.getNom());
-        query += SearchUtil.addConstraint("d", "societe.prenom", "=", societe.getPrenom());
         query += SearchUtil.addConstraint("d", "societe.registreComerce", "=", societe.getRegistreComerce());
         query += SearchUtil.addConstraint("d", "societe.authentificationCnss", "=", societe.getAuthentificationCnss());
         query += SearchUtil.addConstraint("d", "societe.juridiction", "=", societe.getJuridiction());

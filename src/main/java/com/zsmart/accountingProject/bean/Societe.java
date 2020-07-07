@@ -14,14 +14,13 @@ public class Societe implements Serializable {
     private String raisonSocial;
     private String ice;
     private String identifiantFiscal;
-    private String nom;
-    private String prenom;
+
     private String registreComerce;
     private String authentificationCnss;
     private String juridiction;
     private String statuejuridique;
     private String adresse;
-    private String  contratBail;
+    private String contratBail;
     private String certificatNegatif;
     private String registreCommerceimage;
     private String patente;
@@ -117,21 +116,7 @@ public class Societe implements Serializable {
         this.adherant = adherant;
     }
 
-    public String getNom() {
-        return nom;
-    }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
 
     public String getRegistreComerce() {
         return registreComerce;

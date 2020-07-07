@@ -10,4 +10,5 @@ public interface AdherantService {
 
     public Adherant findById(Long id);
 
+
 }

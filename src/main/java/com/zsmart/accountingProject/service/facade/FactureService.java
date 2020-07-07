@@ -3,6 +3,7 @@ package com.zsmart.accountingProject.service.facade;
 import com.zsmart.accountingProject.bean.DeclarationTva;
 import com.zsmart.accountingProject.bean.Facture;
 import com.zsmart.accountingProject.bean.PaiementFacture;
+import com.zsmart.accountingProject.ws.rest.vo.ChartData;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
@@ -55,4 +56,9 @@ public interface FactureService {
     public int deletePaiement(PaiementFacture paiementFacture);
 
     public boolean isClient(Long id);
+
+    public int countByAdherantIdAndSocieteIdAndEtatFactureLibelleLike(Long adherentId, Long socId, String etat);
+
+    public ChartData generateChartData(Long adherentId, Long socId, Date dateMin, Date dateMax);
+
 }

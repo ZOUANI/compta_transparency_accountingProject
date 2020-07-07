@@ -2,6 +2,7 @@
 package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.Cpc;
+import com.zsmart.accountingProject.bean.CpcCompteComptable;
 import com.zsmart.accountingProject.bean.CpcSousClasse;
 import com.zsmart.accountingProject.dao.CpcCompteComptableDao;
 import com.zsmart.accountingProject.dao.CpcDao;
@@ -9,17 +10,23 @@ import com.zsmart.accountingProject.dao.CpcSousClasseDao;
 import com.zsmart.accountingProject.service.facade.CpcService;
 import com.zsmart.accountingProject.service.facade.CpcSousClasseService;
 import com.zsmart.accountingProject.service.facade.OperationComptableService;
+import com.zsmart.accountingProject.service.util.ExcelUtil;
 import com.zsmart.accountingProject.service.util.ListUtil;
 import com.zsmart.accountingProject.service.util.SearchUtil;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 
@@ -193,6 +200,67 @@ public class CpcServiceImpl implements CpcService {
 			clone(cpc, cpcClone);
 			return cpcClone;
 		}
+	}
+
+	@Override
+	public Resource getExcel(Cpc cpc) {
+		XSSFWorkbook workbook = new XSSFWorkbook();
+
+		CellStyle headerStyle = workbook.createCellStyle();
+
+		XSSFFont font = (workbook).createFont();
+		headerStyle.setFillForegroundColor(IndexedColors.BLACK1.getIndex());
+		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short) 10);
+		font.setBold(true);
+		headerStyle.setFont(font);
+		Map<String, Integer> headerData = new LinkedHashMap<>();
+
+		headerData.put("CPC", 12000);
+		headerData.put("TOTAL", 6000);
+
+		XSSFSheet sheet = ExcelUtil.initSheet(workbook, "CPC", headerData, null, headerStyle);
+
+
+		CellStyle boldStyle = workbook.createCellStyle();
+		boldStyle.setWrapText(true);
+		XSSFFont ft = (workbook).createFont();
+		ft.setBold(true);
+		boldStyle.setFont(ft);
+
+		CellStyle normalStyle = workbook.createCellStyle();
+		normalStyle.setWrapText(true);
+
+		if (cpc.getCpcSousClasses() != null && !cpc.getCpcSousClasses().isEmpty()) {
+			int i = 0;
+			for (CpcSousClasse cpcSousClasse : cpc.getCpcSousClasses()) {
+				if (i > 0) {
+					if (cpc.getCpcSousClasses().get(i - 1).getSousClasseComptable().getNumero().toString().charAt(0) != cpcSousClasse.getSousClasseComptable().getNumero().toString().charAt(0)) {
+						List<List<String>> totalCharge = new ArrayList<>();
+						totalCharge.add(Arrays.asList("TOTAL CHARGE", cpc.getTotalCharge().toString()));
+						ExcelUtil.fillTable(sheet, totalCharge, headerStyle, sheet.getLastRowNum() + 1);
+					}
+				}
+				List<List<String>> csc = new ArrayList<>();
+				csc.add(Arrays.asList(cpcSousClasse.getSousClasseComptable().getLibelle(), cpcSousClasse.getMontant().toString()));
+				ExcelUtil.fillTable(sheet, csc, boldStyle, sheet.getLastRowNum() + 1);
+				for (CpcCompteComptable cpcCompteComptable : cpcSousClasse.getCpcCompteComptables()) {
+					List<List<String>> ccc = new ArrayList<>();
+					ccc.add(Arrays.asList(cpcCompteComptable.getCompteComptable().getLibelle(), cpcCompteComptable.getMontant().toString()));
+					ExcelUtil.fillTable(sheet, ccc, normalStyle, sheet.getLastRowNum() + 1);
+				}
+				i++;
+
+			}
+			List<List<String>> lastTwoRows = new ArrayList<>();
+			lastTwoRows.add(Arrays.asList("TOTAL PRODUIT", cpc.getTotalProduit().toString()));
+			lastTwoRows.add(Arrays.asList("RESULTAT", cpc.getResultat().toString()));
+			ExcelUtil.fillTable(sheet, lastTwoRows, headerStyle, sheet.getLastRowNum() + 1);
+		}
+		return ExcelUtil.exportBlob(workbook);
+
+
 	}
 
 	public List<Cpc> clone(List<Cpc> cpcs) {

@@ -7,6 +7,7 @@ import com.zsmart.accountingProject.service.util.NumberUtil;
 import com.zsmart.accountingProject.ws.rest.converter.CpcConverter;
 import com.zsmart.accountingProject.ws.rest.vo.CpcVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,21 @@ public class CpcRest {
         cpcConverter.getCpcSousClasseConverter().getCpcCompteComptableConverter().setCompteComptable(true);
         Cpc cpc = cpcConverter.toItem(cpcVo);
         return cpcConverter.toVo(cpcService.findCpcClasseComptable(cpc.getDateDebut(), cpc.getDateFin(), cpc.getSociete().getId()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COMPTABLE') or hasRole('ADHERENT')")
+    @PostMapping("/excel/")
+    public Resource excel(@RequestBody CpcVo cpcVo) {
+        cpcConverter.setCpcSousClasses(true);
+        cpcConverter.setAdherant(true);
+
+        cpcConverter.getCpcSousClasseConverter().setSousClasseComptable(true);
+        cpcConverter.getCpcSousClasseConverter().setCpcCompteComptables(true);
+        cpcConverter.getCpcSousClasseConverter().getCpcCompteComptableConverter().setCompteComptable(true);
+
+        Cpc cpc = cpcConverter.toItem(cpcVo);
+        return cpcService.getExcel(cpc);
+
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('COMPTABLE')")

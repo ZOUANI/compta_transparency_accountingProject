@@ -18,19 +18,22 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExcelUtil {
     public static XSSFSheet initSheet(XSSFWorkbook workbook, String sheetname, Map<String, Integer> columnHeaderWithColumnWidth, List<String> columnHeader, CellStyle headerStyle) {
         XSSFSheet sheet = workbook.createSheet(sheetname);
 
         if (columnHeaderWithColumnWidth != null && !columnHeaderWithColumnWidth.isEmpty()) {
-            int i = 0;
+
             Row header = sheet.createRow(0);
+            AtomicInteger index = new AtomicInteger();
             columnHeaderWithColumnWidth.forEach(
                     (s, integer) -> {
-                        sheet.setColumnWidth(i, integer);
-                        Cell headerCell = header.createCell(i);
+                        sheet.setColumnWidth(index.get(), integer);
+                        Cell headerCell = header.createCell(index.get());
                         headerCell.setCellValue(s);
+                        index.getAndIncrement();
                         if (headerStyle != null) headerCell.setCellStyle(headerStyle);
 
                     }

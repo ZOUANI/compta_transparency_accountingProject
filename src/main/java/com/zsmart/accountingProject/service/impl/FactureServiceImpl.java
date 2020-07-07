@@ -5,6 +5,7 @@ import com.zsmart.accountingProject.bean.*;
 import com.zsmart.accountingProject.dao.FactureDao;
 import com.zsmart.accountingProject.service.facade.*;
 import com.zsmart.accountingProject.service.util.*;
+import com.zsmart.accountingProject.ws.rest.vo.ChartData;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -12,12 +13,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -61,6 +64,12 @@ public class FactureServiceImpl implements FactureService {
     @Autowired
 
     private EtatFactureService etatfactureService;
+    @Autowired
+
+    private SocieteService societeService;
+    @Autowired
+
+    private SpringTemplateEngine templateEngine;
 
 
     @Autowired
@@ -266,6 +275,7 @@ public class FactureServiceImpl implements FactureService {
         String query = "SELECT f FROM Facture f where 1=1";
         if (facture.getSociete() != null) {
             query += SearchUtil.addConstraint("f", "societe.raisonSocial", "=", facture.getSociete().getRaisonSocial());
+            query += SearchUtil.addConstraint("f", "societe.id", "=", facture.getSociete().getId());
             query += SearchUtil.addConstraint("f", "societe.identifiantFiscal", "=", facture.getSociete().getIdentifiantFiscal());
             query += SearchUtil.addConstraint("f", "societe.ice", "=", facture.getSociete().getIce());
         }
@@ -274,6 +284,7 @@ public class FactureServiceImpl implements FactureService {
         query += SearchUtil.addConstraint("f", "typeFacture", "LIKE", facture.getTypeFacture());
         query += SearchUtil.addConstraint("f", "annee", "=", facture.getAnnee());
         query += SearchUtil.addConstraint("f", "trimester", "=", facture.getTrimester());
+        query += SearchUtil.addConstraint("f", "adherant.id", "=", facture.getAdherant().getId());
         query += SearchUtil.addConstraintMinMaxDate("f", " dateFacture", dateFactureMin,
                 dateFactureMax);
         query += SearchUtil.addConstraintMinMaxDate("f", " dateSaisie", dateSaisieMin, dateSaisieMax);
@@ -471,6 +482,55 @@ public class FactureServiceImpl implements FactureService {
         Facture facture = findById(id);
         return Util.instanceOf(facture, FactureClient.class);
     }
+
+    @Override
+    public int countByAdherantIdAndSocieteIdAndEtatFactureLibelleLike(Long adherentId, Long socId, String etat) {
+        return factureDao.countByAdherantIdAndSocieteIdAndEtatFactureLibelleLike(adherentId, socId, etat);
+    }
+
+    @Override
+    public ChartData generateChartData(Long adherentId, Long socId, Date dateMin, Date dateMax) {
+        ChartData chartData = new ChartData();
+        chartData.setLabels(new ArrayList<>());
+        chartData.setTotalCharge(new ArrayList<>());
+        chartData.setTotalGain(new ArrayList<>());
+        List<List<YearMonth>> dates = DateUtil.splitDate(YearMonth.of(DateUtil.getYear(dateMin), DateUtil.getMonth(dateMin)), YearMonth.of(DateUtil.getYear(dateMax), DateUtil.getMonth(dateMax)), 12);
+        System.out.println(dateMax);
+        System.out.println(dateMin);
+        System.out.println(dates);
+        assert dates != null;
+        for (List<YearMonth> range : dates
+        ) {
+            if (range.get(0).compareTo(range.get(1)) == 0) {
+                chartData.getLabels().add(range.get(0).getMonth().toString() + "/" + range.get(0).getYear());
+            } else {
+                chartData.getLabels().add(range.get(0).getMonth().toString() + "/" + range.get(0).getYear() + " - " + range.get(1).getMonth().toString() + "/" + range.get(1).getYear());
+            }
+            BigDecimal totalCharge = BigDecimal.ZERO;
+            BigDecimal totalGain = BigDecimal.ZERO;
+
+            Facture search = new Facture();
+            Societe societe = societeService.findById(socId);
+            search.setSociete(societe);
+            search.setAdherant(new Adherant());
+            search.getAdherant().setId(adherentId);
+
+            List<Facture> factures = findByCriteria(search, DateUtil.fromYearMonth(range.get(0), false), DateUtil.fromYearMonth(range.get(1), true), null, null);
+
+            for (Facture facture : factures
+            ) {
+                if (Util.instanceOf(facture, FactureClient.class)) {
+                    totalGain = totalGain.add(facture.getTotalPayerHt());
+                } else {
+                    totalCharge = totalCharge.add(facture.getTotalPayerHt());
+                }
+            }
+            chartData.getTotalCharge().add(totalCharge);
+            chartData.getTotalGain().add(totalGain);
+        }
+        return chartData;
+    }
+
 
     private OperationComptable constructOp(Societe societe,
                                            BigDecimal montant,

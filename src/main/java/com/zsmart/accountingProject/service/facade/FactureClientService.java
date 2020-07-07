@@ -28,7 +28,7 @@ public interface FactureClientService {
 
     public FactureClient findBySocieteIdAndReference(Long id, String ref);
 
-    public List<BigDecimal> calculateGainParAnneeEtSocieteId(int annee, Long id);
+    public List<BigDecimal> calculateGain(int annee, Long socId, Long adherentId);
 
     public int delete(FactureClient factureclient);
 
@@ -52,6 +52,12 @@ public interface FactureClientService {
 
     public FactureClient findByAdherantIdAndId(Long adhrentId, Long id);
 
+    public FactureClient findByAdherantIdAndIdAndSocieteId(Long adhrentId, Long id, Long socId);
+
     public void deleteFacWithAll(Long adherentId, Long facId) throws IOException;
+
+    public Resource toPdf(FactureClient factureClient) throws IOException;
+
+    public BigDecimal getTotalIncome(Long adherentId, Long socId, Date dateDebut, Date dateFin);
 
 }

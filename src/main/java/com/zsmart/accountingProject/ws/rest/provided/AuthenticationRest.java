@@ -18,6 +18,11 @@ public class AuthenticationRest {
         return utilisateurService.signUp(user);
     }
 
+    @PostMapping("/admin/")
+    public int adminSignup(@RequestBody SignupRequest user) {
+        return utilisateurService.adminsignUp(user);
+    }
+
     @PostMapping("signin/login/{login}/pass/{pass}")
     public AuthResponse signin(@PathVariable String login, @PathVariable String pass) {
 

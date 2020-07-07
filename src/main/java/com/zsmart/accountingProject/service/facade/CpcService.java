@@ -1,6 +1,7 @@
 package com.zsmart.accountingProject.service.facade;
 
 import com.zsmart.accountingProject.bean.Cpc;
+import org.springframework.core.io.Resource;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,6 +24,8 @@ public interface CpcService {
     public void clone(Cpc cpc, Cpc cpcClone);
 
     public Cpc clone(Cpc cpc);
+
+    public Resource getExcel(Cpc cpc);
 
     public List<Cpc> clone(List<Cpc> cpcs);
 

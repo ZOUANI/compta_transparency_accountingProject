@@ -4,10 +4,7 @@ package com.zsmart.accountingProject.service.impl;
 import com.zsmart.accountingProject.bean.*;
 import com.zsmart.accountingProject.dao.FactureFournisseurDao;
 import com.zsmart.accountingProject.service.facade.*;
-import com.zsmart.accountingProject.service.util.DateUtil;
-import com.zsmart.accountingProject.service.util.ExcelUtil;
-import com.zsmart.accountingProject.service.util.NumberUtil;
-import com.zsmart.accountingProject.service.util.SearchUtil;
+import com.zsmart.accountingProject.service.util.*;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -18,6 +15,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
@@ -51,6 +49,9 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
     @Autowired
 
     private FournisseurService fournisseurService;
+    @Autowired
+
+    private SpringTemplateEngine templateEngine;
 
     @Autowired
 
@@ -111,6 +112,7 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
                     groupe.setLibelle("GroupFacture" + facturefournisseur.getReference() + facturefournisseur.getSociete().getRaisonSocial());
                     groupe.setCode("CodeGroup" + facturefournisseur.getReference() + facturefournisseur.getSociete().getRaisonSocial());
                     groupe.setAdherant(facturefournisseur.getAdherant());
+                    groupe.setDateSaisie(facturefournisseur.getDateSaisie());
                     operationComptableGroupeService.save(groupe);
 
                 } else {
@@ -234,6 +236,30 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
     }
 
     @Override
+    public FactureFournisseur findByAdherantIdAndIdAndSocieteId(Long adhrentId, Long id, Long socId) {
+        return facturefournisseurDao.findByAdherantIdAndIdAndSocieteId(adhrentId, id, socId);
+    }
+
+    @Override
+    public BigDecimal getTotalExpense(Long adherentId, Long socId, Date dateDebut, Date dateFin) {
+        FactureFournisseur facture = new FactureFournisseur();
+        Societe societe = societeService.findById(socId);
+        facture.setAdherant(new Adherant());
+        facture.getAdherant().setId(adherentId);
+        facture.setSociete(societe);
+
+        List<FactureFournisseur> factureFournisseurs = findByCriteria(facture, dateDebut, dateFin, null, null);
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (FactureFournisseur factureFournisseur : factureFournisseurs
+        ) {
+            total = total.add(factureFournisseur.getTotalPayerHt());
+        }
+        return total;
+    }
+
+    @Override
     public void deleteFacWithAll(Long adherentId, Long facId) throws IOException {
         FactureFournisseur factureFournisseur = facturefournisseurDao.findByAdherantIdAndId(adherentId, facId);
         if (factureFournisseur != null) {
@@ -259,6 +285,12 @@ public class FactureFournisseurServiceImpl implements FactureFournisseurService 
             }
             facturefournisseurDao.delete(factureFournisseur);
         }
+    }
+
+    @Override
+    public Resource toPdf(FactureFournisseur factureFournisseur) throws IOException {
+        FactureFournisseur facture = findById(factureFournisseur.getId());
+        return PdfUtil.htmlToPdf(facture, templateEngine, "factureFournisseur");
     }
 
     @Override

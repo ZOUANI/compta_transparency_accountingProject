@@ -52,5 +52,11 @@ public interface FactureFournisseurService {
 
     public FactureFournisseur findByAdherantIdAndId(Long adhrentId, Long id);
 
+    public FactureFournisseur findByAdherantIdAndIdAndSocieteId(Long adhrentId, Long id, Long socId);
+
+    public BigDecimal getTotalExpense(Long adherentId, Long socId, Date dateDebut, Date dateFin);
+
     public void deleteFacWithAll(Long adherentId, Long facId) throws IOException;
+
+    public Resource toPdf(FactureFournisseur factureFournisseur) throws IOException;
 }

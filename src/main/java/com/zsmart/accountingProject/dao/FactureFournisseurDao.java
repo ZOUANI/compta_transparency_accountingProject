@@ -17,6 +17,8 @@ public interface FactureFournisseurDao extends JpaRepository<FactureFournisseur,
 
     public FactureFournisseur findByAdherantIdAndId(Long adhrentId, Long id);
 
+    public FactureFournisseur findByAdherantIdAndIdAndSocieteId(Long adhrentId, Long id, Long socId);
+
     public int deleteByFournisseur(Fournisseur fournisseur);
 
     public void deleteByAdherantIdAndId(Long adherentId, Long id);

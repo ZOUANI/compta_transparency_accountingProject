@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,14 @@ public class FactureFournisseurRest {
     public FactureFournisseurVo save(@RequestBody FactureFournisseurVo factureFournisseurVo) {
         FactureFournisseur factureFournisseur = factureFournisseurConverter.toItem(factureFournisseurVo);
         return factureFournisseurConverter.toVo(factureFournisseurService.save(factureFournisseur));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT') or hasRole('COMPTABLE')")
+    @PostMapping("/pdf")
+    public Resource pdf(@RequestBody FactureFournisseurVo factureFournisseurVo) throws IOException {
+        FactureFournisseur factureFournisseur = factureFournisseurConverter.toItem(factureFournisseurVo);
+        return factureFournisseurService.toPdf(factureFournisseur);
+
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT')")
@@ -113,6 +122,29 @@ public class FactureFournisseurRest {
             return null;
         }
 
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT') or hasRole('COMPTABLE')")
+    @GetMapping("/adherent/{adherentId}/id/{id}/societe/{socId}")
+    public FactureFournisseurVo findByAdherantIdAndIdAndSocieteId(@PathVariable Long adherentId, @PathVariable Long id, @PathVariable Long socId) {
+        try {
+            factureFournisseurConverter.setFactureItems(true);
+            factureFournisseurConverter.setOperationComptable(true);
+            factureFournisseurConverter.setSociete(true);
+            factureFournisseurConverter.setEtatFacture(true);
+            factureFournisseurConverter.setFournisseur(true);
+            return factureFournisseurConverter.toVo(factureFournisseurService.findByAdherantIdAndIdAndSocieteId(adherentId, id, socId));
+        } catch (EntityNotFoundException e) {
+            return null;
+        }
+
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT') or hasRole('COMPTABLE')")
+    @GetMapping("/adherent/{adherentId}/societe/{socId}/dateMin/{dateMin}/dateMax/{dateMax}")
+    public BigDecimal findByAdherentAndId(@PathVariable Long adherentId, @PathVariable Long socId, @PathVariable Date dateMin, @PathVariable Date dateMax) {
+
+        return factureFournisseurService.getTotalExpense(adherentId, socId, dateMin, dateMax);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('ADHERENT') ")

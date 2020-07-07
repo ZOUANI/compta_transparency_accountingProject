@@ -2,6 +2,7 @@
 package com.zsmart.accountingProject.service.impl;
 
 import com.zsmart.accountingProject.bean.OperationComptable;
+import com.zsmart.accountingProject.bean.OperationComptableGroupe;
 import com.zsmart.accountingProject.bean.Societe;
 import com.zsmart.accountingProject.dao.OperationComptableDao;
 import com.zsmart.accountingProject.service.facade.*;
@@ -48,26 +49,28 @@ public class OperationComptableServiceImpl implements OperationComptableService 
 
 	@Autowired
 
-	private CompteBanquaireService comptebanquaireService;
+    private CompteBanquaireService comptebanquaireService;
 
-	@Autowired
+    @Autowired
 
-	private CompteComptableService comptecomptableService;
+    private CompteComptableService comptecomptableService;
 
-	@Autowired
+    @Autowired
 
-	private OperationComptableGroupeService operationcomptablegroupeService;
+    private OperationComptableGroupeService operationcomptablegroupeService;
+    @Autowired
 
-	@Autowired
+    private OperationComptableGroupeService operationComptableGroupeService;
+    @Autowired
 
-	private FactureService factureService;
-	@Autowired
+    private FactureService factureService;
+    @Autowired
 
-	private SocieteService societeService;
+    private SocieteService societeService;
 
 
-	@Override
-	public List<Object[]> findGroupeByClasseCompteComptable(Date dateDebut, Date dateFin, String code, Long socId) {
+    @Override
+    public List<Object[]> findGroupeByClasseCompteComptable(Date dateDebut, Date dateFin, String code, Long socId) {
 		return findOperationComptableCpc("compteComptable.sousClasseComptable.classeComptable", dateDebut, dateFin, code, socId);
 	}
 
@@ -128,8 +131,13 @@ public class OperationComptableServiceImpl implements OperationComptableService 
         if (operationcomptable == null) {
             return -1;
         } else {
+            OperationComptableGroupe groupe = operationComptableGroupeService.findById(operationcomptable.getOperationComptableGroupe().getId());
+            if (groupe.getOperationComptables().size() == 1) {
+                operationComptableGroupeService.delete(groupe);
+            }
             operationcomptableDao.delete(operationcomptable);
             return 1;
+
         }
     }
 
@@ -151,6 +159,11 @@ public class OperationComptableServiceImpl implements OperationComptableService 
     @Transactional
     @Override
     public void deleteByAdherantIdAndId(Long adherentId, Long id) {
+        OperationComptable operationComptable = findByAdherantIdAndId(adherentId, id);
+        OperationComptableGroupe groupe = operationComptableGroupeService.findById(operationComptable.getOperationComptableGroupe().getId());
+        if (groupe.getOperationComptables().size() == 1) {
+            operationComptableGroupeService.delete(groupe);
+        }
         operationcomptableDao.deleteByAdherantIdAndId(adherentId, id);
     }
 
@@ -246,6 +259,7 @@ public class OperationComptableServiceImpl implements OperationComptableService 
 
 
         CellStyle headerStyle = workbook.createCellStyle();
+
         XSSFFont font = (workbook).createFont();
         font.setFontName("Arial");
         font.setFontHeightInPoints((short) 10);

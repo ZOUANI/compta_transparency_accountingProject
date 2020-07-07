@@ -1,9 +1,6 @@
 package com.zsmart.accountingProject.service.impl;
 
-import com.zsmart.accountingProject.bean.Adherant;
-import com.zsmart.accountingProject.bean.Comptable;
-import com.zsmart.accountingProject.bean.Role;
-import com.zsmart.accountingProject.bean.Utilisateur;
+import com.zsmart.accountingProject.bean.*;
 import com.zsmart.accountingProject.dao.UtilisateurDao;
 import com.zsmart.accountingProject.service.facade.RoleService;
 import com.zsmart.accountingProject.service.facade.UtilisateurService;
@@ -145,6 +142,31 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
         adherant.setAuthorities(roles);
         utilisateurDao.save(adherant);
         return 0;
+    }
+
+    @Override
+    public int adminsignUp(SignupRequest user) {
+        if (user == null || user.getEmail() == null || user.getEmail().isEmpty() || user.getPassword() == null
+                || user.getPassword().isEmpty()) {
+            return -1;
+        }
+        Utilisateur loadedUser = utilisateurDao.findByEmail(user.getEmail()).orElse(null);
+        if (loadedUser != null) {
+            return -2;
+        } else {
+            List<Role> roles = new ArrayList<>();
+            Role roleComptable = roleService.findByName("ROLE_ADMIN");
+            roles.add(roleComptable);
+            Admin admin = new Admin();
+            admin.setNom(user.getFirstName());
+            admin.setEmail(user.getEmail());
+            admin.setPrenom(user.getLastName());
+            admin.setPassword(passwordEncoder.encode(user.getPassword()));
+            admin.setAuthorities(roles);
+
+            utilisateurDao.save(admin);
+            return 0;
+        }
     }
 
     @Override
